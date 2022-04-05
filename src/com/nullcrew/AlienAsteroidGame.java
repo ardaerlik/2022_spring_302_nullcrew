@@ -10,7 +10,7 @@ public final class AlienAsteroidGame {
 	private AlienAsteroidGame() {}
 
 	public static void main(String[] args) {
-		getInstance().changeScreen(null, new GameView());
+		
 	}
 	
 	public static AlienAsteroidGame getInstance() {
