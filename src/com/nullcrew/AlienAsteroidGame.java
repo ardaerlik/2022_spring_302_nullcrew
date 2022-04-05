@@ -25,11 +25,13 @@ public final class AlienAsteroidGame {
 		if (from == null) {
 			to.setBounds(0, 0, 1000, 1000);
 			to.setVisible(true);
+			
 		} else if (to == null) {
 			// exit application
 		} else {
 			
 		}
+		from.dispose();
 	}
 
 }
