@@ -17,6 +17,7 @@ public class GamePanel extends JPanel
 	private Timer gameTimer;
 	private Rectangle paddle;
 	private int paddlePositionX = 100;
+	private int paddleRotation = 0;
 
 	/**
 	 * Create the panel.
@@ -65,6 +66,12 @@ public class GamePanel extends JPanel
 			}
 			case (KeyEvent.VK_RIGHT): {
 				paddlePositionX += 5;
+				break;
+			}
+			case (KeyEvent.VK_A): {
+				break;
+			}
+			case (KeyEvent.VK_D): {
 				break;
 			}
 		}
