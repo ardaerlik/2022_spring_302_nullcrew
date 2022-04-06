@@ -33,5 +33,5 @@ public final class AlienAsteroidGame {
 		}
 		from.dispose();
 	}
-	// DENEME DENEME DENEME DENEME DENEME DENEME DENEME DENEME DENEME 
+	
 }

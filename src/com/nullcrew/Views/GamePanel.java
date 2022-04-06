@@ -2,6 +2,7 @@ package com.nullcrew.Views;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -18,8 +19,8 @@ public class GamePanel extends JPanel
 	
 	private GameView gameView;
 	private Timer gameTimerUI;
-	private GameMode gameMode;
-
+	public static GameMode gameMode;
+	public static Graphics paddleGraphics;
 	/**
 	 * Create the panel.
 	 */
@@ -78,10 +79,15 @@ public class GamePanel extends JPanel
 	
 	private void paintPaddle(Graphics g) {
 		g.setColor(Color.BLACK);
-		g.fillRect(gameView.getGameController().getPaddle().getX(),
+		paddleGraphics=g;
+		Graphics2D g2= (Graphics2D) GamePanel.paddleGraphics;
+		g2.rotate(Math.toRadians(gameView.getGameController().getPaddle().getRotationDegree()),
+				gameView.getGameController().getPaddle().getX()+gameView.getGameController().getPaddle().getWidth()/2,
+				gameView.getGameController().getPaddle().getY());
+		g2.fill3DRect(gameView.getGameController().getPaddle().getX(),
 				gameView.getGameController().getPaddle().getY(),
 				gameView.getGameController().getPaddle().getWidth(),
-				gameView.getGameController().getPaddle().getHeight());
+				gameView.getGameController().getPaddle().getHeight(),true);
 	}
 	
 	@Override

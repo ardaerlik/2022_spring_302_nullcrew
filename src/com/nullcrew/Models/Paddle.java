@@ -15,6 +15,8 @@ public class Paddle extends GameObject {
 
 	public void setRotationDegree(int rotationDegree) {
 		this.rotationDegree = rotationDegree;
+		
 	}
+
 
 }
