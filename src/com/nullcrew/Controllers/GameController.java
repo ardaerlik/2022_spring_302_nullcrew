@@ -19,7 +19,9 @@ public class GameController {
 			break;
 		}
 		case LEFT: {
-			paddle.setX(paddle.getX() - 5);
+			if (paddle.getX() > 0) {
+				paddle.setX(paddle.getX() - 5);
+			}
 			break;
 		}
 		default:
