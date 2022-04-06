@@ -70,6 +70,7 @@ public class GamePanel extends JPanel
 			gameMode = GameMode.RESUMED;
 			gameTimerUI.start();
 			break;
+			
 		}
 		case RESUMED: {
 			break;
