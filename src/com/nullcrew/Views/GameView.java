@@ -7,9 +7,15 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import javax.swing.SpringLayout;
 
+import com.nullcrew.Controllers.GameController;
+
 public class GameView {
 
 	private JFrame frame;
+	private JPanel topPanel;
+	private JPanel belowPanel;
+	private GamePanel gamePanel;
+	private GameController gameController;
 
 	/**
 	 * Launch the application.
@@ -31,6 +37,7 @@ public class GameView {
 	 * Create the application.
 	 */
 	public GameView() {
+		gameController = new GameController(this); 
 		initialize();
 	}
 
@@ -52,7 +59,7 @@ public class GameView {
 		springLayout.putConstraint(SpringLayout.EAST, topPanel, 1024, SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(topPanel);
 		
-		GamePanel gamePanel = new GamePanel();
+		GamePanel gamePanel = new GamePanel(this);
 		springLayout.putConstraint(SpringLayout.NORTH, gamePanel, 115, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.SOUTH, gamePanel, 623, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.WEST, gamePanel, 0, SpringLayout.WEST, frame.getContentPane());
@@ -66,5 +73,45 @@ public class GameView {
 		springLayout.putConstraint(SpringLayout.WEST, belowPanel, 0, SpringLayout.WEST, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, belowPanel, 1024, SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(belowPanel);
+	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+
+	public JPanel getTopPanel() {
+		return topPanel;
+	}
+
+	public void setTopPanel(JPanel topPanel) {
+		this.topPanel = topPanel;
+	}
+
+	public JPanel getBelowPanel() {
+		return belowPanel;
+	}
+
+	public void setBelowPanel(JPanel belowPanel) {
+		this.belowPanel = belowPanel;
+	}
+
+	public GamePanel getGamePanel() {
+		return gamePanel;
+	}
+
+	public void setGamePanel(GamePanel gamePanel) {
+		this.gamePanel = gamePanel;
+	}
+
+	public GameController getGameController() {
+		return gameController;
+	}
+
+	public void setGameController(GameController gameController) {
+		this.gameController = gameController;
 	}
 }
