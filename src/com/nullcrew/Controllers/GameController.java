@@ -1,5 +1,6 @@
 package com.nullcrew.Controllers;
 
+import java.awt.Graphics2D;
 import com.nullcrew.Models.*;
 import com.nullcrew.Utilities.*;
 import com.nullcrew.Views.*;
@@ -13,6 +14,9 @@ public class GameController {
 	}
 
 	public void paddleMoved(MoveDirection direction) {
+		if(GamePanel.gameMode==GameMode.PAUSED) {
+			return;
+		}
 		switch (direction) {
 		case RIGHT: {
 			paddle.setX(paddle.getX() + 5);
@@ -30,12 +34,21 @@ public class GameController {
 	}
 	
 	public void paddleRotated(MoveDirection direction) {
+		if(GamePanel.gameMode==GameMode.PAUSED) {
+			return;
+		}
 		switch (direction) {
 		case UP: {
+			if(paddle.getRotationDegree()+5>45) {
+				return;
+			}
 			paddle.setRotationDegree(paddle.getRotationDegree() + 5);
 			break;
 		}
 		case DOWN: {
+			if(paddle.getRotationDegree()-5<-45) {
+				return;
+			}
 			paddle.setRotationDegree(paddle.getRotationDegree() - 5);
 			break;
 		}
