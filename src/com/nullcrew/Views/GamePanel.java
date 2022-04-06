@@ -18,6 +18,7 @@ public class GamePanel extends JPanel
 	
 	private GameView gameView;
 	private Timer gameTimerUI;
+	private GameMode gameMode;
 
 	/**
 	 * Create the panel.
@@ -31,11 +32,12 @@ public class GamePanel extends JPanel
 		requestFocusInWindow();
 		addKeyListener(this);
 		restartAction();
+		gameMode = GameMode.RESUMED;
 	}
 	
 	private void restartAction() {
 		gameTimerUI = new Timer(20, this);
-		gameTimerUI.start();
+		gameTimerUI.restart();
 	}
 	
 	private void createGameObjects() {
@@ -44,6 +46,34 @@ public class GamePanel extends JPanel
 	
 	private void configureUI() {
 		setBackground(Color.ORANGE);
+	}
+	
+	private void pauseTheGame() {
+		switch (gameMode) {
+		case RESUMED: {
+			System.out.println("paused");
+			gameMode = GameMode.PAUSED;
+			gameTimerUI.stop();
+			break;
+		}
+		case PAUSED: {
+			break;
+		}
+		}
+	}
+	
+	private void resumeTheGame() {
+		switch (gameMode) {
+		case PAUSED: {
+			System.out.println("resumed");
+			gameMode = GameMode.RESUMED;
+			gameTimerUI.start();
+			break;
+		}
+		case RESUMED: {
+			break;
+		}
+		}
 	}
 	
 	private void paintPaddle(Graphics g) {
@@ -83,6 +113,19 @@ public class GamePanel extends JPanel
 		}
 		case (KeyEvent.VK_D): {
 			gameView.getGameController().paddleRotated(MoveDirection.DOWN);
+			break;
+		}
+		case (KeyEvent.VK_ESCAPE): {
+			switch (gameMode) {
+			case PAUSED: {
+				resumeTheGame();
+				break;
+			}
+			case RESUMED: {
+				pauseTheGame();
+				break;
+			}
+			}
 			break;
 		}
 		}
