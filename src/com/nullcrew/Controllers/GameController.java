@@ -18,8 +18,10 @@ public class GameController {
 			return;
 		}
 		switch (direction) {
-		case RIGHT: {
-			paddle.setX(paddle.getX() + 5);
+		case RIGHT: {		
+			if (paddle.getX() + gameView.getGameController().getPaddle().getWidth() < gameView.getFrame().getWidth()) {
+				paddle.setX(paddle.getX() + 5);
+			}
 			break;
 		}
 		case LEFT: {
