@@ -78,9 +78,11 @@ public class GamePanel extends JPanel
 			break;
 		}
 		case (KeyEvent.VK_A): {
+			gameView.getGameController().paddleRotated(MoveDirection.UP);
 			break;
 		}
 		case (KeyEvent.VK_D): {
+			gameView.getGameController().paddleRotated(MoveDirection.DOWN);
 			break;
 		}
 		}

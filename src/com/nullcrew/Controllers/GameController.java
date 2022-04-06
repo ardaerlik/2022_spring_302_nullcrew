@@ -28,7 +28,18 @@ public class GameController {
 	}
 	
 	public void paddleRotated(MoveDirection direction) {
-		// TODO: call paddle model and change rotations
+		switch (direction) {
+		case UP: {
+			paddle.setRotationDegree(paddle.getRotationDegree() + 5);
+			break;
+		}
+		case DOWN: {
+			paddle.setRotationDegree(paddle.getRotationDegree() - 5);
+			break;
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + direction);
+		}
 	}
 
 	public GameView getGameView() {
