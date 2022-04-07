@@ -21,6 +21,7 @@ public class GamePanel extends JPanel
 	private Timer gameTimerUI;
 	public static GameMode gameMode;
 	public static Graphics paddleGraphics;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -52,7 +53,6 @@ public class GamePanel extends JPanel
 	private void pauseTheGame() {
 		switch (gameMode) {
 		case RESUMED: {
-			System.out.println("paused");
 			gameMode = GameMode.PAUSED;
 			gameTimerUI.stop();
 			break;
@@ -66,7 +66,6 @@ public class GamePanel extends JPanel
 	private void resumeTheGame() {
 		switch (gameMode) {
 		case PAUSED: {
-			System.out.println("resumed");
 			gameMode = GameMode.RESUMED;
 			gameTimerUI.start();
 			break;
@@ -80,7 +79,7 @@ public class GamePanel extends JPanel
 	
 	private void paintPaddle(Graphics g) {
 		g.setColor(Color.BLACK);
-		paddleGraphics=g;
+		paddleGraphics = g;
 		Graphics2D g2= (Graphics2D) GamePanel.paddleGraphics;
 		g2.rotate(Math.toRadians(gameView.getGameController().getPaddle().getRotationDegree()),
 				gameView.getGameController().getPaddle().getX()+gameView.getGameController().getPaddle().getWidth()/2,

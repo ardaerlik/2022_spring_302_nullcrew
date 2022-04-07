@@ -11,22 +11,22 @@ import javax.swing.JPanel;
 
 public class TopPanel extends JPanel {
 	
+	private GameView gameView;
 	private JFrame exitFrame;
 	private JButton exitButton;
 	private JButton yesButton;
 	private JButton noButton;
 
-	public TopPanel() {
-		
-		this.setLayout(null);
-		createExitButton();
-		this.add(exitButton);
-
+	public TopPanel(GameView gameView) {
+		this.gameView = gameView;
 		configureUI();
 	}
 
 	private void configureUI() {
 		setBackground(Color.GREEN);
+		createExitButton();
+		setLayout(null);
+		add(exitButton);
 	}
 	
 	private void createExitButton() {
@@ -44,12 +44,10 @@ public class TopPanel extends JPanel {
 	}
 	
 	private void createExitFrame() {
-		
 		exitFrame = new JFrame("Exit Game");
 		exitFrame.setBounds(384, 288, 256, 192);
 		
 		createYesButton();
-		
 		createNoButton();
 		
 		JLabel exitLabel = new JLabel("Are you sure you want to exit?");
