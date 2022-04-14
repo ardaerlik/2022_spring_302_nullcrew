@@ -2,12 +2,11 @@ package com.nullcrew.Views;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.Color;
-import javax.swing.SpringLayout;
 
 import com.nullcrew.Controllers.GameController;
+import com.nullcrew.Models.GameObjectFactory;
 
 public class GameView {
 
@@ -16,6 +15,7 @@ public class GameView {
 	private JPanel belowPanel;
 	private GamePanel gamePanel;
 	private GameController gameController;
+	private int[] numOfAsteroidTypes;
 
 	/**
 	 * Launch the application.
@@ -51,21 +51,21 @@ public class GameView {
 		SpringLayout springLayout = new SpringLayout();
 		frame.getContentPane().setLayout(springLayout);
 		
-		JPanel topPanel = new TopPanel(this);
+		topPanel = new TopPanel(this);
 		springLayout.putConstraint(SpringLayout.NORTH, topPanel, 0, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.SOUTH, topPanel, 115, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.WEST, topPanel, 0, SpringLayout.WEST, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, topPanel, 1024, SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(topPanel);
-		
-		GamePanel gamePanel = new GamePanel(this);
+
+		gamePanel = new GamePanel(this);
 		springLayout.putConstraint(SpringLayout.NORTH, gamePanel, 115, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.SOUTH, gamePanel, 623, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.WEST, gamePanel, 0, SpringLayout.WEST, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, gamePanel, 1024, SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(gamePanel);
 		
-		JPanel belowPanel = new JPanel();
+		belowPanel = new JPanel();
 		belowPanel.setBackground(Color.CYAN);
 		springLayout.putConstraint(SpringLayout.NORTH, belowPanel, 623, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.SOUTH, belowPanel, 768, SpringLayout.NORTH, frame.getContentPane());
@@ -112,5 +112,18 @@ public class GameView {
 
 	public void setGameController(GameController gameController) {
 		this.gameController = gameController;
+	}
+
+	public void setNumOfAsteroidTypes(int[] numOfAsteroidTypes){
+		this.numOfAsteroidTypes = numOfAsteroidTypes; //number of simple, firm, explosive and gift asteroids.
+	}
+
+	public void createAsteroids(){
+		gameController.setAsteroids(GameObjectFactory.createAsteroids(numOfAsteroidTypes));
+		gamePanel.repaint();
+	}
+
+	public int[] getNumOfAsteroidTypes() {
+		return numOfAsteroidTypes;
 	}
 }
