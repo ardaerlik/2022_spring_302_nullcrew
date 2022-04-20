@@ -16,6 +16,8 @@ public class GameView {
 	private GamePanel gamePanel;
 	private GameController gameController;
 	private int[] numOfAsteroidTypes;
+	private final int WIDTH = 1024;
+	private final int HEIGHT = 768;
 
 	/**
 	 * Launch the application.
@@ -46,7 +48,7 @@ public class GameView {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(0, 0, 1024, 768);
+		frame.setBounds(0, 0, WIDTH, HEIGHT);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
 		frame.getContentPane().setLayout(springLayout);
@@ -119,7 +121,10 @@ public class GameView {
 	}
 
 	public void createAsteroids(){
-		gameController.setAsteroids(GameObjectFactory.createAsteroids(numOfAsteroidTypes));
+		int[] locSpaces = {gamePanel.getXLocationSpace(), gamePanel.getYLocationSpace()};
+		int[] margins = {gamePanel.getLeftMargin(), gamePanel.getTopMargin(), gamePanel.getRightMargin(), gamePanel.getBottomMargin()};
+		int[] maxRowsColumns = {gamePanel.getMaxRows(), gamePanel.getMaxColumns()};
+		gameController.setAsteroids(GameObjectFactory.createAsteroids(numOfAsteroidTypes, locSpaces, margins, maxRowsColumns));
 		gamePanel.repaint();
 	}
 
