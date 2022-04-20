@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -22,7 +23,15 @@ public class GamePanel extends JPanel
 	private Timer gameTimerUI;
 	public static GameMode gameMode;
 	public static Graphics paddleGraphics, asteroidGraphics;
-	
+	private final int MAX_ROWS = 5;
+	private final int MAX_COLUMNS = 15;
+	private final int MARGIN_LEFT = 50;
+	private final int MARGIN_RIGHT = 50;
+	private final int MARGIN_TOP = 100;
+	private final int MARGIN_BOTTOM = 200;
+	private final int WIDTH = 1024;
+	private final int HEIGHT = 470;
+
 	/**
 	 * Create the panel.
 	 */
@@ -89,6 +98,38 @@ public class GamePanel extends JPanel
 				gameView.getGameController().getPaddle().getY(),
 				gameView.getGameController().getPaddle().getWidth(),
 				gameView.getGameController().getPaddle().getHeight(),true);
+	}
+
+	public int getXLocationSpace(){
+		return (WIDTH - MARGIN_LEFT - MARGIN_RIGHT - GameObjectFactory.ASTEROID_WIDTH) / (MAX_COLUMNS - 1);
+	}
+
+	public int getYLocationSpace(){
+		return (HEIGHT - MARGIN_TOP - MARGIN_BOTTOM - GameObjectFactory.ASTEROID_HEIGHT) / (MAX_ROWS - 1);
+	}
+
+	public int getLeftMargin() {
+		return MARGIN_LEFT;
+	}
+
+	public int getRightMargin() {
+		return MARGIN_RIGHT;
+	}
+
+	public int getTopMargin() {
+		return MARGIN_TOP;
+	}
+
+	public int getBottomMargin() {
+		return MARGIN_BOTTOM;
+	}
+
+	public int getMaxRows() {
+		return MAX_ROWS;
+	}
+
+	public int getMaxColumns() {
+		return MAX_COLUMNS;
 	}
 
 	private void paintAsteroids(Graphics g) {
