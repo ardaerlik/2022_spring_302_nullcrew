@@ -1,10 +1,16 @@
 package com.nullcrew.Views;
 
+import com.nullcrew.Utilities.MoveDirection;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 public class TopPanel extends JPanel {
 	
@@ -14,6 +20,8 @@ public class TopPanel extends JPanel {
 	private JButton yesButton;
 	private JButton noButton;
 	private JButton okButton;
+	private JToggleButton switchButton;
+	private JPopupMenu popupMenu;
 	private JLabel simpleLabel, firmLabel, explosiveLabel, giftLabel;
 	private JTextField simpleField, firmField, explosiveField, giftField;
 	private int[] numOfAsteroidTypes;
@@ -30,6 +38,8 @@ public class TopPanel extends JPanel {
 		setLayout(new FlowLayout());
 		createAsteroidNumbersForm();
 		createOkButton();
+		createSwitchButton();
+		createPopupMenu();
 		add(simpleLabel);
 		add(simpleField);
 		add(firmLabel);
@@ -39,6 +49,7 @@ public class TopPanel extends JPanel {
 		add(giftLabel);
 		add(giftField);
 		add(okButton);
+		add(switchButton);
 		add(exitButton);
 	}
 
@@ -58,7 +69,7 @@ public class TopPanel extends JPanel {
 	}
 
 	private void createOkButton() {
-		okButton = new JButton("OK");
+		okButton = new JButton("Start");
 		okButton.setBounds(10,100,100,25);
 		okButton.setBackground(Color.green);
 		okButton.addActionListener(new ActionListener() {
@@ -71,7 +82,41 @@ public class TopPanel extends JPanel {
 				numOfAsteroidTypes[3] = Integer.parseInt( giftField.getText());
 				gameView.setNumOfAsteroidTypes(numOfAsteroidTypes);
 				gameView.createAsteroids();
+				okButton.setLabel("Restart");
 			}
+		});
+	}
+
+	private void createSwitchButton() {
+		switchButton = new JToggleButton("Switch Mode");
+		switchButton.setBounds(10,100,200,25);
+		switchButton.setBackground(Color.green);
+		switchButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JToggleButton b = switchButton;
+				if (b.isSelected()) {
+					popupMenu.show(b, 0, b.getBounds().height);
+				} else {
+					popupMenu.setVisible(false);
+				}
+			}
+		});
+	}
+
+	private void createPopupMenu() {
+		popupMenu = new JPopupMenu();
+		popupMenu.add("Build Mode");
+		popupMenu.add("Run Mode");
+		popupMenu.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				switchButton.setSelected(false);
+			}
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {}
 		});
 	}
 	

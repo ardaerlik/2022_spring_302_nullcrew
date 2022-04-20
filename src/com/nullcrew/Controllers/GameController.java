@@ -17,7 +17,6 @@ public class GameController {
 		this.gameView = gameView;
 	}
 
-
 	public void paddleMoved(MoveDirection direction) {
 		if(GamePanel.gameMode==GameMode.PAUSED) {
 			return;

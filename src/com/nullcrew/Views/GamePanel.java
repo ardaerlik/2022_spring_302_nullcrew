@@ -37,7 +37,7 @@ public class GamePanel extends JPanel
 	 */
 	public GamePanel(GameView gameView) {
 		this.gameView = gameView;
-		
+
 		createGameObjects();
 		configureUI();
 		setFocusable(true);
@@ -46,7 +46,7 @@ public class GamePanel extends JPanel
 		restartAction();
 		gameMode = GameMode.RESUMED;
 	}
-	
+
 	private void restartAction() {
 		gameTimerUI = new Timer(20, this);
 		gameTimerUI.restart();
@@ -59,8 +59,8 @@ public class GamePanel extends JPanel
 	private void configureUI() {
 		setBackground(Color.ORANGE);
 	}
-	
-	private void pauseTheGame() {
+
+	public void pauseTheGame() {
 		switch (gameMode) {
 		case RESUMED: {
 			gameMode = GameMode.PAUSED;
@@ -73,7 +73,7 @@ public class GamePanel extends JPanel
 		}
 	}
 	
-	private void resumeTheGame() {
+	public void resumeTheGame() {
 		switch (gameMode) {
 		case PAUSED: {
 			gameMode = GameMode.RESUMED;
