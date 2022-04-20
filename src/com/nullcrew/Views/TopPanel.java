@@ -1,13 +1,10 @@
 package com.nullcrew.Views;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class TopPanel extends JPanel {
 	
@@ -16,22 +13,70 @@ public class TopPanel extends JPanel {
 	private JButton exitButton;
 	private JButton yesButton;
 	private JButton noButton;
+	private JButton okButton;
+	private JLabel simpleLabel, firmLabel, explosiveLabel, giftLabel;
+	private JTextField simpleField, firmField, explosiveField, giftField;
+	private int[] numOfAsteroidTypes;
 
 	public TopPanel(GameView gameView) {
 		this.gameView = gameView;
+		numOfAsteroidTypes = null;
 		configureUI();
 	}
 
 	private void configureUI() {
 		setBackground(Color.GREEN);
 		createExitButton();
-		setLayout(null);
+		setLayout(new FlowLayout());
+		createAsteroidNumbersForm();
+		createOkButton();
+		add(simpleLabel);
+		add(simpleField);
+		add(firmLabel);
+		add(firmField);
+		add(explosiveLabel);
+		add(explosiveField);
+		add(giftLabel);
+		add(giftField);
+		add(okButton);
 		add(exitButton);
+	}
+
+	private void createAsteroidNumbersForm(){
+		simpleLabel = new JLabel("Simple Asteroids:");
+		simpleField = new JTextField(5);
+		firmLabel = new JLabel("Firm Asteroids:");
+		firmField = new JTextField(5);
+		explosiveLabel = new JLabel("Explosive Asteroids:");
+		explosiveField = new JTextField(5);
+		giftLabel = new JLabel("Gift Asteroids:");
+		giftField = new JTextField(5);
+	}
+
+	public int[] getNumOfAsteroidTypes(){
+		return numOfAsteroidTypes;
+	}
+
+	private void createOkButton() {
+		okButton = new JButton("OK");
+		okButton.setBounds(10,100,100,25);
+		okButton.setBackground(Color.green);
+		okButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				numOfAsteroidTypes = new int[4];
+				numOfAsteroidTypes[0] = Integer.parseInt( simpleField.getText());
+				numOfAsteroidTypes[1] = Integer.parseInt( firmField.getText());
+				numOfAsteroidTypes[2] = Integer.parseInt( explosiveField.getText());
+				numOfAsteroidTypes[3] = Integer.parseInt( giftField.getText());
+				gameView.setNumOfAsteroidTypes(numOfAsteroidTypes);
+				gameView.createAsteroids();
+			}
+		});
 	}
 	
 	private void createExitButton() {
 		exitButton = new JButton("X");
-		
 		exitButton.setBounds(955,10,45,25);
 		exitButton.setBackground(Color.red);
 		exitButton.setFocusable(false);

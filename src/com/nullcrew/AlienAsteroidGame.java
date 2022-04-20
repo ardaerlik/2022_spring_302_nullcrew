@@ -1,13 +1,21 @@
 package com.nullcrew;
 
 import javax.swing.JFrame;
+
+import com.nullcrew.Models.Asteroid;
 import com.nullcrew.Views.GameView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public final class AlienAsteroidGame {
+
 	
 	private static AlienAsteroidGame instance = new AlienAsteroidGame();
 	
-	private AlienAsteroidGame() {}
+	private AlienAsteroidGame() {
+
+	}
 
 	public static void main(String[] args) {
 		

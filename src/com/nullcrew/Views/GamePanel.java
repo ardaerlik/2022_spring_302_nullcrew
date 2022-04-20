@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -20,7 +21,7 @@ public class GamePanel extends JPanel
 	private GameView gameView;
 	private Timer gameTimerUI;
 	public static GameMode gameMode;
-	public static Graphics paddleGraphics;
+	public static Graphics paddleGraphics, asteroidGraphics;
 	
 	/**
 	 * Create the panel.
@@ -42,7 +43,7 @@ public class GamePanel extends JPanel
 		gameTimerUI.restart();
 	}
 	
-	private void createGameObjects() {
+	public void createGameObjects() {
 		gameView.getGameController().setPaddle(GameObjectFactory.createPaddle());
 	}
 	
@@ -89,11 +90,39 @@ public class GamePanel extends JPanel
 				gameView.getGameController().getPaddle().getWidth(),
 				gameView.getGameController().getPaddle().getHeight(),true);
 	}
+
+	private void paintAsteroids(Graphics g) {
+		g.setColor(Color.BLACK);
+		asteroidGraphics = g;
+		Graphics2D g2= (Graphics2D) GamePanel.asteroidGraphics;
+		List<Asteroid> asteroidList = gameView.getGameController().getAsteroidList();
+		for(Asteroid a: asteroidList){
+			g2.setColor(a.getColor());
+			switch (a.getType()) {
+				case "simple":
+					g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
+					break;
+				case "firm":
+					g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
+					break;
+				case "explosive":
+					g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
+					break;
+				case "gift":
+					g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
+					break;
+			}
+		}
+		g.setColor(Color.BLACK);
+	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		paintPaddle(g);
+		if( gameView.getNumOfAsteroidTypes() != null) {
+			paintAsteroids(g);
+		}
 	}
 
 	@Override
