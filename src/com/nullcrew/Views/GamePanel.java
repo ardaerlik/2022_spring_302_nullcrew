@@ -22,7 +22,7 @@ public class GamePanel extends JPanel
 	private GameView gameView;
 	private Timer gameTimerUI;
 	public static GameMode gameMode;
-	public static Graphics paddleGraphics, asteroidGraphics;
+	public static Graphics paddleGraphics, asteroidGraphics, ballGraphics;
 	private final int MAX_ROWS = 5;
 	private final int MAX_COLUMNS = 15;
 	private final int MARGIN_LEFT = 50;
@@ -54,6 +54,7 @@ public class GamePanel extends JPanel
 	
 	public void createGameObjects() {
 		gameView.getGameController().setPaddle(GameObjectFactory.createPaddle());
+		gameView.getGameController().setBall(GameObjectFactory.createBall());
 	}
 	
 	private void configureUI() {
@@ -100,6 +101,26 @@ public class GamePanel extends JPanel
 				gameView.getGameController().getPaddle().getHeight(),true);
 	}
 
+	
+	
+	
+	
+	private void paintBall(Graphics g) {
+		g.setColor(Color.red);
+		ballGraphics = g;
+		
+		Graphics2D g2 = (Graphics2D) GamePanel.ballGraphics;
+		g2.fillOval(gameView.getGameController().getBall().getX(),
+				gameView.getGameController().getBall().getY(),
+				gameView.getGameController().getBall().getWidth(),
+				gameView.getGameController().getBall().getHeight());
+	
+	}
+	
+	
+	
+	
+	
 	public int getXLocationSpace(){
 		return (WIDTH - MARGIN_LEFT - MARGIN_RIGHT - GameObjectFactory.ASTEROID_WIDTH) / (MAX_COLUMNS - 1);
 	}
@@ -161,6 +182,7 @@ public class GamePanel extends JPanel
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		paintPaddle(g);
+		paintBall(g);
 		if( gameView.getNumOfAsteroidTypes() != null) {
 			paintAsteroids(g);
 		}
@@ -174,6 +196,7 @@ public class GamePanel extends JPanel
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		System.out.println("****");
 		switch (e.getKeyCode()) {
 		case (KeyEvent.VK_LEFT): {
 			gameView.getGameController().paddleMoved(MoveDirection.LEFT);

@@ -5,8 +5,7 @@ import com.nullcrew.Utilities.MoveDirection;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -30,6 +29,7 @@ public class TopPanel extends JPanel {
 		this.gameView = gameView;
 		numOfAsteroidTypes = null;
 		configureUI();
+		setFocusable(false);
 	}
 
 	private void configureUI() {
@@ -83,6 +83,8 @@ public class TopPanel extends JPanel {
 				gameView.setNumOfAsteroidTypes(numOfAsteroidTypes);
 				gameView.createAsteroids();
 				okButton.setLabel("Restart");
+				gameView.getGamePanel().resumeTheGame();
+				
 			}
 		});
 	}
