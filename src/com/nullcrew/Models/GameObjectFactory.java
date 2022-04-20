@@ -1,5 +1,6 @@
 package com.nullcrew.Models;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -21,33 +22,57 @@ public class GameObjectFactory {
 		int numExplosive = numOfAsteroidTypes[2];
 		int numGift = numOfAsteroidTypes[3];
 		for(int i=0; i<numSimple; i++){
-			//115 - 400
-			Random r = new Random();
-			int x = r.nextInt(1024);
-			int y = r.nextInt(400-115) + 115;
-			asteroids.add( new SimpleAsteroid(x, y, 40, 40, 0));
+			SimpleAsteroid simpleAsteroid = new SimpleAsteroid(0, 0, 40, 40, 0);
+			asteroids = controlLocation(asteroids, simpleAsteroid);
 		}
 		for(int i=0; i<numFirm; i++){
-			//115 - 400
-			Random r = new Random();
-			int x = r.nextInt(1024);
-			int y = r.nextInt(400-115) + 115;
-			asteroids.add( new FirmAsteroid(x, y, 40, 40, 0));
+			FirmAsteroid firmAsteroid = new FirmAsteroid(0, 0, 40, 40, 0);
+			asteroids = controlLocation(asteroids, firmAsteroid);
 		}
 		for(int i=0; i<numExplosive; i++){
-			//115 - 400
-			Random r = new Random();
-			int x = r.nextInt(1024);
-			int y = r.nextInt(400-115) + 115;
-			asteroids.add( new ExplosiveAsteroid(x, y, 40, 40, 0));
+			ExplosiveAsteroid explosiveAsteroid = new ExplosiveAsteroid(0, 0, 40, 40, 0);
+			asteroids = controlLocation(asteroids, explosiveAsteroid);
 		}
 		for(int i=0; i<numGift; i++){
-			//115 - 400
-			Random r = new Random();
-			int x = r.nextInt(1024);
-			int y = r.nextInt(400-115) + 115;
-			asteroids.add( new GiftAsteroid(x, y, 40, 40, 0));
+			GiftAsteroid giftAsteroid = new GiftAsteroid(0, 0, 40, 40, 0);
+			asteroids = controlLocation(asteroids, giftAsteroid);
 		}
 		return asteroids;
+	}
+	
+	private static List<Asteroid> controlLocation(List<Asteroid> asteroids, Asteroid newAsteroid) {
+		boolean isValidLocation = false;
+		
+		do {
+			Random r = new Random();
+			int xLoc = r.nextInt(1024 - newAsteroid.getWidth());
+			int yLoc = r.nextInt(470 - newAsteroid.getHeight());
+			newAsteroid.setX(xLoc);
+			newAsteroid.setY(yLoc);
+			
+			isValidLocation = true;
+			
+			for (int i=0; i<asteroids.size(); i++) {
+				if (intersects(newAsteroid, asteroids.get(i))) {
+					isValidLocation = false;
+					break;
+				}
+			}
+		} while (!isValidLocation);
+		
+		asteroids.add(newAsteroid);
+		
+		return asteroids;
+	}
+	
+	private static boolean intersects(Asteroid asteroid1, Asteroid asteroid2) {
+		Rectangle rectangle1 = new Rectangle(asteroid1.x, asteroid1.y, asteroid1.width, asteroid1.height);
+		Rectangle rectangle2 = new Rectangle(asteroid2.x, asteroid2.y, asteroid2.width, asteroid2.height);
+		
+		if (rectangle1.intersects(rectangle2)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
