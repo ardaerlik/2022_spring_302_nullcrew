@@ -1,11 +1,8 @@
 package com.nullcrew.Views;
 
-import com.nullcrew.Utilities.MoveDirection;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -76,6 +73,8 @@ public class TopPanel extends JPanel {
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				gameView.getGamePanel().setFocusable(true);
+				gameView.getGamePanel().requestFocusInWindow();
 				numOfAsteroidTypes = new int[4];
 				numOfAsteroidTypes[0] = Integer.parseInt( simpleField.getText());
 				numOfAsteroidTypes[1] = Integer.parseInt( firmField.getText());
@@ -83,7 +82,7 @@ public class TopPanel extends JPanel {
 				numOfAsteroidTypes[3] = Integer.parseInt( giftField.getText());
 				gameView.setNumOfAsteroidTypes(numOfAsteroidTypes);
 				gameView.createAsteroids();
-				okButton.setLabel("Restart");
+				okButton.setText("Restart");
 				gameView.getGamePanel().resumeTheGame();
 				
 			}
@@ -97,6 +96,8 @@ public class TopPanel extends JPanel {
 		switchButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				gameView.getGamePanel().setFocusable(true);
+				gameView.getGamePanel().requestFocusInWindow();
 				JToggleButton b = switchButton;
 				if (b.isSelected()) {
 					popupMenu.show(b, 0, b.getBounds().height);
