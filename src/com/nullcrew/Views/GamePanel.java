@@ -198,8 +198,6 @@ public class GamePanel extends JPanel
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println("Pressed");
-		System.out.println("****");
 		switch (e.getKeyCode()) {
 		case (KeyEvent.VK_LEFT): {
 			gameView.getGameController().paddleMoved(MoveDirection.LEFT);
