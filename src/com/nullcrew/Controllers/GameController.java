@@ -12,6 +12,7 @@ public class GameController {
 	private GameView gameView;
 	private Paddle paddle;
 	private List<Asteroid> asteroidList;
+	private Ball ball;
 	
 	public GameController(GameView gameView) {
 		this.gameView = gameView;
@@ -62,7 +63,33 @@ public class GameController {
 			throw new IllegalArgumentException("Unexpected value: " + direction);
 		}
 	}
+	
+	
+	
+	
 
+	public void ballMoved() {
+		if(GamePanel.gameMode==GameMode.PAUSED) {
+			return;
+		}
+		if(0>=ball.getX()) {
+			ball.setVelocityX(-ball.getVelocityX());
+		}
+		if(ball.getX()+ball.getWidth()>=gameView.getGamePanel().getWidth()) {
+			ball.setVelocityX(-ball.getVelocityX());
+		}
+		if(0>=ball.getY()){
+			ball.setVelocityY((-ball.getVelocityY()));
+		}
+		ball.setX(ball.getX() + ball.getVelocityX());
+		ball.setY(ball.getY() + ball.getVelocityY());
+		
+	}
+	
+	
+	
+	
+	
 	public GameView getGameView() {
 		return gameView;
 	}
@@ -78,7 +105,16 @@ public class GameController {
 	public void setPaddle(Paddle paddle) {
 		this.paddle = paddle;
 	}
-
+	
+	public Ball getBall() {
+		return ball;
+	}
+	
+	public void setBall(Ball ball)
+	{
+		this.ball = ball;
+	}
+	
 	public List<Asteroid> getAsteroidList(){ return asteroidList;}
 
 	public void setAsteroids(List<Asteroid> asteroidList){ this.asteroidList = asteroidList;}
