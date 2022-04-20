@@ -40,11 +40,12 @@ public class GamePanel extends JPanel
 
 		createGameObjects();
 		configureUI();
-		setFocusable(true);
+
 		requestFocusInWindow();
 		addKeyListener(this);
 		restartAction();
-		gameMode = GameMode.RESUMED;
+		setFocusable(true);
+		gameMode = GameMode.PAUSED;
 	}
 
 	private void restartAction() {
@@ -180,6 +181,7 @@ public class GamePanel extends JPanel
 	
 	@Override
 	public void paintComponent(Graphics g) {
+		gameView.getGameController().ballMoved();
 		super.paintComponent(g);
 		paintPaddle(g);
 		paintBall(g);
@@ -196,6 +198,7 @@ public class GamePanel extends JPanel
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		System.out.println("Pressed");
 		System.out.println("****");
 		switch (e.getKeyCode()) {
 		case (KeyEvent.VK_LEFT): {

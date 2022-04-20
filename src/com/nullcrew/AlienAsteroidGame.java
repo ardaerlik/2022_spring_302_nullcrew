@@ -22,6 +22,7 @@ public final class AlienAsteroidGame {
 	}
 	
 	public static AlienAsteroidGame getInstance() {
+		
 		if (instance == null) {
 			instance = new AlienAsteroidGame();
 		}

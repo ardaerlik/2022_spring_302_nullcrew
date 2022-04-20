@@ -33,6 +33,7 @@ public class TopPanel extends JPanel {
 	}
 
 	private void configureUI() {
+		setFocusable(false);
 		setBackground(Color.GREEN);
 		createExitButton();
 		setLayout(new FlowLayout());

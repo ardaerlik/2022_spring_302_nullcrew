@@ -72,7 +72,15 @@ public class GameController {
 		if(GamePanel.gameMode==GameMode.PAUSED) {
 			return;
 		}
-		
+		if(0>=ball.getX()) {
+			ball.setVelocityX(-ball.getVelocityX());
+		}
+		if(ball.getX()+ball.getWidth()>=gameView.getGamePanel().getWidth()) {
+			ball.setVelocityX(-ball.getVelocityX());
+		}
+		if(0>=ball.getY()){
+			ball.setVelocityY((-ball.getVelocityY()));
+		}
 		ball.setX(ball.getX() + ball.getVelocityX());
 		ball.setY(ball.getY() + ball.getVelocityY());
 		
