@@ -119,7 +119,8 @@ public class GamePanel extends JPanel
 	}
 	
 	
-	
+
+
 	
 	
 	public int getXLocationSpace(){
@@ -239,6 +240,13 @@ public class GamePanel extends JPanel
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		gameView.getGameController().paddleHitBall();
+		Asteroid astr= gameView.getGameController().ballHitAsteroid();
+		if(astr!=null&&gameView.getGameController().getAsteroidList().contains(astr)){
+			List<Asteroid> list= gameView.getGameController().getAsteroidList();
+			list.remove(astr);
+			gameView.getGameController().setAsteroids(list);
+		}
 		repaint();
 	}
 

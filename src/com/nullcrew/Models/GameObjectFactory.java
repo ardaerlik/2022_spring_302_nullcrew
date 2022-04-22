@@ -15,7 +15,7 @@ public class GameObjectFactory {
 	}
 	
 	public static Ball createBall() {
-		return new Ball(155, 455, 17, 17);
+		return new Ball(155, 445, 17, 17);
 	}
 
 	public static List<Asteroid> createAsteroids(int[] numOfAsteroidTypes, int[] locSpaces, int[] margins, int[] maxRowsColumns){

@@ -30,7 +30,7 @@ public class MenuView {
 				try {
 					MenuView window = new MenuView();
 					window.frame.setVisible(true);
-				} catch (Exception e) {
+				} catch (Exception e) { 
 					e.printStackTrace();
 				}
 			}
