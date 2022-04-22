@@ -85,9 +85,38 @@ public class GameController {
 		ball.setY(ball.getY() + ball.getVelocityY());
 		
 	}
-	
-	
-	
+
+
+	public Asteroid removeAsteroid(int x, int y){
+		Asteroid toBeRemoved=null;
+		for(Asteroid a: asteroidList){
+			if( x >= a.getX() && x <= a.getX()+GameObjectFactory.ASTEROID_WIDTH &&
+					y >= a.getY() && y <= a.getY()+GameObjectFactory.ASTEROID_HEIGHT) {
+				toBeRemoved=a;
+			}
+		}
+		Asteroid backup=null;
+		if(toBeRemoved != null) {
+			backup = (Asteroid) toBeRemoved.clone();
+			asteroidList.remove(toBeRemoved);
+			gameView.getGamePanel().repaint();
+		}
+		return backup;
+	}
+
+	public boolean addAsteroid(Asteroid toBeAdded, int newX, int newY){
+		for(Asteroid a: asteroidList){
+			if( newX >= a.getX() && newX <= a.getX()+GameObjectFactory.ASTEROID_WIDTH &&
+					newY >= a.getY() && newY <= a.getY()+GameObjectFactory.ASTEROID_HEIGHT) {
+				return false;
+			}
+		}
+		toBeAdded.setX(newX);
+		toBeAdded.setY(newY);
+		asteroidList.add(toBeAdded);
+		gameView.getGamePanel().repaint();
+		return true;
+	}
 	
 	
 	public GameView getGameView() {

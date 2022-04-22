@@ -4,13 +4,11 @@ import java.awt.*;
 
 public abstract class Asteroid extends GameObject {
 	private double speed;
-	private String type;
 	private Color color;
 
-	public Asteroid(int x, int y, int width, int height, double speed, String type, Color color) {
+	public Asteroid(int x, int y, int width, int height, double speed, Color color) {
 		super(x, y, width, height);
 		this.speed = speed;
-		this.type = type;
 		this.color = color;
 	}
 
@@ -20,11 +18,10 @@ public abstract class Asteroid extends GameObject {
 
 	public abstract void hit();
 
-	public String getType(){
-		return type;
-	}
-
 	public Color getColor() {
 		return color;
 	}
+
+	@Override
+	public abstract Asteroid clone();
 }

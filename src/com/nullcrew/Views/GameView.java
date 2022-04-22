@@ -66,7 +66,7 @@ public class GameView {
 		springLayout.putConstraint(SpringLayout.WEST, gamePanel, 0, SpringLayout.WEST, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, gamePanel, 1024, SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(gamePanel);
-		
+
 		belowPanel = new JPanel();
 		belowPanel.setBackground(Color.CYAN);
 		springLayout.putConstraint(SpringLayout.NORTH, belowPanel, 623, SpringLayout.NORTH, frame.getContentPane());

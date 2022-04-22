@@ -3,12 +3,14 @@ package com.nullcrew.Views;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-public class TopPanel extends JPanel {
+public class TopPanel extends JPanel  {
 	
 	private GameView gameView;
 	private JFrame exitFrame;

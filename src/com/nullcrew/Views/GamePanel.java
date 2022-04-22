@@ -1,23 +1,16 @@
 package com.nullcrew.Views;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import javax.swing.*;
 
 import com.nullcrew.Models.*;
 import com.nullcrew.Utilities.*;
 
-public class GamePanel extends JPanel
-	implements ActionListener, KeyListener {
+public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener {
 	
 	private GameView gameView;
 	private Timer gameTimerUI;
@@ -43,6 +36,7 @@ public class GamePanel extends JPanel
 
 		requestFocusInWindow();
 		addKeyListener(this);
+		addMouseListener( this);
 		restartAction();
 		setFocusable(true);
 		gameMode = GameMode.PAUSED;
@@ -161,20 +155,7 @@ public class GamePanel extends JPanel
 		List<Asteroid> asteroidList = gameView.getGameController().getAsteroidList();
 		for(Asteroid a: asteroidList){
 			g2.setColor(a.getColor());
-			switch (a.getType()) {
-				case "simple":
-					g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
-					break;
-				case "firm":
-					g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
-					break;
-				case "explosive":
-					g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
-					break;
-				case "gift":
-					g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
-					break;
-			}
+			g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
 		}
 		g.setColor(Color.BLACK);
 	}
@@ -242,4 +223,49 @@ public class GamePanel extends JPanel
 		repaint();
 	}
 
+	@Override
+	public void mouseClicked(MouseEvent mouseEvent) {
+		if(mouseEvent.getButton() == MouseEvent.BUTTON3) {
+			int x = mouseEvent.getX();
+			int y = mouseEvent.getY();
+			gameView.getGameController().removeAsteroid(x, y);
+		}
+	}
+
+	private Asteroid draggedAsteroid = null;
+	@Override
+	public void mousePressed(MouseEvent mouseEvent) {
+		if(mouseEvent.getButton() == MouseEvent.BUTTON1) {
+			int x = mouseEvent.getX();
+			int y = mouseEvent.getY();
+			draggedAsteroid = gameView.getGameController().removeAsteroid(x, y);
+			if(draggedAsteroid != null) {
+				this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent mouseEvent) {
+		if(mouseEvent.getButton() == MouseEvent.BUTTON1 && draggedAsteroid != null) {
+			int x = mouseEvent.getX();
+			int y = mouseEvent.getY();
+			boolean success = gameView.getGameController().addAsteroid(draggedAsteroid, x, y);
+			this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			if(!success){
+				JOptionPane.showMessageDialog(null, "Can not drop over an existing asteroid!", "Error", JOptionPane.ERROR_MESSAGE);
+				gameView.getGameController().addAsteroid(draggedAsteroid, draggedAsteroid.getX(), draggedAsteroid.getY());
+			}
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent mouseEvent) {
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent mouseEvent) {
+
+	}
 }
