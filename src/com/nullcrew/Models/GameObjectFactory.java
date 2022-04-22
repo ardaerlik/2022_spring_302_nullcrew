@@ -6,16 +6,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import com.nullcrew.Views.GamePanel;
+
 public class GameObjectFactory {
 	public static final int ASTEROID_WIDTH = 20;
 	public static final int ASTEROID_HEIGHT = 20;
+
 	
 	public static Paddle createPaddle() {
 		return new Paddle(100, 470, 120, 10);
 	}
 	
 	public static Ball createBall() {
-		return new Ball(155, 455, 17, 17);
+		return new Ball(155, 445, 17, 17);
 	}
 
 	public static List<Asteroid> createAsteroids(int[] numOfAsteroidTypes, int[] locSpaces, int[] margins, int[] maxRowsColumns){
@@ -28,21 +31,33 @@ public class GameObjectFactory {
 		for(int i=0; i<numSimple; i++){
 			SimpleAsteroid simpleAsteroid = new SimpleAsteroid(0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
 //			asteroids = controlLocation(asteroids, simpleAsteroid);
+			if(GamePanel.list_objects!=null) {
+				GamePanel.list_objects.add(simpleAsteroid);
+			}
 			asteroids.add(simpleAsteroid);
 		}
 		for(int i=0; i<numFirm; i++){
 			FirmAsteroid firmAsteroid = new FirmAsteroid(0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
 //			asteroids = controlLocation(asteroids, firmAsteroid);
+			if(GamePanel.list_objects!=null) {
+				GamePanel.list_objects.add(firmAsteroid);
+			}
 			asteroids.add(firmAsteroid);
 		}
 		for(int i=0; i<numExplosive; i++){
 			ExplosiveAsteroid explosiveAsteroid = new ExplosiveAsteroid(0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
 //			asteroids = controlLocation(asteroids, explosiveAsteroid);
+			if(GamePanel.list_objects!=null) {
+				GamePanel.list_objects.add(explosiveAsteroid);
+			}
 			asteroids.add(explosiveAsteroid);
 		}
 		for(int i=0; i<numGift; i++){
 			GiftAsteroid giftAsteroid = new GiftAsteroid(0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
 //			asteroids = controlLocation(asteroids, giftAsteroid);
+			if(GamePanel.list_objects!=null) {
+				GamePanel.list_objects.add(giftAsteroid);
+			}
 			asteroids.add(giftAsteroid);
 		}
 		Collections.shuffle(asteroids);

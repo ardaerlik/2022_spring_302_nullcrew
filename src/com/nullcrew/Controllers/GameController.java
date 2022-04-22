@@ -1,6 +1,7 @@
 package com.nullcrew.Controllers;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.List;
 
 import com.nullcrew.AlienAsteroidGame;
@@ -87,7 +88,37 @@ public class GameController {
 	}
 	
 	
-	
+	public void paddleHitBall(){
+        if(new Rectangle(ball.getX(),ball.getY(),ball.getWidth(),ball.getHeight()).
+                intersects(new Rectangle(paddle.getX(),paddle.getY(),paddle.getWidth()+1,paddle.getHeight()+1))){
+            ball.setVelocityY((-ball.getVelocityY()));
+
+        }
+    }
+
+    public Asteroid ballHitAsteroid() {
+        if(getAsteroidList()==null) {
+            return null;
+        }
+        if(getAsteroidList().size()==0) {
+            return null;
+        }
+
+        for(Asteroid asteroid: getAsteroidList()) {
+            if(asteroid==null) {
+                continue;
+            }
+            if(new Rectangle(ball.getX(),ball.getY(),ball.getWidth(),ball.getHeight()).
+                    intersects(new Rectangle(asteroid.getX(),asteroid.getY(),asteroid.getWidth()+1,asteroid.getHeight()+1))){
+
+
+                    return asteroid;
+
+            }
+
+        }
+        return null;
+    }
 	
 	
 	public GameView getGameView() {
