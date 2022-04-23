@@ -1,4 +1,4 @@
-package com.nullcrew.Controllers;
+package com.nullcrew.Domain.Controllers;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;

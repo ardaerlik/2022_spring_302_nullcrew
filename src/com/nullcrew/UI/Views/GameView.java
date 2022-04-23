@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.Color;
 import java.util.List;
 
-import com.nullcrew.Controllers.GameController;
+import com.nullcrew.Domain.Controllers.GameController;
 import com.nullcrew.Models.Asteroid;
 import com.nullcrew.Models.GameObjectFactory;
 
