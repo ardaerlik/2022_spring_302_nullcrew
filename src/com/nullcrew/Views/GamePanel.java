@@ -131,16 +131,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				for(Asteroid a: asteroidList){
 					g2.setColor(a.getColor());
 					switch (a.getType()) {
-						case "simple":
+						case Simple:
 							g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
 							break;
-						case "firm":
+						case Firm:
 							g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
 							break;
-						case "explosive":
+						case Explosive:
 							g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
 							break;
-						case "gift":
+						case Gift:
 							g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
 							break;
 					}
