@@ -3,6 +3,8 @@ package com.nullcrew.Views;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,6 +12,9 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,6 +39,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	private final int WIDTH = 1024;
 	private final int HEIGHT = 470;
 	public static List<GameObject> list_objects;
+
 	/**
 	 * Create the panel.
 	 */
@@ -94,24 +100,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		}
 	}
 	
-	
 	private void paintObjects(Graphics g) {
-		
 		for(GameObject object: list_objects) {
-			
 			if(object instanceof Paddle) {
-				g.setColor(Color.BLACK);
-				paddleGraphics = g;
-				Graphics2D g2= (Graphics2D) GamePanel.paddleGraphics;
-				g2.rotate(Math.toRadians(gameView.getGameController().getPaddle().getRotationDegree()),
-						gameView.getGameController().getPaddle().getX()+gameView.getGameController().getPaddle().getWidth()/2,
-						gameView.getGameController().getPaddle().getY());
-				g2.fill3DRect(gameView.getGameController().getPaddle().getX(),
-						gameView.getGameController().getPaddle().getY(),
-						gameView.getGameController().getPaddle().getWidth(),
-						gameView.getGameController().getPaddle().getHeight(),true);
-				
+				paintPaddle(g);	
 			}
+
 			if(object instanceof Ball) {
 				g.setColor(Color.red);
 				ballGraphics = g;
@@ -122,38 +116,45 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 						gameView.getGameController().getBall().getWidth(),
 						gameView.getGameController().getBall().getHeight());
 			}
+
 			if(object instanceof Asteroid) {
-				
 				g.setColor(Color.BLACK);
 				asteroidGraphics = g;
 				Graphics2D g2= (Graphics2D) GamePanel.asteroidGraphics;
 				List<Asteroid> asteroidList = gameView.getGameController().getAsteroidList();
 				for(Asteroid a: asteroidList){
 					g2.setColor(a.getColor());
-					switch (a.getType()) {
-						case Simple:
-							g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
-							break;
-						case Firm:
-							g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
-							break;
-						case Explosive:
-							g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
-							break;
-						case Gift:
-							g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
-							break;
-					}
+					g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
 				}
 				g.setColor(Color.BLACK);
 			}
 		}
-		
 	}
 
+	private void paintPaddle(Graphics g) {
 
-	
-	
+		super.paintComponent( g );
+	    Graphics2D g2d = (Graphics2D) g;
+
+	    Rectangle2D rect = new Rectangle2D.Double( 
+	    		gameView.getGameController().getPaddle().getX(),
+				gameView.getGameController().getPaddle().getY(),
+				gameView.getGameController().getPaddle().getWidth(),
+				gameView.getGameController().getPaddle().getHeight());
+
+	    AffineTransform transform = new AffineTransform();
+
+	    transform.rotate(Math.toRadians(gameView.getGameController().getPaddle().getRotationDegree()),	    		
+	    		gameView.getGameController().getPaddle().getX()+gameView.getGameController().getPaddle().getWidth()/2,
+				gameView.getGameController().getPaddle().getY()-gameView.getGameController().getPaddle().getHeight()/2);
+
+
+	    Shape s = transform.createTransformedShape(rect);
+
+	    g2d.fill( s );
+	    g2d.draw( s );
+	}
+
 	public int getXLocationSpace(){
 		return (WIDTH - MARGIN_LEFT - MARGIN_RIGHT - GameObjectFactory.ASTEROID_WIDTH) / (MAX_COLUMNS - 1);
 	}
@@ -185,25 +186,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	public int getMaxColumns() {
 		return MAX_COLUMNS;
 	}
-
-	private void paintAsteroids(Graphics g) {
-		g.setColor(Color.BLACK);
-		asteroidGraphics = g;
-		Graphics2D g2= (Graphics2D) GamePanel.asteroidGraphics;
-		List<Asteroid> asteroidList = gameView.getGameController().getAsteroidList();
-		for(Asteroid a: asteroidList){
-			g2.setColor(a.getColor());
-			g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
-		}
-		g.setColor(Color.BLACK);
-	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
-
 		super.paintComponent(g);
 		paintObjects(g);
-
 	}
 
 	@Override
@@ -257,12 +244,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	public void actionPerformed(ActionEvent e) {
 		gameView.getGameController().ballMoved();
 		gameView.getGameController().paddleHitBall();
-		Asteroid astr= gameView.getGameController().ballHitAsteroid();
-		if(astr!=null&&gameView.getGameController().getAsteroidList().contains(astr)){
-			List<Asteroid> list= gameView.getGameController().getAsteroidList();
-			list.remove(astr);
-			gameView.getGameController().setAsteroids(list);
-		}
+		Asteroid asteroid = gameView.getGameController().ballHitAsteroid();
+		if(asteroid!=null)
+		{
+			gameView.getGameController().reflectFromAsteroid(asteroid);
+		}   				
+
 		repaint();
 	}
 

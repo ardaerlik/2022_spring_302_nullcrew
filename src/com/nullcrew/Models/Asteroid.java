@@ -2,6 +2,8 @@ package com.nullcrew.Models;
 
 import java.awt.*;
 
+import com.nullcrew.Views.GameView;
+
 public abstract class Asteroid extends GameObject {
 	private double speed;
 	private Color color;
@@ -18,13 +20,13 @@ public abstract class Asteroid extends GameObject {
 		return speed;
 	}
 
+	public abstract void hit(GameView gameView);
+
 	public Color getColor() {
 		return color;
 	}
 
 	public AsteroidType getType() { return type; }
-
-	public abstract void hit();
 
 	@Override
 	public abstract Asteroid clone();

@@ -1,6 +1,9 @@
 package com.nullcrew.Models;
 
 import java.awt.*;
+import java.util.List;
+
+import com.nullcrew.Views.GameView;
 
 public class SimpleAsteroid extends Asteroid {
     private int lives;
@@ -15,8 +18,12 @@ public class SimpleAsteroid extends Asteroid {
     }
 
     @Override
-    public void hit() {
+    public void hit(GameView gameView) {
+    	
+		List<Asteroid> list= gameView.getGameController().getAsteroidList();
 
+    	list.remove(this);
+		gameView.getGameController().setAsteroids(list);
     }
 
     @Override

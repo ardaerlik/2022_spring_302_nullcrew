@@ -3,6 +3,9 @@ package com.nullcrew.Controllers;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 import com.nullcrew.AlienAsteroidGame;
@@ -34,13 +37,13 @@ public class GameController {
 		switch (direction) {
 		case RIGHT: {		
 			if (paddle.getX() + gameView.getGameController().getPaddle().getWidth() < gameView.getFrame().getWidth()) {
-				paddle.setX(paddle.getX() + 5);
+				paddle.setX(paddle.getX() + paddle.velocity);
 			}
 			break;
 		}
 		case LEFT: {
 			if (paddle.getX() > 0) {
-				paddle.setX(paddle.getX() - 5);
+				paddle.setX(paddle.getX() - paddle.velocity);
 			}
 			break;
 		}
@@ -72,7 +75,7 @@ public class GameController {
 			throw new IllegalArgumentException("Unexpected value: " + direction);
 		}
 	}
-
+	
 	public void ballMoved() {
 		if(GamePanel.gameMode==GameMode.PAUSED) {
 			return;
@@ -91,39 +94,31 @@ public class GameController {
 		
 	}
 	
+    public void paddleHitBall(){
+	    Rectangle2D rect = new Rectangle2D.Double( 
+	    		gameView.getGameController().getPaddle().getX(),
+				gameView.getGameController().getPaddle().getY(),
+				gameView.getGameController().getPaddle().getWidth(),
+				gameView.getGameController().getPaddle().getHeight());
+
+
+	    AffineTransform transform = new AffineTransform();
+
+	    transform.rotate(Math.toRadians(gameView.getGameController().getPaddle().getRotationDegree()),	    		
+	    		gameView.getGameController().getPaddle().getX()+gameView.getGameController().getPaddle().getWidth()/2,
+				gameView.getGameController().getPaddle().getY()-gameView.getGameController().getPaddle().getHeight()/2);
+
+	    Shape s = transform.createTransformedShape(rect);
+	    Rectangle2D intersect_paddle= s.getBounds2D();
+	    Rectangle2D intersect_ball= new Rectangle2D.Double(ball.getX(),ball.getY(),ball.getWidth(),ball.getHeight());
+   
+        if((intersect_ball).
+        		intersects(intersect_paddle)){
+        	ball.setVelocityY((-ball.getVelocityY()));
+           
+        }
+    }
 	
-	public void paddleHitBall(){
-        if(new Rectangle(ball.getX(),ball.getY(),ball.getWidth(),ball.getHeight()).
-                intersects(new Rectangle(paddle.getX(),paddle.getY(),paddle.getWidth()+1,paddle.getHeight()+1))){
-            ball.setVelocityY((-ball.getVelocityY()));
-
-        }
-    }
-
-    public Asteroid ballHitAsteroid() {
-        if(getAsteroidList()==null) {
-            return null;
-        }
-        if(getAsteroidList().size()==0) {
-            return null;
-        }
-
-        for(Asteroid asteroid: getAsteroidList()) {
-            if(asteroid==null) {
-                continue;
-            }
-            if(new Rectangle(ball.getX(),ball.getY(),ball.getWidth(),ball.getHeight()).
-                    intersects(new Rectangle(asteroid.getX(),asteroid.getY(),asteroid.getWidth()+1,asteroid.getHeight()+1))){
-
-
-                    return asteroid;
-
-            }
-
-        }
-        return null;
-    }
-
 	private int countAsteroidTypes(AsteroidType type){
 		int count=0;
 		for(Asteroid a: asteroidList){
@@ -224,6 +219,55 @@ public class GameController {
 		return true;
 	}
 	
+    public Asteroid ballHitAsteroid() {
+    	if(getAsteroidList()==null || getAsteroidList().size()==0) {
+    		return null;
+    	}
+    	
+
+    	for(Asteroid asteroid: getAsteroidList()) {
+    		if(asteroid==null) {
+    			continue;
+    		}
+            if(new Rectangle(ball.getX(),ball.getY(),ball.getWidth(),ball.getHeight()).
+            		intersects(new Rectangle(asteroid.getX(),asteroid.getY(),asteroid.getWidth()+1,asteroid.getHeight()+1))){
+            	
+    				if((asteroid instanceof ExplosiveAsteroid)) {
+    					((ExplosiveAsteroid) asteroid).hit_nearby(gameView);
+    					asteroid.hit(gameView);
+    				}
+    				else {
+    					asteroid.hit(gameView);
+    				}
+            		return asteroid;
+            }
+         
+    	}
+    	return null;
+    }
+    
+    public void reflectFromAsteroid(Asteroid collided_asteroid) {
+
+		if(collided_asteroid==null) {
+			return;
+		}
+
+		double posX = (double)collided_asteroid.getX()-ball.getX();
+		double posY=(double)collided_asteroid.getY()-ball.getY();
+		double angle = Math.atan2( posY - 0, posX - (double)1 ) * ( 180 / Math.PI );
+		if(45d<=angle&&angle<=135d) {
+			ball.setVelocityY(-ball.getVelocityY());
+		}
+		if((135d<=angle&&angle<=180d)||(0>=angle&&angle>=-45d)) {
+			ball.setVelocityX(-ball.getVelocityX());
+		}
+		if(-45d>=angle&&angle>=-135d) {
+			ball.setVelocityY(-ball.getVelocityY());
+		}
+		if((0d<=angle&&angle<=45d)||(-135d>=angle&&angle<=-180d)) {
+			ball.setVelocityX(-ball.getVelocityX());
+		}
+	}
 	
 	public GameView getGameView() {
 		return gameView;
