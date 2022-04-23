@@ -24,10 +24,12 @@ public class TopPanel extends JPanel {
 	private JLabel simpleLabel, firmLabel, explosiveLabel, giftLabel;
 	private JTextField simpleField, firmField, explosiveField, giftField;
 	private int[] numOfAsteroidTypes;
+	private boolean running_mode_on;
 
 	public TopPanel(GameView gameView) {
 		this.gameView = gameView;
 		numOfAsteroidTypes = null;
+		running_mode_on= false;
 		configureUI();
 		setFocusable(false);
 	}
@@ -52,6 +54,7 @@ public class TopPanel extends JPanel {
 		add(okButton);
 		add(switchButton);
 		add(exitButton);
+
 	}
 
 	private void createAsteroidNumbersForm(){
@@ -88,7 +91,7 @@ public class TopPanel extends JPanel {
 				gameView.getGameController().setBall(new Ball(155, 445, 17, 17));
 				gameView.getGameController().setPaddle(new Paddle (100, 470, 120, 10));
 				okButton.setText("Restart");
-				gameView.getGamePanel().resumeTheGame();
+
 				
 			}
 		});
@@ -115,9 +118,30 @@ public class TopPanel extends JPanel {
 
 	private void createPopupMenu() {
 		popupMenu = new JPopupMenu();
-		popupMenu.add("Build Mode");
-		popupMenu.add("Run Mode");
+		JMenuItem build_item = new JMenuItem("Build Mode");
+		JMenuItem run_item = new JMenuItem("Run Mode");
+		build_item.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					gameView.getGamePanel().pauseTheGame();
+			}
+			
+			
+		});
+		run_item.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					gameView.getGamePanel().resumeTheGame();
+			}
+			
+			
+		});
+		popupMenu.add(build_item);
+		popupMenu.add(run_item);
 		popupMenu.addPopupMenuListener(new PopupMenuListener() {
+		
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
 			@Override

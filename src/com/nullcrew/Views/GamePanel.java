@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.List;
@@ -92,16 +95,33 @@ public class GamePanel extends JPanel
 	}
 	
 	private void paintPaddle(Graphics g) {
-		g.setColor(Color.BLACK);
-		paddleGraphics = g;
-		Graphics2D g2= (Graphics2D) GamePanel.paddleGraphics;
-		g2.rotate(Math.toRadians(gameView.getGameController().getPaddle().getRotationDegree()),
-				gameView.getGameController().getPaddle().getX()+gameView.getGameController().getPaddle().getWidth()/2,
-				gameView.getGameController().getPaddle().getY());
-		g2.fill3DRect(gameView.getGameController().getPaddle().getX(),
+
+		super.paintComponent( g );
+	    Graphics2D g2d = (Graphics2D) g;
+
+
+	    Rectangle2D rect = new Rectangle2D.Double( 
+	    		gameView.getGameController().getPaddle().getX(),
 				gameView.getGameController().getPaddle().getY(),
 				gameView.getGameController().getPaddle().getWidth(),
-				gameView.getGameController().getPaddle().getHeight(),true);
+				gameView.getGameController().getPaddle().getHeight());
+
+
+	    AffineTransform transform = new AffineTransform();
+
+	    transform.rotate(Math.toRadians(gameView.getGameController().getPaddle().getRotationDegree()),	    		
+	    		gameView.getGameController().getPaddle().getX()+gameView.getGameController().getPaddle().getWidth()/2,
+				gameView.getGameController().getPaddle().getY()-gameView.getGameController().getPaddle().getHeight()/2);
+
+
+	    Shape s = transform.createTransformedShape(rect);
+
+	    
+	    g2d.fill( s );
+
+
+	    g2d.draw( s );
+	
 
 	}
 

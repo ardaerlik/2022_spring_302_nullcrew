@@ -2,6 +2,9 @@ package com.nullcrew.Controllers;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 import com.nullcrew.AlienAsteroidGame;
@@ -85,8 +88,25 @@ public class GameController {
 	}
 	
     public void paddleHitBall(){
-        if(new Rectangle(ball.getX(),ball.getY(),ball.getWidth(),ball.getHeight()).
-        		intersects(new Rectangle(paddle.getX(),paddle.getY(),paddle.getWidth()+1,paddle.getHeight()+1))){
+	    Rectangle2D rect = new Rectangle2D.Double( 
+	    		gameView.getGameController().getPaddle().getX(),
+				gameView.getGameController().getPaddle().getY(),
+				gameView.getGameController().getPaddle().getWidth(),
+				gameView.getGameController().getPaddle().getHeight());
+
+
+	    AffineTransform transform = new AffineTransform();
+
+	    transform.rotate(Math.toRadians(gameView.getGameController().getPaddle().getRotationDegree()),	    		
+	    		gameView.getGameController().getPaddle().getX()+gameView.getGameController().getPaddle().getWidth()/2,
+				gameView.getGameController().getPaddle().getY()-gameView.getGameController().getPaddle().getHeight()/2);
+
+	    Shape s = transform.createTransformedShape(rect);
+	    Rectangle2D intersect_paddle= s.getBounds2D();
+	    Rectangle2D intersect_ball= new Rectangle2D.Double(ball.getX(),ball.getY(),ball.getWidth(),ball.getHeight());
+   
+        if((intersect_ball).
+        		intersects(intersect_paddle)){
         	ball.setVelocityY((-ball.getVelocityY()));
            
         }
