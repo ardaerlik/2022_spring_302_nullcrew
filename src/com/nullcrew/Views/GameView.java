@@ -4,8 +4,10 @@ import java.awt.EventQueue;
 
 import javax.swing.*;
 import java.awt.Color;
+import java.util.List;
 
 import com.nullcrew.Controllers.GameController;
+import com.nullcrew.Models.Asteroid;
 import com.nullcrew.Models.GameObjectFactory;
 
 public class GameView {
@@ -66,7 +68,7 @@ public class GameView {
 		springLayout.putConstraint(SpringLayout.WEST, gamePanel, 0, SpringLayout.WEST, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, gamePanel, 1024, SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(gamePanel);
-		
+
 		belowPanel = new JPanel();
 		belowPanel.setBackground(Color.CYAN);
 		springLayout.putConstraint(SpringLayout.NORTH, belowPanel, 623, SpringLayout.NORTH, frame.getContentPane());
@@ -124,7 +126,8 @@ public class GameView {
 		int[] locSpaces = {gamePanel.getXLocationSpace(), gamePanel.getYLocationSpace()};
 		int[] margins = {gamePanel.getLeftMargin(), gamePanel.getTopMargin(), gamePanel.getRightMargin(), gamePanel.getBottomMargin()};
 		int[] maxRowsColumns = {gamePanel.getMaxRows(), gamePanel.getMaxColumns()};
-		gameController.setAsteroids(GameObjectFactory.createAsteroids(numOfAsteroidTypes, locSpaces, margins, maxRowsColumns));
+		List<Asteroid> asteroidList = GameObjectFactory.createAsteroids(numOfAsteroidTypes, locSpaces, margins, maxRowsColumns);
+		gameController.setAsteroids( asteroidList);
 		gamePanel.repaint();
 	}
 

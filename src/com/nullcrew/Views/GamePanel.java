@@ -8,27 +8,28 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import javax.swing.*;
 
 import com.nullcrew.Models.*;
 import com.nullcrew.Utilities.*;
 
-public class GamePanel extends JPanel
-	implements ActionListener, KeyListener {
+
+public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener {
 	
 	private GameView gameView;
 	private Timer gameTimerUI;
 	public static GameMode gameMode;
 	public static Graphics paddleGraphics, asteroidGraphics, ballGraphics;
-	private final int MAX_ROWS = 5;
+	private final int MAX_ROWS = 7;
 	private final int MAX_COLUMNS = 15;
 	private final int MARGIN_LEFT = 50;
 	private final int MARGIN_RIGHT = 50;
-	private final int MARGIN_TOP = 100;
+	private final int MARGIN_TOP = 50;
 	private final int MARGIN_BOTTOM = 200;
 	private final int WIDTH = 1024;
 	private final int HEIGHT = 470;
@@ -44,6 +45,7 @@ public class GamePanel extends JPanel
 
 		requestFocusInWindow();
 		addKeyListener(this);
+		addMouseListener( this);
 		restartAction();
 		setFocusable(true);
 		gameMode = GameMode.PAUSED;
@@ -184,7 +186,17 @@ public class GamePanel extends JPanel
 		return MAX_COLUMNS;
 	}
 
-
+	private void paintAsteroids(Graphics g) {
+		g.setColor(Color.BLACK);
+		asteroidGraphics = g;
+		Graphics2D g2= (Graphics2D) GamePanel.asteroidGraphics;
+		List<Asteroid> asteroidList = gameView.getGameController().getAsteroidList();
+		for(Asteroid a: asteroidList){
+			g2.setColor(a.getColor());
+			g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
+		}
+		g.setColor(Color.BLACK);
+	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
@@ -254,4 +266,60 @@ public class GamePanel extends JPanel
 		repaint();
 	}
 
+	@Override
+	public void mouseClicked(MouseEvent mouseEvent) {
+		if(mouseEvent.getButton() == MouseEvent.BUTTON3) { //this is right click.
+			int x = mouseEvent.getX();
+			int y = mouseEvent.getY();
+			Object[] result = gameView.getGameController().removeAsteroid(x, y); //returns Asteroid, MessageType
+			if(result[1] == MessageType.NoAsteroidInThisLocation){
+				JOptionPane.showMessageDialog(null, "No asteroid to remove in this location!", "Error", JOptionPane.ERROR_MESSAGE);
+			}else if(result[1] == MessageType.MinThresholdErrorTotal) {
+				JOptionPane.showMessageDialog(null, "Total min threshold (at least 75) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
+			}else if(result[1] == MessageType.MinThresholdErrorFirm) {
+				JOptionPane.showMessageDialog(null, "Firm min threshold (at least 10) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
+			}else if(result[1] == MessageType.MinThresholdErrorExplosive) {
+				JOptionPane.showMessageDialog(null, "Explosive min threshold (at least 5) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
+			}else if(result[1] == MessageType.MinThresholdErrorGift) {
+				JOptionPane.showMessageDialog(null, "Gift min threshold (at least 10) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	private Asteroid draggedAsteroid = null;
+	@Override
+	public void mousePressed(MouseEvent mouseEvent) {
+		if(mouseEvent.getButton() == MouseEvent.BUTTON1) { //this is left click.
+			int x = mouseEvent.getX();
+			int y = mouseEvent.getY();
+			draggedAsteroid = gameView.getGameController().dragAsteroid(x, y);
+			if(draggedAsteroid != null) {
+				this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent mouseEvent) {
+		if(mouseEvent.getButton() == MouseEvent.BUTTON1 && draggedAsteroid != null) { //this is left click.
+			int x = mouseEvent.getX();
+			int y = mouseEvent.getY();
+			boolean success = gameView.getGameController().addAsteroid(draggedAsteroid, x, y);
+			this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			if(!success){
+				JOptionPane.showMessageDialog(null, "Can not drop over an existing asteroid!", "Error", JOptionPane.ERROR_MESSAGE);
+				gameView.getGameController().addAsteroid(draggedAsteroid, draggedAsteroid.getX(), draggedAsteroid.getY());
+			}
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent mouseEvent) {
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent mouseEvent) {
+
+	}
 }

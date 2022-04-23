@@ -6,7 +6,7 @@ public class GiftAsteroid extends Asteroid {
     private int lives;
 
     public GiftAsteroid(int x, int y, int width, int height, double speed) {
-        super(x, y, width, height, speed, "gift", Color.BLUE);
+        super(x, y, width, height, speed, Color.BLUE, AsteroidType.Gift);
         lives = 1;
     }
 
@@ -17,5 +17,10 @@ public class GiftAsteroid extends Asteroid {
     @Override
     public void hit() {
 
+    }
+
+    @Override
+    public Asteroid clone(){
+        return new GiftAsteroid(this.x, this.y, this.width, this.height, super.getSpeed());
     }
 }
