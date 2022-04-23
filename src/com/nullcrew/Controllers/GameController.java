@@ -86,7 +86,7 @@ public class GameController {
 	
     public void paddleHitBall(){
         if(new Rectangle(ball.getX(),ball.getY(),ball.getWidth(),ball.getHeight()).
-        		intersects(new Rectangle(paddle.getX(),paddle.getY(),paddle.getWidth(),paddle.getHeight()))){
+        		intersects(new Rectangle(paddle.getX(),paddle.getY(),paddle.getWidth()+1,paddle.getHeight()+1))){
         	ball.setVelocityY((-ball.getVelocityY()));
            
         }
@@ -103,10 +103,15 @@ public class GameController {
     			continue;
     		}
             if(new Rectangle(ball.getX(),ball.getY(),ball.getWidth(),ball.getHeight()).
-            		intersects(new Rectangle(asteroid.getX(),asteroid.getY(),asteroid.getWidth(),asteroid.getHeight()))){
-            		
-    				asteroid.hit(gameView);
-            		
+            		intersects(new Rectangle(asteroid.getX(),asteroid.getY(),asteroid.getWidth()+1,asteroid.getHeight()+1))){
+            	
+    				if((asteroid instanceof ExplosiveAsteroid)) {
+    					((ExplosiveAsteroid) asteroid).hit_nearby(gameView);
+    					asteroid.hit(gameView);
+    				}
+    				else {
+    					asteroid.hit(gameView);
+    				}
             		return asteroid;
             }
          

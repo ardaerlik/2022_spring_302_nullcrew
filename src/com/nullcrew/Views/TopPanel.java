@@ -8,6 +8,9 @@ import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import com.nullcrew.Models.Ball;
+import com.nullcrew.Models.Paddle;
+
 public class TopPanel extends JPanel {
 	
 	private GameView gameView;
@@ -82,6 +85,8 @@ public class TopPanel extends JPanel {
 				numOfAsteroidTypes[3] = Integer.parseInt( giftField.getText());
 				gameView.setNumOfAsteroidTypes(numOfAsteroidTypes);
 				gameView.createAsteroids();
+				gameView.getGameController().setBall(new Ball(155, 445, 17, 17));
+				gameView.getGameController().setPaddle(new Paddle (100, 470, 120, 10));
 				okButton.setText("Restart");
 				gameView.getGamePanel().resumeTheGame();
 				

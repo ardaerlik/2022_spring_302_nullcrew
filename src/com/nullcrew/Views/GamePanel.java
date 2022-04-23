@@ -3,10 +3,12 @@ package com.nullcrew.Views;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.List;
 
@@ -100,6 +102,7 @@ public class GamePanel extends JPanel
 				gameView.getGameController().getPaddle().getY(),
 				gameView.getGameController().getPaddle().getWidth(),
 				gameView.getGameController().getPaddle().getHeight(),true);
+
 	}
 
 	
@@ -242,12 +245,12 @@ public class GamePanel extends JPanel
 		gameView.getGameController().ballMoved();
 
 		gameView.getGameController().paddleHitBall();
-		Asteroid astr = gameView.getGameController().ballHitAsteroid();
-		
-		if (astr != null) {
-			gameView.getGameController().reflectFromAsteroid(astr);
-		}
-		
+		Asteroid asteroid = gameView.getGameController().ballHitAsteroid();
+		if(asteroid!=null)
+		{
+			gameView.getGameController().reflectFromAsteroid(asteroid);
+		}   				
+
 		repaint();
 	}
 

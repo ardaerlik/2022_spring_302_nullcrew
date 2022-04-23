@@ -2,8 +2,8 @@ package com.nullcrew.Models;
 
 public class Ball extends GameObject {
 
-	private final int initialVelocityX = 5;
-    private final int initialVelocityY = -5;
+	private final int initialVelocityX = 3;
+    private final int initialVelocityY = -3;
     
     private int velocityX;
     private int velocityY;
