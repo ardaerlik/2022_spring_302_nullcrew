@@ -3,7 +3,7 @@ package com.nullcrew.Models;
 import java.awt.*;
 import java.util.List;
 
-import com.nullcrew.Views.GameView;
+import com.nullcrew.UI.Views.GameView;
 
 public class FirmAsteroid extends Asteroid {
     private int lives;

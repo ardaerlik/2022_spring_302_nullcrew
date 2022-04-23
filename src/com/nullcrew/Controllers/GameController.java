@@ -8,8 +8,9 @@ import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 import com.nullcrew.Models.*;
+import com.nullcrew.UI.Views.GamePanel;
+import com.nullcrew.UI.Views.GameView;
 import com.nullcrew.Utilities.*;
-import com.nullcrew.Views.*;
 
 
 public class GameController {

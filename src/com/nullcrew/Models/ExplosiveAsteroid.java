@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.nullcrew.Views.GameView;
+import com.nullcrew.UI.Views.GameView;
 
 public class ExplosiveAsteroid extends Asteroid {
     private int lives;

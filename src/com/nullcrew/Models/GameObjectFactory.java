@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import com.nullcrew.Views.GamePanel;
+import com.nullcrew.UI.Views.GamePanel;
 
 public class GameObjectFactory {
 	public static final int ASTEROID_WIDTH = 20;

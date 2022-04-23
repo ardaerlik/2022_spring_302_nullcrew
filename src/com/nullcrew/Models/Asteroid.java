@@ -2,7 +2,7 @@ package com.nullcrew.Models;
 
 import java.awt.*;
 
-import com.nullcrew.Views.GameView;
+import com.nullcrew.UI.Views.GameView;
 
 public abstract class Asteroid extends GameObject {
 	private double speed;

@@ -1,4 +1,4 @@
-package com.nullcrew.Views;
+package com.nullcrew.UI.Views;
 
 import java.awt.EventQueue;
 import java.awt.Font;

@@ -1,4 +1,4 @@
-package com.nullcrew.Views;
+package com.nullcrew.UI.Views;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
