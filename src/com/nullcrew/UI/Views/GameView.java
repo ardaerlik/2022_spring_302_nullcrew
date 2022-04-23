@@ -7,8 +7,8 @@ import java.awt.Color;
 import java.util.List;
 
 import com.nullcrew.Domain.Controllers.GameController;
-import com.nullcrew.Models.Asteroid;
-import com.nullcrew.Models.GameObjectFactory;
+import com.nullcrew.Domain.Models.Asteroid;
+import com.nullcrew.Domain.Models.GameObjectFactory;
 
 public class GameView {
 

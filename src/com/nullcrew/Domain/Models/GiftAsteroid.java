@@ -1,15 +1,15 @@
-package com.nullcrew.Models;
+package com.nullcrew.Domain.Models;
 
 import java.awt.*;
 import java.util.List;
 
 import com.nullcrew.UI.Views.GameView;
 
-public class SimpleAsteroid extends Asteroid {
+public class GiftAsteroid extends Asteroid {
     private int lives;
 
-    public SimpleAsteroid(int x, int y, int width, int height, double speed) {
-        super(x, y, width, height, speed, Color.RED, AsteroidType.Simple);
+    public GiftAsteroid(int x, int y, int width, int height, double speed) {
+        super(x, y, width, height, speed, Color.BLUE, AsteroidType.Gift);
         lives = 1;
     }
 
@@ -28,6 +28,6 @@ public class SimpleAsteroid extends Asteroid {
 
     @Override
     public Asteroid clone(){
-        return new SimpleAsteroid(this.x, this.y, this.width, this.height, super.getSpeed());
+        return new GiftAsteroid(this.x, this.y, this.width, this.height, super.getSpeed());
     }
 }

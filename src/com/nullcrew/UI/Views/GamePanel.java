@@ -17,7 +17,12 @@ import java.util.List;
 
 import javax.swing.*;
 
-import com.nullcrew.Models.*;
+import com.nullcrew.Domain.Models.Asteroid;
+import com.nullcrew.Domain.Models.Ball;
+import com.nullcrew.Domain.Models.GameObject;
+import com.nullcrew.Domain.Models.GameObjectFactory;
+import com.nullcrew.Domain.Models.MessageType;
+import com.nullcrew.Domain.Models.Paddle;
 import com.nullcrew.Utilities.*;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener {

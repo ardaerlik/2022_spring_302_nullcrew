@@ -8,7 +8,9 @@ import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import com.nullcrew.Models.*;
+import com.nullcrew.Domain.Models.Ball;
+import com.nullcrew.Domain.Models.MessageType;
+import com.nullcrew.Domain.Models.Paddle;
 
 public class TopPanel extends JPanel {
 	

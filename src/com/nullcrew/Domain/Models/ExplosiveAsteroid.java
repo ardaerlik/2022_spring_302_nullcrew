@@ -1,4 +1,4 @@
-package com.nullcrew.Models;
+package com.nullcrew.Domain.Models;
 
 import java.awt.*;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.nullcrew.Models;
+package com.nullcrew.Domain.Models;
 
 public abstract class GameObject {
 	protected int x;
