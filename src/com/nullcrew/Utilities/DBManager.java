@@ -1,9 +1,17 @@
 package com.nullcrew.Utilities;
 
-public class DBManager {
+public final class DBManager {
+	private static DBManager instance = new DBManager();
 
+	public static DBManager getInstance() {
+		if (instance == null) {
+			instance = new DBManager();
+		}
+		
+		return instance;
+	}
+	
 	public DBManager() {
-		// TODO Auto-generated constructor stub
 	}
 
 }
