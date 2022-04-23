@@ -45,6 +45,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	private final int WIDTH = 1024;
 	private final int HEIGHT = 470;
 	public static List<GameObject> list_objects;
+	private ArrayList<MoveDirection> pressedKeys;
+	private int pressedKeysLoc;
+	private int pressedKeysLocInt;
+	private boolean isValidLocation;
 
 	/**
 	 * Create the panel.
@@ -52,6 +56,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	public GamePanel(GameView gameView) {
 		this.gameView = gameView;
 		list_objects = new ArrayList<GameObject>();
+		
+		this.pressedKeys = new ArrayList<MoveDirection>();
+		this.pressedKeysLoc = 0;
+		this.pressedKeysLocInt = 0;
+		
 		createGameObjects();
 		configureUI();
 
@@ -138,7 +147,28 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	}
 
 	private void paintPaddle(Graphics g) {
-
+		if (pressedKeysLoc < pressedKeys.size()) {
+			if (pressedKeysLocInt == 0) {
+				isValidLocation = isValidPosition(pressedKeys.get(pressedKeysLoc));
+			}
+			
+			if (isValidLocation) {
+				if (pressedKeysLocInt < 5) {
+					if (pressedKeys.get(pressedKeysLoc) == MoveDirection.LEFT){
+						gameView.getGameController().paddleMoved(MoveDirection.LEFT);;
+					} else {
+						gameView.getGameController().paddleMoved(MoveDirection.RIGHT);;
+					}
+					pressedKeysLocInt++;
+				} else {
+					pressedKeysLoc++;
+					pressedKeysLocInt = 0;
+				}
+			} else {
+				pressedKeysLoc++;
+			}
+		}
+		
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 
@@ -158,6 +188,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 		g2d.fill(s);
 		g2d.draw(s);
+	}
+	
+	private boolean isValidPosition(MoveDirection e) {
+		switch (e) {
+		case LEFT:
+			return true;
+		case RIGHT:
+			return true;
+		default:
+			return false;
+		}
 	}
 
 	public int getXLocationSpace() {
@@ -206,11 +247,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case (KeyEvent.VK_LEFT): {
-			gameView.getGameController().paddleMoved(MoveDirection.LEFT);
+			pressedKeys.add(MoveDirection.LEFT);
 			break;
 		}
 		case (KeyEvent.VK_RIGHT): {
-			gameView.getGameController().paddleMoved(MoveDirection.RIGHT);
+			pressedKeys.add(MoveDirection.RIGHT);
 			break;
 		}
 		case (KeyEvent.VK_A): {
