@@ -1,6 +1,6 @@
 package com.nullcrew.Domain.Models;
 
-import java.awt.*;
+import java.awt.Color;
 
 import com.nullcrew.UI.Views.GameView;
 

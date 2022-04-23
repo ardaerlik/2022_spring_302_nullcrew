@@ -1,6 +1,7 @@
 package com.nullcrew.Domain.Models;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Rectangle;
 import java.util.List;
 import java.util.stream.Collectors;
 

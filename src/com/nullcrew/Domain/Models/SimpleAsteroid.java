@@ -1,6 +1,6 @@
 package com.nullcrew.Domain.Models;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.List;
 
 import com.nullcrew.UI.Views.GameView;
@@ -19,8 +19,7 @@ public class SimpleAsteroid extends Asteroid {
 
     @Override
     public void hit(GameView gameView) {
-    	
-		List<Asteroid> list= gameView.getGameController().getAsteroidList();
+		List<Asteroid> list = gameView.getGameController().getAsteroidList();
 
     	list.remove(this);
 		gameView.getGameController().setAsteroids(list);
@@ -30,4 +29,5 @@ public class SimpleAsteroid extends Asteroid {
     public Asteroid clone(){
         return new SimpleAsteroid(this.x, this.y, this.width, this.height, super.getSpeed());
     }
+    
 }

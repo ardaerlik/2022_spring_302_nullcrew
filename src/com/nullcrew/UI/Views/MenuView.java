@@ -1,9 +1,9 @@
 package com.nullcrew.UI.Views;
 
-import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.EventQueue;
+import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;

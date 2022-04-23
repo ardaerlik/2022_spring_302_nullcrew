@@ -3,9 +3,7 @@ package com.nullcrew.Domain.Models;
 public class Paddle extends GameObject {
 	
 	private int rotationDegree;
-	
 	private final int FINAL_VELOCITY = 20;
-	
 	public int velocity = FINAL_VELOCITY;
 	
 	public Paddle(int x, int y, int width, int height) {
@@ -21,6 +19,5 @@ public class Paddle extends GameObject {
 		this.rotationDegree = rotationDegree;
 		
 	}
-
 
 }

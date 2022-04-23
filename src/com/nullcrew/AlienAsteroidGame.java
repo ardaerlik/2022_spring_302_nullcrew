@@ -15,17 +15,4 @@ public final class AlienAsteroidGame {
 		return instance;
 	}
 	
-//	private void changeScreen(JFrame from, JFrame to) {
-//		if (from == null) {
-//			to.setBounds(0, 0, 1000, 1000);
-//			to.setVisible(true);
-//			
-//		} else if (to == null) {
-//			// exit application
-//		} else {
-//			
-//		}
-//		from.dispose();
-//	}
-	
 }
