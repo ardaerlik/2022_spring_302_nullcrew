@@ -18,7 +18,6 @@ import com.nullcrew.UI.Views.GamePanel;
 import com.nullcrew.UI.Views.GameView;
 import com.nullcrew.Utilities.*;
 
-
 public class GameController {
 	private GameView gameView;
 	private Paddle paddle;

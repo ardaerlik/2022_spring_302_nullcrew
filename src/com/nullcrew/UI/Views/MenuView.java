@@ -9,9 +9,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import com.nullcrew.Domain.Controllers.MenuController;
+
 public class MenuView {
 
 	private JFrame frame;
+	private MenuController menuController;
 
 
 	/**
@@ -35,6 +38,7 @@ public class MenuView {
 	 */
 	public MenuView() {
 		initialize();
+		menuController = new MenuController(this);
 	}
 
 	/**
@@ -75,6 +79,22 @@ public class MenuView {
 		
 		frame.setVisible(true);
 		frame.setResizable(false);
+	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+
+	public MenuController getMenuController() {
+		return menuController;
+	}
+
+	public void setMenuController(MenuController menuController) {
+		this.menuController = menuController;
 	}
 	
 }
