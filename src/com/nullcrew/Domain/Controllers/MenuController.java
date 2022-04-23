@@ -4,7 +4,7 @@ import com.nullcrew.UI.Views.MenuView;
 
 public class MenuController {
 	private MenuView menuView;
-	
+
 	public MenuController(MenuView menuView) {
 		this.menuView = menuView;
 	}

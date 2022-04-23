@@ -30,7 +30,7 @@ import com.nullcrew.Domain.Models.MoveDirection;
 import com.nullcrew.Domain.Models.Paddle;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener {
-	
+
 	private static final long serialVersionUID = 1L;
 	private GameView gameView;
 	private Timer gameTimerUI;
@@ -51,13 +51,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	 */
 	public GamePanel(GameView gameView) {
 		this.gameView = gameView;
-		list_objects= new ArrayList<GameObject>();
+		list_objects = new ArrayList<GameObject>();
 		createGameObjects();
 		configureUI();
 
 		requestFocusInWindow();
 		addKeyListener(this);
-		addMouseListener( this);
+		addMouseListener(this);
 		restartAction();
 		setFocusable(true);
 		gameMode = GameMode.PAUSED;
@@ -67,14 +67,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		gameTimerUI = new Timer(20, this);
 		gameTimerUI.restart();
 	}
-	
+
 	public void createGameObjects() {
 		gameView.getGameController().setPaddle(GameObjectFactory.createPaddle());
 		gameView.getGameController().setBall(GameObjectFactory.createBall());
 		list_objects.add(gameView.getGameController().getPaddle());
 		list_objects.add(gameView.getGameController().getBall());
 	}
-	
+
 	private void configureUI() {
 		setBackground(Color.ORANGE);
 	}
@@ -91,31 +91,31 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		}
 		}
 	}
-	
+
 	public void resumeTheGame() {
 		switch (gameMode) {
 		case PAUSED: {
 			gameMode = GameMode.RESUMED;
 			gameTimerUI.start();
 			break;
-			
+
 		}
 		case RESUMED: {
 			break;
 		}
 		}
 	}
-	
+
 	private void paintObjects(Graphics g) {
-		for(GameObject object: list_objects) {
-			if(object instanceof Paddle) {
-				paintPaddle(g);	
+		for (GameObject object : list_objects) {
+			if (object instanceof Paddle) {
+				paintPaddle(g);
 			}
 
-			if(object instanceof Ball) {
+			if (object instanceof Ball) {
 				g.setColor(Color.red);
 				ballGraphics = g;
-				
+
 				Graphics2D g2 = (Graphics2D) GamePanel.ballGraphics;
 				g2.fillOval(gameView.getGameController().getBall().getX(),
 						gameView.getGameController().getBall().getY(),
@@ -123,12 +123,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 						gameView.getGameController().getBall().getHeight());
 			}
 
-			if(object instanceof Asteroid) {
+			if (object instanceof Asteroid) {
 				g.setColor(Color.BLACK);
 				asteroidGraphics = g;
-				Graphics2D g2= (Graphics2D) GamePanel.asteroidGraphics;
+				Graphics2D g2 = (Graphics2D) GamePanel.asteroidGraphics;
 				List<Asteroid> asteroidList = gameView.getGameController().getAsteroidList();
-				for(Asteroid a: asteroidList){
+				for (Asteroid a : asteroidList) {
 					g2.setColor(a.getColor());
 					g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
 				}
@@ -139,33 +139,32 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	private void paintPaddle(Graphics g) {
 
-		super.paintComponent( g );
-	    Graphics2D g2d = (Graphics2D) g;
+		super.paintComponent(g);
+		Graphics2D g2d = (Graphics2D) g;
 
-	    Rectangle2D rect = new Rectangle2D.Double( 
-	    		gameView.getGameController().getPaddle().getX(),
-				gameView.getGameController().getPaddle().getY(),
-				gameView.getGameController().getPaddle().getWidth(),
+		Rectangle2D rect = new Rectangle2D.Double(gameView.getGameController().getPaddle().getX(),
+				gameView.getGameController().getPaddle().getY(), gameView.getGameController().getPaddle().getWidth(),
 				gameView.getGameController().getPaddle().getHeight());
 
-	    AffineTransform transform = new AffineTransform();
+		AffineTransform transform = new AffineTransform();
 
-	    transform.rotate(Math.toRadians(gameView.getGameController().getPaddle().getRotationDegree()),	    		
-	    		gameView.getGameController().getPaddle().getX()+gameView.getGameController().getPaddle().getWidth()/2,
-				gameView.getGameController().getPaddle().getY()-gameView.getGameController().getPaddle().getHeight()/2);
+		transform.rotate(Math.toRadians(gameView.getGameController().getPaddle().getRotationDegree()),
+				gameView.getGameController().getPaddle().getX()
+						+ gameView.getGameController().getPaddle().getWidth() / 2,
+				gameView.getGameController().getPaddle().getY()
+						- gameView.getGameController().getPaddle().getHeight() / 2);
 
+		Shape s = transform.createTransformedShape(rect);
 
-	    Shape s = transform.createTransformedShape(rect);
-
-	    g2d.fill( s );
-	    g2d.draw( s );
+		g2d.fill(s);
+		g2d.draw(s);
 	}
 
-	public int getXLocationSpace(){
+	public int getXLocationSpace() {
 		return (WIDTH - MARGIN_LEFT - MARGIN_RIGHT - GameObjectFactory.ASTEROID_WIDTH) / (MAX_COLUMNS - 1);
 	}
 
-	public int getYLocationSpace(){
+	public int getYLocationSpace() {
 		return (HEIGHT - MARGIN_TOP - MARGIN_BOTTOM - GameObjectFactory.ASTEROID_HEIGHT) / (MAX_ROWS - 1);
 	}
 
@@ -192,7 +191,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	public int getMaxColumns() {
 		return MAX_COLUMNS;
 	}
-	
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -200,7 +199,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {}
+	public void keyTyped(KeyEvent e) {
+	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -238,49 +238,55 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {}
+	public void keyReleased(KeyEvent e) {
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		gameView.getGameController().ballMoved();
 		gameView.getGameController().paddleHitBall();
 		Asteroid asteroid = gameView.getGameController().ballHitAsteroid();
-		if(asteroid!=null)
-		{
+		if (asteroid != null) {
 			gameView.getGameController().reflectFromAsteroid(asteroid);
-		}   				
+		}
 
 		repaint();
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent mouseEvent) {
-		if(mouseEvent.getButton() == MouseEvent.BUTTON3) { //this is right click.
+		if (mouseEvent.getButton() == MouseEvent.BUTTON3) { // this is right click.
 			int x = mouseEvent.getX();
 			int y = mouseEvent.getY();
-			Object[] result = gameView.getGameController().removeAsteroid(x, y); //returns Asteroid, MessageType
-			if(result[1] == MessageType.NoAsteroidInThisLocation){
-				JOptionPane.showMessageDialog(null, "No asteroid to remove in this location!", "Error", JOptionPane.ERROR_MESSAGE);
-			}else if(result[1] == MessageType.MinThresholdErrorTotal) {
-				JOptionPane.showMessageDialog(null, "Total min threshold (at least 75) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
-			}else if(result[1] == MessageType.MinThresholdErrorFirm) {
-				JOptionPane.showMessageDialog(null, "Firm min threshold (at least 10) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
-			}else if(result[1] == MessageType.MinThresholdErrorExplosive) {
-				JOptionPane.showMessageDialog(null, "Explosive min threshold (at least 5) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
-			}else if(result[1] == MessageType.MinThresholdErrorGift) {
-				JOptionPane.showMessageDialog(null, "Gift min threshold (at least 10) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
+			Object[] result = gameView.getGameController().removeAsteroid(x, y); // returns Asteroid, MessageType
+			if (result[1] == MessageType.NoAsteroidInThisLocation) {
+				JOptionPane.showMessageDialog(null, "No asteroid to remove in this location!", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			} else if (result[1] == MessageType.MinThresholdErrorTotal) {
+				JOptionPane.showMessageDialog(null, "Total min threshold (at least 75) is violated!", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			} else if (result[1] == MessageType.MinThresholdErrorFirm) {
+				JOptionPane.showMessageDialog(null, "Firm min threshold (at least 10) is violated!", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			} else if (result[1] == MessageType.MinThresholdErrorExplosive) {
+				JOptionPane.showMessageDialog(null, "Explosive min threshold (at least 5) is violated!", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			} else if (result[1] == MessageType.MinThresholdErrorGift) {
+				JOptionPane.showMessageDialog(null, "Gift min threshold (at least 10) is violated!", "Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
 
 	private Asteroid draggedAsteroid = null;
+
 	@Override
 	public void mousePressed(MouseEvent mouseEvent) {
-		if(mouseEvent.getButton() == MouseEvent.BUTTON1) { //this is left click.
+		if (mouseEvent.getButton() == MouseEvent.BUTTON1) { // this is left click.
 			int x = mouseEvent.getX();
 			int y = mouseEvent.getY();
 			draggedAsteroid = gameView.getGameController().dragAsteroid(x, y);
-			if(draggedAsteroid != null) {
+			if (draggedAsteroid != null) {
 				this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 		}
@@ -288,22 +294,26 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void mouseReleased(MouseEvent mouseEvent) {
-		if(mouseEvent.getButton() == MouseEvent.BUTTON1 && draggedAsteroid != null) { //this is left click.
+		if (mouseEvent.getButton() == MouseEvent.BUTTON1 && draggedAsteroid != null) { // this is left click.
 			int x = mouseEvent.getX();
 			int y = mouseEvent.getY();
 			boolean success = gameView.getGameController().addAsteroid(draggedAsteroid, x, y);
 			this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			if(!success){
-				JOptionPane.showMessageDialog(null, "Can not drop over an existing asteroid!", "Error", JOptionPane.ERROR_MESSAGE);
-				gameView.getGameController().addAsteroid(draggedAsteroid, draggedAsteroid.getX(), draggedAsteroid.getY());
+			if (!success) {
+				JOptionPane.showMessageDialog(null, "Can not drop over an existing asteroid!", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				gameView.getGameController().addAsteroid(draggedAsteroid, draggedAsteroid.getX(),
+						draggedAsteroid.getY());
 			}
 		}
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent mouseEvent) {}
+	public void mouseEntered(MouseEvent mouseEvent) {
+	}
 
 	@Override
-	public void mouseExited(MouseEvent mouseEvent) {}
-	
+	public void mouseExited(MouseEvent mouseEvent) {
+	}
+
 }
