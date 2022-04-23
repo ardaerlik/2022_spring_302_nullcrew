@@ -1,6 +1,6 @@
 package com.nullcrew.Domain.Models;
 
-import java.awt.*;
+import java.awt.Color;
 
 import com.nullcrew.UI.Views.GameView;
 
@@ -26,7 +26,9 @@ public abstract class Asteroid extends GameObject {
 		return color;
 	}
 
-	public AsteroidType getType() { return type; }
+	public AsteroidType getType() {
+		return type;
+	}
 
 	@Override
 	public abstract Asteroid clone();

@@ -1,10 +1,19 @@
 package com.nullcrew.UI.Views;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
@@ -13,7 +22,7 @@ import com.nullcrew.Domain.Models.MessageType;
 import com.nullcrew.Domain.Models.Paddle;
 
 public class TopPanel extends JPanel {
-	
+
 	private static final long serialVersionUID = 1L;
 	private GameView gameView;
 	private JFrame exitFrame;
@@ -56,7 +65,7 @@ public class TopPanel extends JPanel {
 		add(exitButton);
 	}
 
-	private void createAsteroidNumbersForm(){
+	private void createAsteroidNumbersForm() {
 		simpleLabel = new JLabel("Simple Asteroids:");
 		simpleField = new JTextField(5);
 		firmLabel = new JLabel("Firm Asteroids:");
@@ -67,50 +76,55 @@ public class TopPanel extends JPanel {
 		giftField = new JTextField(5);
 	}
 
-	public int[] getNumOfAsteroidTypes(){
+	public int[] getNumOfAsteroidTypes() {
 		return numOfAsteroidTypes;
 	}
 
 	private void createOkButton() {
 		okButton = new JButton("Start");
-		okButton.setBounds(10,100,100,25);
+		okButton.setBounds(10, 100, 100, 25);
 		okButton.setBackground(Color.green);
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gameView.getGamePanel().setFocusable(true);
 				gameView.getGamePanel().requestFocusInWindow();
-				numOfAsteroidTypes = new int[4]; //simple, firm, explosive, gift
-				numOfAsteroidTypes[0] = Integer.parseInt( simpleField.getText());
-				numOfAsteroidTypes[1] = Integer.parseInt( firmField.getText());
-				numOfAsteroidTypes[2] = Integer.parseInt( explosiveField.getText());
-				numOfAsteroidTypes[3] = Integer.parseInt( giftField.getText());
+				numOfAsteroidTypes = new int[4]; // simple, firm, explosive, gift
+				numOfAsteroidTypes[0] = Integer.parseInt(simpleField.getText());
+				numOfAsteroidTypes[1] = Integer.parseInt(firmField.getText());
+				numOfAsteroidTypes[2] = Integer.parseInt(explosiveField.getText());
+				numOfAsteroidTypes[3] = Integer.parseInt(giftField.getText());
 				MessageType msg = gameView.getGameController().checkNumAsteroids(numOfAsteroidTypes);
-		        if(msg == MessageType.MinThresholdErrorTotal) {
-                    JOptionPane.showMessageDialog(null, "Total min threshold (at least 75) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
-                }else if(msg == MessageType.MaxThresholdErrorTotal) {
-					JOptionPane.showMessageDialog(null, "Total max threshold (at most 105) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
-				}else if(msg == MessageType.MinThresholdErrorFirm) {
-                    JOptionPane.showMessageDialog(null, "Firm min threshold (at least 10) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
-                }else if(msg == MessageType.MinThresholdErrorExplosive) {
-                    JOptionPane.showMessageDialog(null, "Explosive min threshold (at least 5) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
-                }else if(msg == MessageType.MinThresholdErrorGift) {
-                    JOptionPane.showMessageDialog(null, "Gift min threshold (at least 10) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
-                }else{
+				if (msg == MessageType.MinThresholdErrorTotal) {
+					JOptionPane.showMessageDialog(null, "Total min threshold (at least 75) is violated!", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else if (msg == MessageType.MaxThresholdErrorTotal) {
+					JOptionPane.showMessageDialog(null, "Total max threshold (at most 105) is violated!", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else if (msg == MessageType.MinThresholdErrorFirm) {
+					JOptionPane.showMessageDialog(null, "Firm min threshold (at least 10) is violated!", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else if (msg == MessageType.MinThresholdErrorExplosive) {
+					JOptionPane.showMessageDialog(null, "Explosive min threshold (at least 5) is violated!", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else if (msg == MessageType.MinThresholdErrorGift) {
+					JOptionPane.showMessageDialog(null, "Gift min threshold (at least 10) is violated!", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
 					okButton.setText("Restart");
-                    gameView.setNumOfAsteroidTypes(numOfAsteroidTypes);
+					gameView.setNumOfAsteroidTypes(numOfAsteroidTypes);
 					gameView.createAsteroids();
 					gameView.getGameController().setBall(new Ball(155, 445, 17, 17));
-					gameView.getGameController().setPaddle(new Paddle (100, 470, 120, 10));
+					gameView.getGameController().setPaddle(new Paddle(100, 470, 120, 10));
 					gameView.getGamePanel().resumeTheGame();
-                }
+				}
 			}
 		});
 	}
 
 	private void createSwitchButton() {
 		switchButton = new JToggleButton("Switch Mode");
-		switchButton.setBounds(10,100,200,25);
+		switchButton.setBounds(10, 100, 200, 25);
 		switchButton.setBackground(Color.green);
 		switchButton.addActionListener(new ActionListener() {
 			@Override
@@ -134,20 +148,21 @@ public class TopPanel extends JPanel {
 		build_item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					gameView.getGamePanel().pauseTheGame();
+				gameView.getGamePanel().pauseTheGame();
 			}
 		});
 		run_item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					gameView.getGamePanel().resumeTheGame();
+				gameView.getGamePanel().resumeTheGame();
 			}
 		});
 		popupMenu.add(build_item);
 		popupMenu.add(run_item);
 		popupMenu.addPopupMenuListener(new PopupMenuListener() {
 			@Override
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+			}
 
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
@@ -155,13 +170,14 @@ public class TopPanel extends JPanel {
 			}
 
 			@Override
-			public void popupMenuCanceled(PopupMenuEvent e) {}
+			public void popupMenuCanceled(PopupMenuEvent e) {
+			}
 		});
 	}
-	
+
 	private void createExitButton() {
 		exitButton = new JButton("X");
-		exitButton.setBounds(955,10,45,25);
+		exitButton.setBounds(955, 10, 45, 25);
 		exitButton.setBackground(Color.red);
 		exitButton.setFocusable(false);
 		exitButton.addActionListener(new ActionListener() {
@@ -169,16 +185,16 @@ public class TopPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				createExitFrame();
 			}
-		});	
+		});
 	}
-	
+
 	private void createExitFrame() {
 		exitFrame = new JFrame("Exit Game");
 		exitFrame.setBounds(384, 288, 256, 192);
-		
+
 		createYesButton();
 		createNoButton();
-		
+
 		JLabel exitLabel = new JLabel("Are you sure you want to exit?");
 		exitLabel.setBounds(10, 50, 225, 15);
 
@@ -186,22 +202,22 @@ public class TopPanel extends JPanel {
 		exitFrame.add(exitLabel);
 		exitFrame.add(yesButton);
 		exitFrame.add(noButton);
-		
+
 		exitFrame.setVisible(true);
 	}
-	
+
 	private void createYesButton() {
 		yesButton = new JButton("Yes");
-		yesButton.setBounds(10,100,100,25);
+		yesButton.setBounds(10, 100, 100, 25);
 		yesButton.setBackground(Color.green);
 		yesButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
-			}	
+			}
 		});
 	}
-	
+
 	private void createNoButton() {
 		noButton = new JButton("No");
 		noButton.setBounds(130, 100, 100, 25);
@@ -210,22 +226,8 @@ public class TopPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				exitFrame.dispose();
-			}	
+			}
 		});
 	}
-	
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

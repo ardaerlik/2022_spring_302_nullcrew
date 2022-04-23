@@ -1,4 +1,4 @@
-package com.nullcrew.Utilities;
+package com.nullcrew.Domain.Models;
 
 public enum GameMode {
 	PAUSED, RESUMED

@@ -1,10 +1,12 @@
 package com.nullcrew.UI.Views;
 
-import java.awt.EventQueue;
-
-import javax.swing.*;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SpringLayout;
 
 import com.nullcrew.Domain.Controllers.GameController;
 import com.nullcrew.Domain.Models.Asteroid;
@@ -41,7 +43,7 @@ public class GameView {
 	 * Create the application.
 	 */
 	public GameView() {
-		gameController = new GameController(this); 
+		gameController = new GameController(this);
 		initialize();
 	}
 
@@ -54,7 +56,7 @@ public class GameView {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
 		frame.getContentPane().setLayout(springLayout);
-		
+
 		topPanel = new TopPanel(this);
 		springLayout.putConstraint(SpringLayout.NORTH, topPanel, 0, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.SOUTH, topPanel, 115, SpringLayout.NORTH, frame.getContentPane());
@@ -76,6 +78,17 @@ public class GameView {
 		springLayout.putConstraint(SpringLayout.WEST, belowPanel, 0, SpringLayout.WEST, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, belowPanel, 1024, SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(belowPanel);
+	}
+
+	public void createAsteroids() {
+		int[] locSpaces = { gamePanel.getXLocationSpace(), gamePanel.getYLocationSpace() };
+		int[] margins = { gamePanel.getLeftMargin(), gamePanel.getTopMargin(), gamePanel.getRightMargin(),
+				gamePanel.getBottomMargin() };
+		int[] maxRowsColumns = { gamePanel.getMaxRows(), gamePanel.getMaxColumns() };
+		List<Asteroid> asteroidList = GameObjectFactory.createAsteroids(numOfAsteroidTypes, locSpaces, margins,
+				maxRowsColumns);
+		gameController.setAsteroids(asteroidList);
+		gamePanel.repaint();
 	}
 
 	public JFrame getFrame() {
@@ -118,17 +131,8 @@ public class GameView {
 		this.gameController = gameController;
 	}
 
-	public void setNumOfAsteroidTypes(int[] numOfAsteroidTypes){
-		this.numOfAsteroidTypes = numOfAsteroidTypes; //number of simple, firm, explosive and gift asteroids.
-	}
-
-	public void createAsteroids(){
-		int[] locSpaces = {gamePanel.getXLocationSpace(), gamePanel.getYLocationSpace()};
-		int[] margins = {gamePanel.getLeftMargin(), gamePanel.getTopMargin(), gamePanel.getRightMargin(), gamePanel.getBottomMargin()};
-		int[] maxRowsColumns = {gamePanel.getMaxRows(), gamePanel.getMaxColumns()};
-		List<Asteroid> asteroidList = GameObjectFactory.createAsteroids(numOfAsteroidTypes, locSpaces, margins, maxRowsColumns);
-		gameController.setAsteroids( asteroidList);
-		gamePanel.repaint();
+	public void setNumOfAsteroidTypes(int[] numOfAsteroidTypes) {
+		this.numOfAsteroidTypes = numOfAsteroidTypes; // number of simple, firm, explosive and gift asteroids.
 	}
 
 	public int[] getNumOfAsteroidTypes() {
