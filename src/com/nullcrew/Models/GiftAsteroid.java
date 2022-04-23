@@ -19,7 +19,6 @@ public class GiftAsteroid extends Asteroid {
 
     @Override
     public void hit(GameView gameView) {
-    	
 		List<Asteroid> list= gameView.getGameController().getAsteroidList();
 
     	list.remove(this);
