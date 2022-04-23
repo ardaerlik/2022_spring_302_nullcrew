@@ -9,7 +9,7 @@ import javax.swing.*;
 
 import com.nullcrew.Models.*;
 import com.nullcrew.Utilities.*;
-import javafx.util.Pair;
+
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener {
 	
@@ -229,16 +229,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		if(mouseEvent.getButton() == MouseEvent.BUTTON3) { //this is right click.
 			int x = mouseEvent.getX();
 			int y = mouseEvent.getY();
-			Pair<Asteroid, MessageType> result = gameView.getGameController().removeAsteroid(x, y);
-			if(result.getValue() == MessageType.NoAsteroidInThisLocation){
+			Object[] result = gameView.getGameController().removeAsteroid(x, y); //returns Asteroid, MessageType
+			if(result[1] == MessageType.NoAsteroidInThisLocation){
 				JOptionPane.showMessageDialog(null, "No asteroid to remove in this location!", "Error", JOptionPane.ERROR_MESSAGE);
-			}else if(result.getValue() == MessageType.MinThresholdErrorTotal) {
+			}else if(result[1] == MessageType.MinThresholdErrorTotal) {
 				JOptionPane.showMessageDialog(null, "Total min threshold (at least 75) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
-			}else if(result.getValue() == MessageType.MinThresholdErrorFirm) {
+			}else if(result[1] == MessageType.MinThresholdErrorFirm) {
 				JOptionPane.showMessageDialog(null, "Firm min threshold (at least 10) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
-			}else if(result.getValue() == MessageType.MinThresholdErrorExplosive) {
+			}else if(result[1] == MessageType.MinThresholdErrorExplosive) {
 				JOptionPane.showMessageDialog(null, "Explosive min threshold (at least 5) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
-			}else if(result.getValue() == MessageType.MinThresholdErrorGift) {
+			}else if(result[1] == MessageType.MinThresholdErrorGift) {
 				JOptionPane.showMessageDialog(null, "Gift min threshold (at least 10) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}

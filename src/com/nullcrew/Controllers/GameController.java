@@ -8,7 +8,7 @@ import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Models.*;
 import com.nullcrew.Utilities.*;
 import com.nullcrew.Views.*;
-import javafx.util.Pair;
+
 
 public class GameController {
 	private GameView gameView;
@@ -118,7 +118,7 @@ public class GameController {
 		return backup;
 	}
 
-	public Pair<Asteroid, MessageType> removeAsteroid(int x, int y){
+	public Object[] removeAsteroid(int x, int y){
 		MessageType msg = null;
 		Asteroid toBeRemoved=null;
 		for(Asteroid a: asteroidList){
@@ -153,7 +153,7 @@ public class GameController {
 				gameView.getGamePanel().repaint();
 			}
 		}
-		return new Pair<Asteroid, MessageType>(backup, msg);
+		return new Object[]{backup, msg};
 	}
 
 	public MessageType checkNumAsteroids(int[] numOfAsteroidTypes){ //simple, firm, explosive, gift
