@@ -1,7 +1,6 @@
 package com.nullcrew.Models;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,9 +17,9 @@ public class ExplosiveAsteroid extends Asteroid {
     public int getLives(){
         return lives;
     }
+    
     @Override
     public void hit(GameView gameView) {
-    	
 		List<Asteroid> list= gameView.getGameController().getAsteroidList();
     	list.remove(this);
 		gameView.getGameController().setAsteroids(list);
@@ -33,14 +32,6 @@ public class ExplosiveAsteroid extends Asteroid {
     }
 	
     public void hit_nearby(GameView gameView) {
-    	
-    	int minX = this.getX() - 200;
-    	int maxX = this.getX() + 200;
-    	
-    	int minY = this.getY() - 200;
-    	int maxY = this.getY() + 200;
-
-    	
     	List<Asteroid> list = gameView.getGameController().getAsteroidList();
     	List<Asteroid> temp_list = list.stream().map(x->(Asteroid) x).collect(Collectors.toList());
     	

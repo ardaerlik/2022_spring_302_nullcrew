@@ -3,17 +3,16 @@ package com.nullcrew.Views;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import com.nullcrew.Models.*
+import com.nullcrew.Models.*;
 
 public class TopPanel extends JPanel {
 	
+	private static final long serialVersionUID = 1L;
 	private GameView gameView;
 	private JFrame exitFrame;
 	private JButton exitButton;
@@ -25,12 +24,10 @@ public class TopPanel extends JPanel {
 	private JLabel simpleLabel, firmLabel, explosiveLabel, giftLabel;
 	private JTextField simpleField, firmField, explosiveField, giftField;
 	private int[] numOfAsteroidTypes;
-	private boolean running_mode_on;
 
 	public TopPanel(GameView gameView) {
 		this.gameView = gameView;
 		numOfAsteroidTypes = null;
-		running_mode_on= false;
 		configureUI();
 		setFocusable(false);
 	}

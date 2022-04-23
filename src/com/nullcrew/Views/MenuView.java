@@ -1,20 +1,13 @@
 package com.nullcrew.Views;
 
 import java.awt.EventQueue;
-
 import java.awt.Font;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
-
-
 import java.awt.Color;
 import java.awt.Container;
 
 import javax.swing.JButton;
-
-
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class MenuView {
 
@@ -48,7 +41,6 @@ public class MenuView {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
 		frame = new JFrame();
 		
 		frame.setBounds(0, 0, 1024, 768);
@@ -82,9 +74,7 @@ public class MenuView {
 		container.add(button4);
 		
 		frame.setVisible(true);
-		
-		
-
 		frame.setResizable(false);
 	}
+	
 }

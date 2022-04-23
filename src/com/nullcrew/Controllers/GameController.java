@@ -1,6 +1,5 @@
 package com.nullcrew.Controllers;
 
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.awt.Shape;
@@ -8,7 +7,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
-import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Models.*;
 import com.nullcrew.Utilities.*;
 import com.nullcrew.Views.*;
@@ -253,18 +251,18 @@ public class GameController {
 		}
 
 		double posX = (double)collided_asteroid.getX()-ball.getX();
-		double posY=(double)collided_asteroid.getY()-ball.getY();
+		double posY = (double)collided_asteroid.getY()-ball.getY();
 		double angle = Math.atan2( posY - 0, posX - (double)1 ) * ( 180 / Math.PI );
-		if(45d<=angle&&angle<=135d) {
+		if(45d <= angle && angle <= 135d) {
 			ball.setVelocityY(-ball.getVelocityY());
 		}
-		if((135d<=angle&&angle<=180d)||(0>=angle&&angle>=-45d)) {
+		if((135d <= angle&&angle <= 180d) || (0 >= angle && angle >= -45d)) {
 			ball.setVelocityX(-ball.getVelocityX());
 		}
-		if(-45d>=angle&&angle>=-135d) {
+		if(-45d >= angle && angle >= -135d) {
 			ball.setVelocityY(-ball.getVelocityY());
 		}
-		if((0d<=angle&&angle<=45d)||(-135d>=angle&&angle<=-180d)) {
+		if((0d <= angle && angle <= 45d) || (-135d >= angle && angle <= -180d)) {
 			ball.setVelocityX(-ball.getVelocityX());
 		}
 	}
@@ -289,12 +287,16 @@ public class GameController {
 		return ball;
 	}
 	
-	public void setBall(Ball ball)
-	{
+	public void setBall(Ball ball) {
 		this.ball = ball;
 	}
 	
-	public List<Asteroid> getAsteroidList(){ return asteroidList;}
+	public List<Asteroid> getAsteroidList() {
+		return asteroidList;
+	}
 
-	public void setAsteroids(List<Asteroid> asteroidList){ this.asteroidList = asteroidList;}
+	public void setAsteroids(List<Asteroid> asteroidList) {
+		this.asteroidList = asteroidList;
+	}
+	
 }

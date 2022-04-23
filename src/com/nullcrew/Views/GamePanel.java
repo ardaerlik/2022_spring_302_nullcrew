@@ -3,7 +3,6 @@ package com.nullcrew.Views;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,8 +13,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.*;
@@ -23,9 +20,9 @@ import javax.swing.*;
 import com.nullcrew.Models.*;
 import com.nullcrew.Utilities.*;
 
-
 public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener {
 	
+	private static final long serialVersionUID = 1L;
 	private GameView gameView;
 	private Timer gameTimerUI;
 	public static GameMode gameMode;
@@ -194,10 +191,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyTyped(KeyEvent e) {}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -235,10 +229,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyReleased(KeyEvent e) {}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -301,12 +292,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent mouseEvent) {
-
-	}
+	public void mouseEntered(MouseEvent mouseEvent) {}
 
 	@Override
-	public void mouseExited(MouseEvent mouseEvent) {
-
-	}
+	public void mouseExited(MouseEvent mouseEvent) {}
+	
 }

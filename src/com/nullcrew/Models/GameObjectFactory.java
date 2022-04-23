@@ -1,6 +1,5 @@
 package com.nullcrew.Models;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -94,14 +93,15 @@ public class GameObjectFactory {
 	}
 
 	
-	private static boolean intersects(Asteroid asteroid1, Asteroid asteroid2) {
-		Rectangle rectangle1 = new Rectangle(asteroid1.x, asteroid1.y, asteroid1.width, asteroid1.height);
-		Rectangle rectangle2 = new Rectangle(asteroid2.x, asteroid2.y, asteroid2.width, asteroid2.height);
-		
-		if (rectangle1.intersects(rectangle2)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+//	private static boolean intersects(Asteroid asteroid1, Asteroid asteroid2) {
+//		Rectangle rectangle1 = new Rectangle(asteroid1.x, asteroid1.y, asteroid1.width, asteroid1.height);
+//		Rectangle rectangle2 = new Rectangle(asteroid2.x, asteroid2.y, asteroid2.width, asteroid2.height);
+//		
+//		if (rectangle1.intersects(rectangle2)) {
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
+	
 }
