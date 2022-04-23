@@ -6,7 +6,7 @@ public class ExplosiveAsteroid extends Asteroid {
     private int lives;
 
     public ExplosiveAsteroid(int x, int y, int width, int height, double speed) {
-        super(x, y, width, height, speed, Color.BLACK);
+        super(x, y, width, height, speed, Color.BLACK, AsteroidType.Explosive);
         lives = 1;
     }
 

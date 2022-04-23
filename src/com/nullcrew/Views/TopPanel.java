@@ -1,5 +1,7 @@
 package com.nullcrew.Views;
 
+import com.nullcrew.Models.MessageType;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -77,16 +79,28 @@ public class TopPanel extends JPanel  {
 			public void actionPerformed(ActionEvent e) {
 				gameView.getGamePanel().setFocusable(true);
 				gameView.getGamePanel().requestFocusInWindow();
-				numOfAsteroidTypes = new int[4];
+				numOfAsteroidTypes = new int[4]; //simple, firm, explosive, gift
 				numOfAsteroidTypes[0] = Integer.parseInt( simpleField.getText());
 				numOfAsteroidTypes[1] = Integer.parseInt( firmField.getText());
 				numOfAsteroidTypes[2] = Integer.parseInt( explosiveField.getText());
 				numOfAsteroidTypes[3] = Integer.parseInt( giftField.getText());
-				gameView.setNumOfAsteroidTypes(numOfAsteroidTypes);
-				gameView.createAsteroids();
-				okButton.setText("Restart");
-				gameView.getGamePanel().resumeTheGame();
-				
+				MessageType msg = gameView.getGameController().checkNumAsteroids(numOfAsteroidTypes);
+		        if(msg == MessageType.MinThresholdErrorTotal) {
+                    JOptionPane.showMessageDialog(null, "Total min threshold (at least 75) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
+                }else if(msg == MessageType.MaxThresholdErrorTotal) {
+					JOptionPane.showMessageDialog(null, "Total max threshold (at most 105) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
+				}else if(msg == MessageType.MinThresholdErrorFirm) {
+                    JOptionPane.showMessageDialog(null, "Firm min threshold (at least 10) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
+                }else if(msg == MessageType.MinThresholdErrorExplosive) {
+                    JOptionPane.showMessageDialog(null, "Explosive min threshold (at least 5) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
+                }else if(msg == MessageType.MinThresholdErrorGift) {
+                    JOptionPane.showMessageDialog(null, "Gift min threshold (at least 10) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
+                }else{
+                    gameView.setNumOfAsteroidTypes(numOfAsteroidTypes);
+					gameView.createAsteroids();
+                    okButton.setText("Restart");
+                    gameView.getGamePanel().resumeTheGame();
+                }
 			}
 		});
 	}

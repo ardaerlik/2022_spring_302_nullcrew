@@ -4,8 +4,10 @@ import java.awt.EventQueue;
 
 import javax.swing.*;
 import java.awt.Color;
+import java.util.List;
 
 import com.nullcrew.Controllers.GameController;
+import com.nullcrew.Models.Asteroid;
 import com.nullcrew.Models.GameObjectFactory;
 
 public class GameView {
@@ -124,7 +126,8 @@ public class GameView {
 		int[] locSpaces = {gamePanel.getXLocationSpace(), gamePanel.getYLocationSpace()};
 		int[] margins = {gamePanel.getLeftMargin(), gamePanel.getTopMargin(), gamePanel.getRightMargin(), gamePanel.getBottomMargin()};
 		int[] maxRowsColumns = {gamePanel.getMaxRows(), gamePanel.getMaxColumns()};
-		gameController.setAsteroids(GameObjectFactory.createAsteroids(numOfAsteroidTypes, locSpaces, margins, maxRowsColumns));
+		List<Asteroid> asteroidList = GameObjectFactory.createAsteroids(numOfAsteroidTypes, locSpaces, margins, maxRowsColumns);
+		gameController.setAsteroids( asteroidList);
 		gamePanel.repaint();
 	}
 

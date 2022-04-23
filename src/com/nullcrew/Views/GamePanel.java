@@ -9,6 +9,7 @@ import javax.swing.*;
 
 import com.nullcrew.Models.*;
 import com.nullcrew.Utilities.*;
+import javafx.util.Pair;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener {
 	
@@ -16,11 +17,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	private Timer gameTimerUI;
 	public static GameMode gameMode;
 	public static Graphics paddleGraphics, asteroidGraphics, ballGraphics;
-	private final int MAX_ROWS = 5;
+	private final int MAX_ROWS = 7;
 	private final int MAX_COLUMNS = 15;
 	private final int MARGIN_LEFT = 50;
 	private final int MARGIN_RIGHT = 50;
-	private final int MARGIN_TOP = 100;
+	private final int MARGIN_TOP = 50;
 	private final int MARGIN_BOTTOM = 200;
 	private final int WIDTH = 1024;
 	private final int HEIGHT = 470;
@@ -225,20 +226,31 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void mouseClicked(MouseEvent mouseEvent) {
-		if(mouseEvent.getButton() == MouseEvent.BUTTON3) {
+		if(mouseEvent.getButton() == MouseEvent.BUTTON3) { //this is right click.
 			int x = mouseEvent.getX();
 			int y = mouseEvent.getY();
-			gameView.getGameController().removeAsteroid(x, y);
+			Pair<Asteroid, MessageType> result = gameView.getGameController().removeAsteroid(x, y);
+			if(result.getValue() == MessageType.NoAsteroidInThisLocation){
+				JOptionPane.showMessageDialog(null, "No asteroid to remove in this location!", "Error", JOptionPane.ERROR_MESSAGE);
+			}else if(result.getValue() == MessageType.MinThresholdErrorTotal) {
+				JOptionPane.showMessageDialog(null, "Total min threshold (at least 75) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
+			}else if(result.getValue() == MessageType.MinThresholdErrorFirm) {
+				JOptionPane.showMessageDialog(null, "Firm min threshold (at least 10) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
+			}else if(result.getValue() == MessageType.MinThresholdErrorExplosive) {
+				JOptionPane.showMessageDialog(null, "Explosive min threshold (at least 5) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
+			}else if(result.getValue() == MessageType.MinThresholdErrorGift) {
+				JOptionPane.showMessageDialog(null, "Gift min threshold (at least 10) is violated!", "Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 
 	private Asteroid draggedAsteroid = null;
 	@Override
 	public void mousePressed(MouseEvent mouseEvent) {
-		if(mouseEvent.getButton() == MouseEvent.BUTTON1) {
+		if(mouseEvent.getButton() == MouseEvent.BUTTON1) { //this is left click.
 			int x = mouseEvent.getX();
 			int y = mouseEvent.getY();
-			draggedAsteroid = gameView.getGameController().removeAsteroid(x, y);
+			draggedAsteroid = gameView.getGameController().dragAsteroid(x, y);
 			if(draggedAsteroid != null) {
 				this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
@@ -247,7 +259,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void mouseReleased(MouseEvent mouseEvent) {
-		if(mouseEvent.getButton() == MouseEvent.BUTTON1 && draggedAsteroid != null) {
+		if(mouseEvent.getButton() == MouseEvent.BUTTON1 && draggedAsteroid != null) { //this is left click.
 			int x = mouseEvent.getX();
 			int y = mouseEvent.getY();
 			boolean success = gameView.getGameController().addAsteroid(draggedAsteroid, x, y);
