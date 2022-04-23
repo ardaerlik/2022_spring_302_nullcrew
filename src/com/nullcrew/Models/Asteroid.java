@@ -2,6 +2,8 @@ package com.nullcrew.Models;
 
 import java.awt.*;
 
+import com.nullcrew.Views.GameView;
+
 public abstract class Asteroid extends GameObject {
 	private double speed;
 	private String type;
@@ -18,7 +20,7 @@ public abstract class Asteroid extends GameObject {
 		return speed;
 	}
 
-	public abstract void hit();
+	public abstract void hit(GameView gameView);
 
 	public String getType(){
 		return type;

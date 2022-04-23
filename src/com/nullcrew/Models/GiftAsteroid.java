@@ -2,6 +2,8 @@ package com.nullcrew.Models;
 
 import java.awt.*;
 
+import com.nullcrew.Views.GameView;
+
 public class GiftAsteroid extends Asteroid {
     private int lives;
 
@@ -15,7 +17,7 @@ public class GiftAsteroid extends Asteroid {
     }
 
     @Override
-    public void hit() {
+    public void hit(GameView gameView) {
 
     }
 }

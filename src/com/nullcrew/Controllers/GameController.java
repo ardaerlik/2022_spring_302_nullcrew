@@ -26,13 +26,13 @@ public class GameController {
 		switch (direction) {
 		case RIGHT: {		
 			if (paddle.getX() + gameView.getGameController().getPaddle().getWidth() < gameView.getFrame().getWidth()) {
-				paddle.setX(paddle.getX() + 10);
+				paddle.setX(paddle.getX() + paddle.velocity);
 			}
 			break;
 		}
 		case LEFT: {
 			if (paddle.getX() > 0) {
-				paddle.setX(paddle.getX() - 10);
+				paddle.setX(paddle.getX() - paddle.velocity);
 			}
 			break;
 		}
@@ -65,9 +65,6 @@ public class GameController {
 		}
 	}
 	
-	
-	
-	
 
 	public void ballMoved() {
 		if(GamePanel.gameMode==GameMode.PAUSED) {
@@ -96,12 +93,10 @@ public class GameController {
     }
 	
     public Asteroid ballHitAsteroid() {
-    	if(getAsteroidList()==null) {
+    	if(getAsteroidList()==null || getAsteroidList().size()==0) {
     		return null;
     	}
-    	if(getAsteroidList().size()==0) {
-    		return null;
-    	}
+    	
 
     	for(Asteroid asteroid: getAsteroidList()) {
     		if(asteroid==null) {
@@ -110,15 +105,37 @@ public class GameController {
             if(new Rectangle(ball.getX(),ball.getY(),ball.getWidth(),ball.getHeight()).
             		intersects(new Rectangle(asteroid.getX(),asteroid.getY(),asteroid.getWidth(),asteroid.getHeight()))){
             		
-       
+    				asteroid.hit(gameView);
+            		
             		return asteroid;
-             
             }
          
     	}
     	return null;
     }
-	
+    
+    public void reflectFromAsteroid(Asteroid collided_asteroid) {
+
+		if(collided_asteroid==null) {
+			return;
+		}
+
+		double posX = (double)collided_asteroid.getX()-ball.getX();
+		double posY=(double)collided_asteroid.getY()-ball.getY();
+		double angle = Math.atan2( posY - 0, posX - (double)1 ) * ( 180 / Math.PI );
+		if(45d<=angle&&angle<=135d) {
+			ball.setVelocityY(-ball.getVelocityY());
+		}
+		if((135d<=angle&&angle<=180d)||(0>=angle&&angle>=-45d)) {
+			ball.setVelocityX(-ball.getVelocityX());
+		}
+		if(-45d>=angle&&angle>=-135d) {
+			ball.setVelocityY(-ball.getVelocityY());
+		}
+		if((0d<=angle&&angle<=45d)||(-135d>=angle&&angle<=-180d)) {
+			ball.setVelocityX(-ball.getVelocityX());
+		}
+	}
 	
 	public GameView getGameView() {
 		return gameView;

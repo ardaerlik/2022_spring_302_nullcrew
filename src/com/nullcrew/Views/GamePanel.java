@@ -170,7 +170,7 @@ public class GamePanel extends JPanel
 					g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
 					break;
 				case "explosive":
-					g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
+					g2.fillOval(a.getX(), a.getY(), a.getWidth(), a.getHeight());
 					break;
 				case "gift":
 					g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
@@ -182,7 +182,6 @@ public class GamePanel extends JPanel
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		gameView.getGameController().ballMoved();
 		super.paintComponent(g);
 		paintPaddle(g);
 		paintBall(g);
@@ -240,13 +239,15 @@ public class GamePanel extends JPanel
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		gameView.getGameController().ballMoved();
+
 		gameView.getGameController().paddleHitBall();
-		Asteroid astr= gameView.getGameController().ballHitAsteroid();
-		if(astr!=null&&gameView.getGameController().getAsteroidList().contains(astr)){
-			List<Asteroid> list= gameView.getGameController().getAsteroidList();
-			list.remove(astr);
-			gameView.getGameController().setAsteroids(list);
+		Asteroid astr = gameView.getGameController().ballHitAsteroid();
+		
+		if (astr != null) {
+			gameView.getGameController().reflectFromAsteroid(astr);
 		}
+		
 		repaint();
 	}
 

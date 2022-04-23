@@ -31,7 +31,9 @@ public class GameObjectFactory {
 			asteroids.add(simpleAsteroid);
 		}
 		for(int i=0; i<numFirm; i++){
-			FirmAsteroid firmAsteroid = new FirmAsteroid(0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
+			Random rand = new Random();
+			int lives = rand.nextInt(3)*5;
+			FirmAsteroid firmAsteroid = new FirmAsteroid(0, 0, ASTEROID_WIDTH + lives, ASTEROID_HEIGHT + lives, 0);
 //			asteroids = controlLocation(asteroids, firmAsteroid);
 			asteroids.add(firmAsteroid);
 		}
