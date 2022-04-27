@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import com.nullcrew.Domain.Models.AsteroidType;
 import com.nullcrew.Domain.Models.Ball;
 import com.nullcrew.Domain.Models.ExplosiveAsteroid;
 import com.nullcrew.Domain.Models.GameMode;
+import com.nullcrew.Domain.Models.GameObject;
 import com.nullcrew.Domain.Models.GameObjectFactory;
 import com.nullcrew.Domain.Models.MessageType;
 import com.nullcrew.Domain.Models.MoveDirection;
@@ -81,7 +83,7 @@ public class GameController {
 		if (0 >= ball.getX()) {
 			ball.setVelocityX(-ball.getVelocityX());
 		}
-		if (ball.getX() + ball.getWidth() >= gameView.getGamePanel().getWidth()) {
+		if (ball.getX() + ball.getWidth() >= gameView.getInitialWidth()) {
 			ball.setVelocityX(-ball.getVelocityX());
 		}
 		if (0 >= ball.getY()) {
@@ -186,7 +188,7 @@ public class GameController {
 		}
 		switch (direction) {
 		case RIGHT: {
-			if (paddle.getX() + gameView.getGameController().getPaddle().getWidth() < gameView.getFrame().getWidth()) {
+			if (paddle.getX() + gameView.getGameController().getPaddle().getWidth() < gameView.getInitialWidth()) {
 				paddle.setX(paddle.getX() + paddle.velocity);
 			}
 			break;

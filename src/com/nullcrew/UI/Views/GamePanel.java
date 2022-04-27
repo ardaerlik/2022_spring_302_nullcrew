@@ -1,13 +1,13 @@
 package com.nullcrew.UI.Views;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,7 +146,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			}
 		}
 	}
-
+	
 	private void paintPaddle(Graphics g) {
 		if (pressedKeysLoc < pressedKeys.size()) {
 			if (pressedKeysLocInt == 0) {
@@ -176,9 +176,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		Rectangle2D rect = new Rectangle2D.Double(gameView.getGameController().getPaddle().getX(),
 				gameView.getGameController().getPaddle().getY(), gameView.getGameController().getPaddle().getWidth(),
 				gameView.getGameController().getPaddle().getHeight());
-
+		float rate_x= ((float)gameView.getFrame().getWidth()/(float) gameView.getInitialWidth());
+		float rate_y =((float)gameView.getFrame().getHeight()/(float) gameView.getInitialHeight());
+		double size_x=(double)rate_x;
+		double size_y= (double)rate_y;
+		g2d.scale(size_x, size_y);
 		AffineTransform transform = new AffineTransform();
-
 		transform.rotate(Math.toRadians(gameView.getGameController().getPaddle().getRotationDegree()),
 				gameView.getGameController().getPaddle().getX()
 						+ gameView.getGameController().getPaddle().getWidth() / 2,
@@ -250,20 +253,33 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+
 		switch (e.getKeyCode()) {
 		case (KeyEvent.VK_LEFT): {
+			if(gameMode==GameMode.PAUSED) {
+				return;
+			}
 			pressedKeys.add(MoveDirection.LEFT);
 			break;
 		}
 		case (KeyEvent.VK_RIGHT): {
+			if(gameMode==GameMode.PAUSED) {
+				return;
+			}
 			pressedKeys.add(MoveDirection.RIGHT);
 			break;
 		}
 		case (KeyEvent.VK_A): {
+			if(gameMode==GameMode.PAUSED) {
+				return;
+			}
 			gameView.getGameController().paddleRotated(MoveDirection.UP);
 			break;
 		}
 		case (KeyEvent.VK_D): {
+			if(gameMode==GameMode.PAUSED) {
+				return;
+			}
 			gameView.getGameController().paddleRotated(MoveDirection.DOWN);
 			break;
 		}
@@ -362,6 +378,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	@Override
 	public void mouseDragged(MouseEvent mouseEvent) {
 		if(initialX==-1){
+			if(draggedAsteroid==null) {
+				return;
+			}
 			int x = mouseEvent.getX();
 			int y = mouseEvent.getY();
 			draggedAsteroid = gameView.getGameController().dragAsteroid(x, y);
