@@ -317,9 +317,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void mouseClicked(MouseEvent mouseEvent) {
+		float rate_x= ((float)gameView.getFrame().getWidth()/(float) gameView.getInitialWidth());
+		float rate_y =((float)gameView.getFrame().getHeight()/(float) gameView.getInitialHeight());
+		double size_x=(double)rate_x;
+		double size_y= (double)rate_y;
 		if (mouseEvent.getButton() == MouseEvent.BUTTON3) { // this is right click.
-			int x = mouseEvent.getX();
-			int y = mouseEvent.getY();
+			int x = (int)(mouseEvent.getX()/size_x);
+			int y = (int)(mouseEvent.getY()/size_y);
 			Object[] result = gameView.getGameController().removeAsteroid(x, y); // returns Asteroid, MessageType
 			if (result[1] == MessageType.NoAsteroidInThisLocation) {
 				JOptionPane.showMessageDialog(null, "No asteroid to remove in this location!", "Error",
@@ -348,9 +352,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void mouseReleased(MouseEvent mouseEvent) {
+		float rate_x= ((float)gameView.getFrame().getWidth()/(float) gameView.getInitialWidth());
+		float rate_y =((float)gameView.getFrame().getHeight()/(float) gameView.getInitialHeight());
+		double size_x=(double)rate_x;
+		double size_y= (double)rate_y;
 		if (mouseEvent.getButton() == MouseEvent.BUTTON1 && draggedAsteroid != null) { // this is left click.
-			int x = mouseEvent.getX();
-			int y = mouseEvent.getY();
+			int x = (int)(mouseEvent.getX()/size_x);
+			int y = (int)(mouseEvent.getY()/size_y);
 //			System.out.println(initialX+", "+initialY);
 			draggedAsteroid.setX(initialX);
 			draggedAsteroid.setY(initialY);
@@ -377,18 +385,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void mouseDragged(MouseEvent mouseEvent) {
+		if (gameMode == GameMode.RESUMED) return;
+		float rate_x= ((float)gameView.getFrame().getWidth()/(float) gameView.getInitialWidth());
+		float rate_y =((float)gameView.getFrame().getHeight()/(float) gameView.getInitialHeight());
+		double size_x=(double)rate_x;
+		double size_y= (double)rate_y;
 		if(initialX==-1){
-			if(draggedAsteroid==null) {
-				return;
-			}
-			int x = mouseEvent.getX();
-			int y = mouseEvent.getY();
+			int x = (int)(mouseEvent.getX()/size_x);
+			int y = (int)(mouseEvent.getY()/size_y);
 			draggedAsteroid = gameView.getGameController().dragAsteroid(x, y);
 			initialX = draggedAsteroid.getX();
 			initialY = draggedAsteroid.getY();
 		}else{
-			int x = mouseEvent.getX();
-			int y = mouseEvent.getY();
+			int x = (int)(mouseEvent.getX()/size_x);
+			int y = (int)(mouseEvent.getY()/size_y);
 			draggedAsteroid.setX(x);
 			draggedAsteroid.setY(y);
 			repaint();
