@@ -20,8 +20,8 @@ public class GameView {
 	private GamePanel gamePanel;
 	private GameController gameController;
 	private int[] numOfAsteroidTypes;
-	private final int WIDTH = 1024;
-	private final int HEIGHT = 768;
+	private final int WIDTH = 1536;
+	private final int HEIGHT = 1152;
 
 	/**
 	 * Launch the application.
@@ -59,24 +59,24 @@ public class GameView {
 
 		topPanel = new TopPanel(this);
 		springLayout.putConstraint(SpringLayout.NORTH, topPanel, 0, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, topPanel, 115, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, topPanel, 172, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.WEST, topPanel, 0, SpringLayout.WEST, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, topPanel, 1024, SpringLayout.WEST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, topPanel, WIDTH, SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(topPanel);
 
 		gamePanel = new GamePanel(this);
-		springLayout.putConstraint(SpringLayout.NORTH, gamePanel, 115, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, gamePanel, 623, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.NORTH, gamePanel, 172, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, gamePanel, 934, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.WEST, gamePanel, 0, SpringLayout.WEST, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, gamePanel, 1024, SpringLayout.WEST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, gamePanel, WIDTH, SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(gamePanel);
 
 		belowPanel = new JPanel();
 		belowPanel.setBackground(Color.CYAN);
-		springLayout.putConstraint(SpringLayout.NORTH, belowPanel, 623, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, belowPanel, 768, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.NORTH, belowPanel, 934, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, belowPanel, 1152, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.WEST, belowPanel, 0, SpringLayout.WEST, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, belowPanel, 1024, SpringLayout.WEST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, belowPanel, WIDTH, SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(belowPanel);
 	}
 
