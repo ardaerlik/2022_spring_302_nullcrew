@@ -18,6 +18,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import com.nullcrew.Domain.Models.Ball;
+import com.nullcrew.Domain.Models.GameObjectFactory;
 import com.nullcrew.Domain.Models.MessageType;
 import com.nullcrew.Domain.Models.Paddle;
 
@@ -114,8 +115,8 @@ public class TopPanel extends JPanel {
 					okButton.setText("Restart");
 					gameView.setNumOfAsteroidTypes(numOfAsteroidTypes);
 					gameView.createAsteroids();
-					gameView.getGameController().setBall(new Ball(155, 445, 17, 17));
-					gameView.getGameController().setPaddle(new Paddle(100, 470, 120, 10));
+					gameView.getGameController().setBall(new Ball(GameObjectFactory.BALL_X, GameObjectFactory.BALL_Y, 17, 17));
+					gameView.getGameController().setPaddle(new Paddle(GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
 					gameView.getGamePanel().resumeTheGame();
 				}
 			}

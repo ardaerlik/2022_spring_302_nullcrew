@@ -10,13 +10,17 @@ import com.nullcrew.UI.Views.GamePanel;
 public class GameObjectFactory {
 	public static final int ASTEROID_WIDTH = 20;
 	public static final int ASTEROID_HEIGHT = 20;
+	public static final int PADDLE_X = 100;
+	public static final int PADDLE_Y = 705;
+	public static final int BALL_X = 155;
+	public static final int BALL_Y = 675;
 
 	public static Paddle createPaddle() {
-		return new Paddle(100, 470, 120, 10);
+		return new Paddle(PADDLE_X, PADDLE_Y, 120, 10);
 	}
 
 	public static Ball createBall() {
-		return new Ball(155, 445, 17, 17);
+		return new Ball(BALL_X, BALL_Y, 17, 17);
 	}
 
 	public static List<Asteroid> createAsteroids(int[] numOfAsteroidTypes, int[] locSpaces, int[] margins,
@@ -77,12 +81,18 @@ public class GameObjectFactory {
 		int maxRows = maxRowsColumns[0];
 		int maxColumns = maxRowsColumns[1];
 
+		int maxX = (xSpace-ASTEROID_WIDTH)/5;
+		int minX = -(xSpace-ASTEROID_WIDTH)/5;
+		int maxY = (ySpace-ASTEROID_HEIGHT)/5;
+		int minY = -(ySpace-ASTEROID_HEIGHT)/5;
 		int column = 0;
 		int row = 0;
 		for (Asteroid a : asteroids) {
-			a.setX(leftMargin + column * xSpace);
+			int randomX = new Random().nextInt(maxX - minX) + minX;
+			a.setX(leftMargin + column * xSpace + randomX) ;
 			column++;
-			a.setY(topMargin + row * ySpace);
+			int randomY = new Random().nextInt(maxY - minY) + minY;
+			a.setY(topMargin + row * ySpace + randomY);
 			if (column == maxColumns) {
 				column = 0;
 				row++;
@@ -92,16 +102,5 @@ public class GameObjectFactory {
 			}
 		}
 	}
-
-//	private static boolean intersects(Asteroid asteroid1, Asteroid asteroid2) {
-//		Rectangle rectangle1 = new Rectangle(asteroid1.x, asteroid1.y, asteroid1.width, asteroid1.height);
-//		Rectangle rectangle2 = new Rectangle(asteroid2.x, asteroid2.y, asteroid2.width, asteroid2.height);
-//		
-//		if (rectangle1.intersects(rectangle2)) {
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
 
 }

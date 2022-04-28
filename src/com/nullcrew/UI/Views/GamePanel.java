@@ -1,18 +1,13 @@
 package com.nullcrew.UI.Views;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +24,7 @@ import com.nullcrew.Domain.Models.MessageType;
 import com.nullcrew.Domain.Models.MoveDirection;
 import com.nullcrew.Domain.Models.Paddle;
 
-public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener {
+public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
 
 	private static final long serialVersionUID = 1L;
 	private GameView gameView;
@@ -42,13 +37,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	private final int MARGIN_RIGHT = 50;
 	private final int MARGIN_TOP = 50;
 	private final int MARGIN_BOTTOM = 200;
-	private final int WIDTH = 1024;
-	private final int HEIGHT = 470;
+	private final int WIDTH = 1536;
+	private final int HEIGHT = 705;
 	public static List<GameObject> list_objects;
 	private ArrayList<MoveDirection> pressedKeys;
 	private int pressedKeysLoc;
 	private int pressedKeysLocInt;
 	private boolean isValidLocation;
+	private Asteroid draggedAsteroid;
+	private int initialX, initialY;
 
 	/**
 	 * Create the panel.
@@ -60,13 +57,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		this.pressedKeys = new ArrayList<MoveDirection>();
 		this.pressedKeysLoc = 0;
 		this.pressedKeysLocInt = 0;
-		
+		draggedAsteroid = null;
+		initialX=-1;
+		initialY=-1;
+
 		createGameObjects();
 		configureUI();
 
 		requestFocusInWindow();
 		addKeyListener(this);
 		addMouseListener(this);
+		addMouseMotionListener(this);
 		restartAction();
 		setFocusable(true);
 		gameMode = GameMode.PAUSED;
@@ -145,7 +146,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			}
 		}
 	}
-
+	
 	private void paintPaddle(Graphics g) {
 		if (pressedKeysLoc < pressedKeys.size()) {
 			if (pressedKeysLocInt == 0) {
@@ -175,9 +176,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		Rectangle2D rect = new Rectangle2D.Double(gameView.getGameController().getPaddle().getX(),
 				gameView.getGameController().getPaddle().getY(), gameView.getGameController().getPaddle().getWidth(),
 				gameView.getGameController().getPaddle().getHeight());
-
+		float rate_x= ((float)gameView.getFrame().getWidth()/(float) gameView.getInitialWidth());
+		float rate_y =((float)gameView.getFrame().getHeight()/(float) gameView.getInitialHeight());
+		double size_x=(double)rate_x;
+		double size_y= (double)rate_y;
+		g2d.scale(size_x, size_y);
 		AffineTransform transform = new AffineTransform();
-
 		transform.rotate(Math.toRadians(gameView.getGameController().getPaddle().getRotationDegree()),
 				gameView.getGameController().getPaddle().getX()
 						+ gameView.getGameController().getPaddle().getWidth() / 2,
@@ -237,6 +241,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		paintObjects(g);
+		if(draggedAsteroid != null){
+			g.setColor(draggedAsteroid.getColor());
+			g.fill3DRect(draggedAsteroid.getX(), draggedAsteroid.getY(), draggedAsteroid.getWidth(), draggedAsteroid.getHeight(), true);
+		}
 	}
 
 	@Override
@@ -245,20 +253,33 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+
 		switch (e.getKeyCode()) {
 		case (KeyEvent.VK_LEFT): {
+			if(gameMode==GameMode.PAUSED) {
+				return;
+			}
 			pressedKeys.add(MoveDirection.LEFT);
 			break;
 		}
 		case (KeyEvent.VK_RIGHT): {
+			if(gameMode==GameMode.PAUSED) {
+				return;
+			}
 			pressedKeys.add(MoveDirection.RIGHT);
 			break;
 		}
 		case (KeyEvent.VK_A): {
+			if(gameMode==GameMode.PAUSED) {
+				return;
+			}
 			gameView.getGameController().paddleRotated(MoveDirection.UP);
 			break;
 		}
 		case (KeyEvent.VK_D): {
+			if(gameMode==GameMode.PAUSED) {
+				return;
+			}
 			gameView.getGameController().paddleRotated(MoveDirection.DOWN);
 			break;
 		}
@@ -296,9 +317,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void mouseClicked(MouseEvent mouseEvent) {
+		float rate_x= ((float)gameView.getFrame().getWidth()/(float) gameView.getInitialWidth());
+		float rate_y =((float)gameView.getFrame().getHeight()/(float) gameView.getInitialHeight());
+		double size_x=(double)rate_x;
+		double size_y= (double)rate_y;
 		if (mouseEvent.getButton() == MouseEvent.BUTTON3) { // this is right click.
-			int x = mouseEvent.getX();
-			int y = mouseEvent.getY();
+			int x = (int)(mouseEvent.getX()/size_x);
+			int y = (int)(mouseEvent.getY()/size_y);
 			Object[] result = gameView.getGameController().removeAsteroid(x, y); // returns Asteroid, MessageType
 			if (result[1] == MessageType.NoAsteroidInThisLocation) {
 				JOptionPane.showMessageDialog(null, "No asteroid to remove in this location!", "Error",
@@ -319,33 +344,34 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		}
 	}
 
-	private Asteroid draggedAsteroid = null;
 
 	@Override
 	public void mousePressed(MouseEvent mouseEvent) {
-		if (mouseEvent.getButton() == MouseEvent.BUTTON1) { // this is left click.
-			int x = mouseEvent.getX();
-			int y = mouseEvent.getY();
-			draggedAsteroid = gameView.getGameController().dragAsteroid(x, y);
-			if (draggedAsteroid != null) {
-				this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-		}
 	}
+
 
 	@Override
 	public void mouseReleased(MouseEvent mouseEvent) {
+		float rate_x= ((float)gameView.getFrame().getWidth()/(float) gameView.getInitialWidth());
+		float rate_y =((float)gameView.getFrame().getHeight()/(float) gameView.getInitialHeight());
+		double size_x=(double)rate_x;
+		double size_y= (double)rate_y;
 		if (mouseEvent.getButton() == MouseEvent.BUTTON1 && draggedAsteroid != null) { // this is left click.
-			int x = mouseEvent.getX();
-			int y = mouseEvent.getY();
+			int x = (int)(mouseEvent.getX()/size_x);
+			int y = (int)(mouseEvent.getY()/size_y);
+//			System.out.println(initialX+", "+initialY);
+			draggedAsteroid.setX(initialX);
+			draggedAsteroid.setY(initialY);
 			boolean success = gameView.getGameController().addAsteroid(draggedAsteroid, x, y);
-			this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			if (!success) {
 				JOptionPane.showMessageDialog(null, "Can not drop over an existing asteroid!", "Error",
 						JOptionPane.ERROR_MESSAGE);
-				gameView.getGameController().addAsteroid(draggedAsteroid, draggedAsteroid.getX(),
-						draggedAsteroid.getY());
+//				System.out.println(initialX+", "+initialY);
+				gameView.getGameController().addAsteroid(draggedAsteroid, initialX, initialY);
 			}
+			draggedAsteroid=null;
+			initialX=-1;
+			initialY=-1;
 		}
 	}
 
@@ -356,5 +382,33 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	@Override
 	public void mouseExited(MouseEvent mouseEvent) {
 	}
+
+	@Override
+	public void mouseDragged(MouseEvent mouseEvent) {
+		if (gameMode == GameMode.RESUMED) return;
+		float rate_x= ((float)gameView.getFrame().getWidth()/(float) gameView.getInitialWidth());
+		float rate_y =((float)gameView.getFrame().getHeight()/(float) gameView.getInitialHeight());
+		double size_x=(double)rate_x;
+		double size_y= (double)rate_y;
+		if(initialX==-1){
+			int x = (int)(mouseEvent.getX()/size_x);
+			int y = (int)(mouseEvent.getY()/size_y);
+			draggedAsteroid = gameView.getGameController().dragAsteroid(x, y);
+			initialX = draggedAsteroid.getX();
+			initialY = draggedAsteroid.getY();
+		}else{
+			int x = (int)(mouseEvent.getX()/size_x);
+			int y = (int)(mouseEvent.getY()/size_y);
+			draggedAsteroid.setX(x);
+			draggedAsteroid.setY(y);
+			repaint();
+		}
+
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent mouseEvent) {
+	}
+
 
 }

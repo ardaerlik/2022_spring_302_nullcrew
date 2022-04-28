@@ -9,10 +9,11 @@ import com.nullcrew.UI.Views.GameView;
 
 public class ExplosiveAsteroid extends Asteroid {
 	private int lives;
-
+	private int hit_range;
 	public ExplosiveAsteroid(int x, int y, int width, int height, double speed) {
 		super(x, y, width, height, speed, Color.BLACK, AsteroidType.Explosive);
 		lives = 1;
+		hit_range=150;
 	}
 
 	public int getLives() {
@@ -41,7 +42,7 @@ public class ExplosiveAsteroid extends Asteroid {
 				if (astr instanceof ExplosiveAsteroid) {
 					continue;
 				}
-				if (new Rectangle(this.x, this.y, 100, 100)
+				if (new Rectangle(this.x, this.y, hit_range, hit_range)
 						.intersects(new Rectangle(astr.x, astr.y, astr.getWidth(), astr.getHeight()))) {
 
 					temp_list.remove(astr);

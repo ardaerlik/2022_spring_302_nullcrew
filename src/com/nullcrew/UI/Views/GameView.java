@@ -1,12 +1,14 @@
 package com.nullcrew.UI.Views;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SpringLayout;
 
 import com.nullcrew.Domain.Controllers.GameController;
 import com.nullcrew.Domain.Models.Asteroid;
@@ -20,9 +22,8 @@ public class GameView {
 	private GamePanel gamePanel;
 	private GameController gameController;
 	private int[] numOfAsteroidTypes;
-	private final int WIDTH = 1024;
-	private final int HEIGHT = 768;
-
+	private final int WIDTH = 1536;
+	private final int HEIGHT = 1152;
 	/**
 	 * Launch the application.
 	 */
@@ -37,6 +38,7 @@ public class GameView {
 				}
 			}
 		});
+
 	}
 
 	/**
@@ -54,32 +56,25 @@ public class GameView {
 		frame = new JFrame();
 		frame.setBounds(0, 0, WIDTH, HEIGHT);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		SpringLayout springLayout = new SpringLayout();
-		frame.getContentPane().setLayout(springLayout);
+		BorderLayout borderLayout = new BorderLayout();
+		frame.getContentPane().setLayout(borderLayout);
 
 		topPanel = new TopPanel(this);
-		springLayout.putConstraint(SpringLayout.NORTH, topPanel, 0, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, topPanel, 115, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, topPanel, 0, SpringLayout.WEST, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, topPanel, 1024, SpringLayout.WEST, frame.getContentPane());
-		frame.getContentPane().add(topPanel);
+		topPanel.setPreferredSize(new Dimension(WIDTH,172));
+		frame.getContentPane().add(topPanel,BorderLayout.NORTH);
 
 		gamePanel = new GamePanel(this);
-		springLayout.putConstraint(SpringLayout.NORTH, gamePanel, 115, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, gamePanel, 623, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, gamePanel, 0, SpringLayout.WEST, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, gamePanel, 1024, SpringLayout.WEST, frame.getContentPane());
-		frame.getContentPane().add(gamePanel);
+		gamePanel.setPreferredSize(new Dimension(WIDTH,762));
+		frame.getContentPane().add(gamePanel,BorderLayout.CENTER);
 
 		belowPanel = new JPanel();
 		belowPanel.setBackground(Color.CYAN);
-		springLayout.putConstraint(SpringLayout.NORTH, belowPanel, 623, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, belowPanel, 768, SpringLayout.NORTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, belowPanel, 0, SpringLayout.WEST, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, belowPanel, 1024, SpringLayout.WEST, frame.getContentPane());
-		frame.getContentPane().add(belowPanel);
+		gamePanel.setPreferredSize(new Dimension(WIDTH,500));
+		frame.getContentPane().add(belowPanel,BorderLayout.SOUTH);
+		
+		frame.setMinimumSize(new Dimension(1024,768));
 	}
-
+	
 	public void createAsteroids() {
 		int[] locSpaces = { gamePanel.getXLocationSpace(), gamePanel.getYLocationSpace() };
 		int[] margins = { gamePanel.getLeftMargin(), gamePanel.getTopMargin(), gamePanel.getRightMargin(),
@@ -122,7 +117,12 @@ public class GameView {
 	public void setGamePanel(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 	}
-
+	public int getInitialWidth() {
+		return WIDTH;
+	}
+	public int getInitialHeight() {
+		return HEIGHT;
+	}
 	public GameController getGameController() {
 		return gameController;
 	}
