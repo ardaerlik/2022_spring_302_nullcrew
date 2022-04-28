@@ -1,98 +1,102 @@
 package com.nullcrew.UI.Views;
 
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.EventQueue;
-import java.awt.Font;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+public class MenuView extends JFrame{
+    private JPanel loginPanel, buttonPanel;
+    private JButton credentials, newLoadGame, help;
+    private JLabel title, credentialsText, newLoadGameText, helpText;
+    private final int WIDTH = GameView.WIDTH/2;
+    private final int HEIGHT = GameView.HEIGHT/2;
 
-import com.nullcrew.Domain.Controllers.MenuController;
+    public MenuView() throws IOException {
+        createComponents();
+    }
 
-public class MenuView {
+    public void createComponents() throws IOException {
+        this.setBounds(0, 0, WIDTH, HEIGHT);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-	private JFrame frame;
-	private MenuController menuController;
+        loginPanel = new JPanel();
+        loginPanel.setLayout(new BoxLayout( loginPanel, BoxLayout.PAGE_AXIS));
+        buttonPanel = new JPanel();
+        GridLayout layout = new GridLayout(2,3);
+        layout.setVgap(10);
+        layout.setHgap(10);
+        buttonPanel.setLayout(layout);
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuView window = new MenuView();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	/**
-	 * Create the application.
-	 */
-	public MenuView() {
-		initialize();
-		menuController = new MenuController(this);
-	}
+        credentials = new JButton("");
+        credentials.setIcon(new ImageIcon(getClass().getResource("credentials.jpg")));
+        credentials.setOpaque(true);
+        credentials.setFocusPainted(false);
+        credentials.setBorderPainted(false);
+        credentials.setContentAreaFilled(false);
+        credentials.addActionListener(new CredentialsActionListener());
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
+        newLoadGame = new JButton("");
+        newLoadGame.setIcon(new ImageIcon(getClass().getResource("credentials.jpg")));
+        newLoadGame.setOpaque(true);
+        newLoadGame.setFocusPainted(false);
+        newLoadGame.setBorderPainted(false);
+        newLoadGame.setContentAreaFilled(false);
+        newLoadGame.addActionListener(new NewLoadGameActionListener());
 
-		frame.setBounds(0, 0, 1024, 768);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        help = new JButton("");
+        help.setIcon(new ImageIcon(getClass().getResource("credentials.jpg")));
+        help.setOpaque(true);
+        help.setFocusPainted(false);
+        help.setBorderPainted(false);
+        help.setContentAreaFilled(false);
+        help.addActionListener(new HelpActionListener());
 
-		Container container = frame.getContentPane();
-		container.setLayout(null);
+        title = new JLabel("Alien Asteroid Game");
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        credentialsText = new JLabel("Credentials");
+        newLoadGameText = new JLabel("New/Load Game");
+        helpText = new JLabel("Help Screen");
 
-		frame.getContentPane().setBackground(Color.BLACK);
-		JLabel text = new JLabel("ALIEN ASTEROID GAME");
-		text.setBounds(340, 200, 1000, 100);
-		text.setForeground(Color.BLUE);
-		text.setFont(new Font("Calibri", Font.BOLD, 31));
+        loginPanel.add(title);
+        loginPanel.add(Box.createVerticalStrut(120));
+        loginPanel.add(buttonPanel);
+        buttonPanel.add(credentials);
+//        buttonPanel.add(Box.createHorizontalStrut(50));
+        buttonPanel.add(newLoadGame);
+//        buttonPanel.add(Box.createHorizontalStrut(50));
+        buttonPanel.add(help);
+        buttonPanel.add(credentialsText);
+        buttonPanel.add(newLoadGameText);
+        buttonPanel.add(helpText);
+        this.add(loginPanel);
+    }
 
-		container.add(text);
-		JButton button1 = new JButton("New Game");
-		button1.setBounds(384, 384, 200, 40);
-		container.add(button1);
+    private class CredentialsActionListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            System.out.println("Credentials");
+        }
+    }
 
-		JButton button2 = new JButton("Load Game");
-		button2.setBounds(384, 450, 200, 40);
-		container.add(button2);
+    private class NewLoadGameActionListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            System.out.println("New/Load Game");
+        }
+    }
 
-		JButton button3 = new JButton("Help");
-		button3.setBounds(384, 516, 200, 40);
-		container.add(button3);
+    private class HelpActionListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            System.out.println("Help Screen");
+        }
+    }
 
-		JButton button4 = new JButton("Quit");
-		button4.setBounds(384, 582, 200, 40);
-		container.add(button4);
-
-		frame.setVisible(true);
-		frame.setResizable(false);
-	}
-
-	public JFrame getFrame() {
-		return frame;
-	}
-
-	public void setFrame(JFrame frame) {
-		this.frame = frame;
-	}
-
-	public MenuController getMenuController() {
-		return menuController;
-	}
-
-	public void setMenuController(MenuController menuController) {
-		this.menuController = menuController;
-	}
-
+    public static void main(String[] args) throws IOException {
+        new MenuView().setVisible(true);
+    }
 }

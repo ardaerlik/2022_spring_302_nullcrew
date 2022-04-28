@@ -22,8 +22,9 @@ public class GameView {
 	private GamePanel gamePanel;
 	private GameController gameController;
 	private int[] numOfAsteroidTypes;
-	private final int WIDTH = 1536;
-	private final int HEIGHT = 1152;
+	public static final int WIDTH = 1536;
+	public static final int HEIGHT = 1152;
+
 	/**
 	 * Launch the application.
 	 */
