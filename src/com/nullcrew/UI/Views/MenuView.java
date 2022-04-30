@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class MenuView extends JFrame{
+public class MenuView extends JFrame {
     private JPanel loginPanel, buttonPanel;
     private JButton credentials, newLoadGame, help;
     private JLabel title, credentialsText, newLoadGameText, helpText;
@@ -32,7 +32,7 @@ public class MenuView extends JFrame{
 
 
         credentials = new JButton("");
-        credentials.setIcon(new ImageIcon(getClass().getResource("credentials.jpg")));
+        credentials.setIcon(new ImageIcon(getClass().getResource("../../Assets/credentials.jpg")));
         credentials.setOpaque(true);
         credentials.setFocusPainted(false);
         credentials.setBorderPainted(false);
@@ -40,7 +40,7 @@ public class MenuView extends JFrame{
         credentials.addActionListener(new CredentialsActionListener());
 
         newLoadGame = new JButton("");
-        newLoadGame.setIcon(new ImageIcon(getClass().getResource("credentials.jpg")));
+        newLoadGame.setIcon(new ImageIcon(getClass().getResource("../../Assets/credentials.jpg")));
         newLoadGame.setOpaque(true);
         newLoadGame.setFocusPainted(false);
         newLoadGame.setBorderPainted(false);
@@ -48,7 +48,7 @@ public class MenuView extends JFrame{
         newLoadGame.addActionListener(new NewLoadGameActionListener());
 
         help = new JButton("");
-        help.setIcon(new ImageIcon(getClass().getResource("credentials.jpg")));
+        help.setIcon(new ImageIcon(getClass().getResource("../../Assets/credentials.jpg")));
         help.setOpaque(true);
         help.setFocusPainted(false);
         help.setBorderPainted(false);
