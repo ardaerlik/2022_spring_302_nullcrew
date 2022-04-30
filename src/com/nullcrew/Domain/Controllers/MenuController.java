@@ -1,19 +1,19 @@
 package com.nullcrew.Domain.Controllers;
 
-import com.nullcrew.UI.Views.MenuView;
+import com.nullcrew.UI.Views.MenuViewOld;
 
 public class MenuController {
-	private MenuView menuView;
+	private MenuViewOld menuView;
 
-	public MenuController(MenuView menuView) {
+	public MenuController(MenuViewOld menuView) {
 		this.menuView = menuView;
 	}
 
-	public MenuView getMenuView() {
+	public MenuViewOld getMenuView() {
 		return menuView;
 	}
 
-	public void setMenuView(MenuView menuView) {
+	public void setMenuView(MenuViewOld menuView) {
 		this.menuView = menuView;
 	}
 
