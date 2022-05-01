@@ -1,5 +1,7 @@
 package com.nullcrew;
 
+import com.nullcrew.UI.Views.AppView;
+import com.nullcrew.UI.Views.GameView;
 import com.nullcrew.Utilities.DBManager;
 
 public final class AlienAsteroidGame {
@@ -18,20 +20,33 @@ public final class AlienAsteroidGame {
 		getInstance().startApp();
 	}
 	
+	private AlienAsteroidGame() {
+	}
+	
 	public void startApp() {
 		dbManager = DBManager.getInstance();
 		dbManager.connectDB();
+		changeView(null, new GameView());
 	}
 	
 	public void exitApp() {
 		dbManager.closeDB();
 	}
 	
-	public void changeView() {
+	public void changeView(AppView from, AppView to) {
+		if (from == null) {
+			to.startView();
+			return;
+		}
 		
-	}
-
-	private AlienAsteroidGame() {
+		if (to == null) {
+			from.endView();
+			exitApp();
+			return;
+		}
+		
+		to.startView();
+		from.endView();
 	}
 
 }
