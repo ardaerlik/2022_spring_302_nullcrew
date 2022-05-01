@@ -24,7 +24,7 @@ public final class DBManager {
 	}
 	
 	public void connectDB() {
-		ConnectionString connectionString = new ConnectionString("mongodb+srv://nullcrew:<NullCrew2022>@cluster0.wcrf4.mongodb.net/alien_asteroid_games?retryWrites=true&w=majority");
+		ConnectionString connectionString = new ConnectionString("mongodb+srv://nullcrew:<NullCrew2022>@cluster0.wcrf4.mongodb.net/alien_asteroid_game?retryWrites=true&w=majority");
 		MongoClientSettings settings = MongoClientSettings.builder()
 		        .applyConnectionString(connectionString)
 		        .serverApi(ServerApi.builder()

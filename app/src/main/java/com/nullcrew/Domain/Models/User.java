@@ -1,22 +1,32 @@
 package com.nullcrew.Domain.Models;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public class User {
+public final class User {
+	private static User instance = new User();
+	private String email;
+	private String password;
+	private ArrayList<Game> savedGames;
 	
-	String password;
-	
-	String email;
-	
-	List<Game> list_of_games;
-	
-
-	public List<Game> getList_of_games() {
-		return list_of_games;
+	public static User getInstance() {
+		if (instance == null) {
+			instance = new User();
+		}
+		
+		return instance;
 	}
-
-	public void setList_of_games(List<Game> list_of_games) {
-		this.list_of_games = list_of_games;
+	
+	public User() {
+	}
+	
+	public User(String email, String password) {
+		this.email = email;
+		this.password = password;
+	}
+	
+	public User(String email, String password, ArrayList<Game> savedGames) {
+		this(email, password);
+		this.savedGames = savedGames;
 	}
 
 	public String getPassword() {
@@ -34,8 +44,13 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
 
-	
-	
+	public ArrayList<Game> getSavedGames() {
+		return savedGames;
+	}
+
+	public void setSavedGames(ArrayList<Game> savedGames) {
+		this.savedGames = savedGames;
+	}
+		
 }
