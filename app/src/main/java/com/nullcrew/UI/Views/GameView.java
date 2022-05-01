@@ -10,13 +10,13 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Domain.Controllers.GameController;
 import com.nullcrew.Domain.Models.Asteroid;
 import com.nullcrew.Domain.Models.GameObjectFactory;
 
-public class GameView {
+public class GameView extends AppView {
 
-	private JFrame frame;
 	private JPanel topPanel;
 	private JPanel belowPanel;
 	private GamePanel gamePanel;
@@ -26,27 +26,11 @@ public class GameView {
 	public static final int HEIGHT = 1152;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GameView window = new GameView();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public GameView() {
-		gameController = new GameController(this);
+		super(new JFrame());
+		gameController = new GameController(this, AlienAsteroidGame.getInstance());
 		initialize();
 	}
 
@@ -54,7 +38,6 @@ public class GameView {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
 		frame.setBounds(0, 0, WIDTH, HEIGHT);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		BorderLayout borderLayout = new BorderLayout();

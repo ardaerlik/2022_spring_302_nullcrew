@@ -8,6 +8,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Domain.Models.Asteroid;
 import com.nullcrew.Domain.Models.AsteroidType;
 import com.nullcrew.Domain.Models.Ball;
@@ -21,7 +22,7 @@ import com.nullcrew.Domain.Models.Paddle;
 import com.nullcrew.UI.Views.GamePanel;
 import com.nullcrew.UI.Views.GameView;
 
-public class GameController {
+public class GameController extends AppController {
 	public static final int MAX_NUM_ASTEROIDS = 105;
 	public static final int MIN_NUM_ASTEROIDS = 75;
 	public static final int MIN_NUM_EXPLOSIVE = 5;
@@ -29,11 +30,10 @@ public class GameController {
 	public static final int MIN_NUM_GIFT = 10;
 	private List<Asteroid> asteroidList;
 	private Ball ball;
-	private GameView gameView;
 	private Paddle paddle;
 
-	public GameController(GameView gameView) {
-		this.gameView = gameView;
+	public GameController(GameView gameView, AlienAsteroidGame app) {
+		super(gameView, app);
 		asteroidList = new ArrayList<>();
 	}
 
@@ -47,7 +47,7 @@ public class GameController {
 		toBeAdded.setX(newX);
 		toBeAdded.setY(newY);
 		asteroidList.add(toBeAdded);
-		gameView.getGamePanel().repaint();
+		((GameView) view).getGamePanel().repaint();
 		return true;
 	}
 
@@ -64,10 +64,10 @@ public class GameController {
 					asteroid.getX(), asteroid.getY(), asteroid.getWidth() + 1, asteroid.getHeight() + 1))) {
 
 				if ((asteroid instanceof ExplosiveAsteroid)) {
-					((ExplosiveAsteroid) asteroid).hit_nearby(gameView);
-					asteroid.hit(gameView);
+					((ExplosiveAsteroid) asteroid).hit_nearby((GameView) view);
+					asteroid.hit((GameView) view);
 				} else {
-					asteroid.hit(gameView);
+					asteroid.hit((GameView) view);
 				}
 				return asteroid;
 			}
@@ -83,7 +83,7 @@ public class GameController {
 		if (0 >= ball.getX()) {
 			ball.setVelocityX(-ball.getVelocityX());
 		}
-		if (ball.getX() + ball.getWidth() >= gameView.getInitialWidth()) {
+		if (ball.getX() + ball.getWidth() >= ((GameView) view).getInitialWidth()) {
 			ball.setVelocityX(-ball.getVelocityX());
 		}
 		if (0 >= ball.getY()) {
@@ -137,7 +137,7 @@ public class GameController {
 		if (toBeRemoved != null) {
 			backup = (Asteroid) toBeRemoved.clone();
 			asteroidList.remove(toBeRemoved);
-			gameView.getGamePanel().repaint();
+			((GameView) view).getGamePanel().repaint();
 		}
 		return backup;
 	}
@@ -150,26 +150,23 @@ public class GameController {
 		return ball;
 	}
 
-	public GameView getGameView() {
-		return gameView;
-	}
-
 	public Paddle getPaddle() {
 		return paddle;
 	}
 
 	public void paddleHitBall() {
-		Rectangle2D rect = new Rectangle2D.Double(gameView.getGameController().getPaddle().getX(),
-				gameView.getGameController().getPaddle().getY(), gameView.getGameController().getPaddle().getWidth(),
-				gameView.getGameController().getPaddle().getHeight());
+		Rectangle2D rect = new Rectangle2D.Double(((GameView) view).getGameController().getPaddle().getX(),
+				((GameView) view).getGameController().getPaddle().getY(), 
+				((GameView) view).getGameController().getPaddle().getWidth(),
+				((GameView) view).getGameController().getPaddle().getHeight());
 
 		AffineTransform transform = new AffineTransform();
 
-		transform.rotate(Math.toRadians(gameView.getGameController().getPaddle().getRotationDegree()),
-				gameView.getGameController().getPaddle().getX()
-						+ gameView.getGameController().getPaddle().getWidth() / 2,
-				gameView.getGameController().getPaddle().getY()
-						- gameView.getGameController().getPaddle().getHeight() / 2);
+		transform.rotate(Math.toRadians(((GameView) view).getGameController().getPaddle().getRotationDegree()),
+				((GameView) view).getGameController().getPaddle().getX()
+						+ ((GameView) view).getGameController().getPaddle().getWidth() / 2,
+				((GameView) view).getGameController().getPaddle().getY()
+						- ((GameView) view).getGameController().getPaddle().getHeight() / 2);
 
 		Shape s = transform.createTransformedShape(rect);
 		Rectangle2D intersect_paddle = s.getBounds2D();
@@ -188,7 +185,7 @@ public class GameController {
 		}
 		switch (direction) {
 		case RIGHT: {
-			if (paddle.getX() + gameView.getGameController().getPaddle().getWidth() < gameView.getInitialWidth()) {
+			if (paddle.getX() + ((GameView) view).getGameController().getPaddle().getWidth() < ((GameView) view).getInitialWidth()) {
 				paddle.setX(paddle.getX() + paddle.velocity);
 			}
 			break;
@@ -286,7 +283,7 @@ public class GameController {
 			if (toBeRemoved != null) {
 				backup = (Asteroid) toBeRemoved.clone();
 				asteroidList.remove(toBeRemoved);
-				gameView.getGamePanel().repaint();
+				((GameView) view).getGamePanel().repaint();
 			}
 		}
 		return new Object[] { backup, msg };
@@ -298,10 +295,6 @@ public class GameController {
 
 	public void setBall(Ball ball) {
 		this.ball = ball;
-	}
-
-	public void setGameView(GameView gameView) {
-		this.gameView = gameView;
 	}
 
 	public void setPaddle(Paddle paddle) {
