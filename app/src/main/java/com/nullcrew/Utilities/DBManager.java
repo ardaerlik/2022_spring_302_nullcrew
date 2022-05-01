@@ -24,7 +24,7 @@ public final class DBManager {
 	}
 	
 	public void connectDB() {
-		ConnectionString connectionString = new ConnectionString("mongodb+srv://nullcrew:<NullCrew2022>@cluster0.wcrf4.mongodb.net/sample_airbnb?retryWrites=true&w=majority");
+		ConnectionString connectionString = new ConnectionString("mongodb+srv://nullcrew:<NullCrew2022>@cluster0.wcrf4.mongodb.net/alien_asteroid_games?retryWrites=true&w=majority");
 		MongoClientSettings settings = MongoClientSettings.builder()
 		        .applyConnectionString(connectionString)
 		        .serverApi(ServerApi.builder()
@@ -32,7 +32,7 @@ public final class DBManager {
 		            .build())
 		        .build();
 		mongoClient = MongoClients.create(settings);
-		MongoDatabase database = mongoClient.getDatabase("sample_airbnb");
+		MongoDatabase database = mongoClient.getDatabase("alien_asteroid_game");
 	}
 	
 	public void closeDB() {
