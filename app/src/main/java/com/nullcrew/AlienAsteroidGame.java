@@ -26,6 +26,10 @@ public final class AlienAsteroidGame {
 	public void exitApp() {
 		dbManager.closeDB();
 	}
+	
+	public void changeView() {
+		
+	}
 
 	private AlienAsteroidGame() {
 	}
