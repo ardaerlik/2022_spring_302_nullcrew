@@ -3,10 +3,12 @@ package com.nullcrew;
 import com.nullcrew.UI.Views.AppView;
 import com.nullcrew.UI.Views.GameView;
 import com.nullcrew.Utilities.DBManager;
+import com.nullcrew.Utilities.DataStrategy;
 
 public final class AlienAsteroidGame {
 	private static AlienAsteroidGame instance = new AlienAsteroidGame();
 	private DBManager dbManager;
+	private DataStrategy dataStrategy;
 
 	public static AlienAsteroidGame getInstance() {
 		if (instance == null) {
@@ -47,6 +49,14 @@ public final class AlienAsteroidGame {
 		
 		to.startView();
 		from.endView();
+	}
+
+	public DataStrategy getDataStrategy() {
+		return dataStrategy;
+	}
+
+	public void setDataStrategy(DataStrategy dataStrategy) {
+		this.dataStrategy = dataStrategy;
 	}
 
 }
