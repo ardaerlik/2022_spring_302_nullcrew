@@ -22,7 +22,7 @@ dependencies {
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:30.1.1-jre'
-    implementation 'org.mongodb:mongodb-driver-reactivestreams:4.5.0'
+    implementation 'org.mongodb:mongodb-driver-sync:4.3.0'
 }
 
 application {
