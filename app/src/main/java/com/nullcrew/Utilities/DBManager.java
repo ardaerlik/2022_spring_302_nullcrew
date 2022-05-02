@@ -9,8 +9,9 @@ import com.mongodb.ServerApiVersion;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
+import com.nullcrew.Domain.Models.Game;
 
-public final class DBManager {
+public final class DBManager implements DataStrategy {
 	private static DBManager instance = new DBManager();
 	private MongoClient client;
 	private MongoDatabase database;
@@ -49,6 +50,24 @@ public final class DBManager {
 		
 		database.getCollection("users_test").insertOne(tmp);
 		closeDB();
+	}
+
+	@Override
+	public void saveTheGame(Game game) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Game loadTheGame(String gameId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean registerUser() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
