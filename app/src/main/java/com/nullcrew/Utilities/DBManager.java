@@ -1,16 +1,20 @@
 package com.nullcrew.Utilities;
 
+import org.bson.Document;
+
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerApi;
 import com.mongodb.ServerApiVersion;
-import com.mongodb.reactivestreams.client.MongoClient;
-import com.mongodb.reactivestreams.client.MongoClients;
-import com.mongodb.reactivestreams.client.MongoDatabase;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
+import com.nullcrew.Domain.Models.Game;
 
-public final class DBManager {
+public final class DBManager implements DataStrategy {
 	private static DBManager instance = new DBManager();
-	private static MongoClient mongoClient;
+	private MongoClient client;
+	private MongoDatabase database;
 
 	public static DBManager getInstance() {
 		if (instance == null) {
@@ -24,19 +28,46 @@ public final class DBManager {
 	}
 	
 	public void connectDB() {
-		ConnectionString connectionString = new ConnectionString("mongodb+srv://nullcrew:<NullCrew2022>@cluster0.wcrf4.mongodb.net/sample_airbnb?retryWrites=true&w=majority");
+		ConnectionString connectionString = new ConnectionString("mongodb+srv://nullcrew:NullCrew2022@cluster0.wcrf4.mongodb.net/alien_asteroid_game?retryWrites=true&w=majority");
 		MongoClientSettings settings = MongoClientSettings.builder()
 		        .applyConnectionString(connectionString)
 		        .serverApi(ServerApi.builder()
 		            .version(ServerApiVersion.V1)
 		            .build())
 		        .build();
-		mongoClient = MongoClients.create(settings);
-		MongoDatabase database = mongoClient.getDatabase("sample_airbnb");
+		client = MongoClients.create(settings);
+		database = client.getDatabase("alien_asteroid_game");
 	}
 	
 	public void closeDB() {
-		mongoClient.close();
+		client.close();
+	}
+	
+	public void registerUser(String email, String password) {
+		Document tmp = new Document("aaa", "aa.")
+				.append("email", email)
+				.append("password", password);
+		
+		database.getCollection("users_test").insertOne(tmp);
+		closeDB();
+	}
+
+	@Override
+	public void saveTheGame(Game game) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Game loadTheGame(String gameId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean registerUser() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

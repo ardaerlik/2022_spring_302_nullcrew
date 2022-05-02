@@ -1,41 +1,43 @@
 package com.nullcrew.Domain.Models;
 
-import java.util.List;
-
-public class User {
+public final class User {
+	private static User instance = new User();
+	private Account account;
 	
-	String password;
-	
-	String email;
-	
-	List<Game> list_of_games;
-	
-
-	public List<Game> getList_of_games() {
-		return list_of_games;
-	}
-
-	public void setList_of_games(List<Game> list_of_games) {
-		this.list_of_games = list_of_games;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public static User getInstance() {
+		if (instance == null) {
+			instance = new User();
+		}
+		
+		return instance;
 	}
 	
+	public User() {
+	}
+	
+	public User(Account account) {
+		this.account = account;
+	}
+	
+	public void login(Account account) {
+		this.account = account;
+	}
+	
+	public void logout() {
+		this.account = null;
+	}
 
-	
-	
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
+	@Override
+	public String toString() {
+		return "User [account=" + account + "]";
+	}
+		
 }
