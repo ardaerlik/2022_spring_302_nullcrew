@@ -5,22 +5,24 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginView extends JFrame{
+public class LoginView extends AppView {
     private JPanel loginPanel;
     private JButton register, login;
     private JTextField emailField, passwordField;
     private JLabel title, subtitle, forgetText;
-    private final int WIDTH = GameView.WIDTH/2;
-    private final int HEIGHT = GameView.HEIGHT/2;
 
-    public LoginView(){
-        createComponents();
+    /**
+	 * Create the application.
+	 */
+    public LoginView() {
+    	super(new JFrame());
+        initalize();
     }
 
-    public void createComponents(){
-        this.setBounds(0, 0, WIDTH, HEIGHT);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+    /**
+	 * Initialize the contents of the frame.
+	 */
+    private void initalize(){
         loginPanel = new JPanel();
         loginPanel.setLayout(new BoxLayout( loginPanel, BoxLayout.PAGE_AXIS));
 
@@ -62,7 +64,6 @@ public class LoginView extends JFrame{
         forgetText = new JLabel("Forget my password");
         forgetText.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-
         loginPanel.add(title);
         loginPanel.add(Box.createVerticalStrut(30));
         loginPanel.add(subtitle);
@@ -75,24 +76,21 @@ public class LoginView extends JFrame{
         loginPanel.add(login);
         loginPanel.add(Box.createVerticalStrut(20));
         loginPanel.add(forgetText);
-        this.add(loginPanel);
+        frame.add(loginPanel);
     }
 
-    private class RegisterActionListener implements ActionListener{
+    private class RegisterActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             System.out.println("Register");
         }
     }
 
-    private class LoginActionListener implements ActionListener{
+    private class LoginActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             System.out.println("Login");
         }
     }
 
-    public static void main(String[] args) {
-        new LoginView().setVisible(true);
-    }
 }

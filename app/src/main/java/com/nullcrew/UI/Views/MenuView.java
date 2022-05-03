@@ -1,27 +1,28 @@
 package com.nullcrew.UI.Views;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
-public class MenuView extends JFrame {
+public class MenuView extends AppView {
     private JPanel loginPanel, buttonPanel;
     private JButton credentials, newLoadGame, help;
     private JLabel title, credentialsText, newLoadGameText, helpText;
-    private final int WIDTH = GameView.WIDTH/2;
-    private final int HEIGHT = GameView.HEIGHT/2;
 
-    public MenuView() throws IOException {
-        createComponents();
+    /**
+	 * Create the application.
+	 */
+    public MenuView() {
+    	super(new JFrame());
+        initialize();
     }
 
-    public void createComponents() throws IOException {
-        this.setBounds(0, 0, WIDTH, HEIGHT);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+    /**
+	 * Initialize the contents of the frame.
+	 */
+    public void initialize() {
         loginPanel = new JPanel();
         loginPanel.setLayout(new BoxLayout( loginPanel, BoxLayout.PAGE_AXIS));
         buttonPanel = new JPanel();
@@ -32,7 +33,7 @@ public class MenuView extends JFrame {
 
 
         credentials = new JButton("");
-        credentials.setIcon(new ImageIcon(getClass().getResource("../../Assets/credentials.jpg")));
+        credentials.setIcon(new ImageIcon("app/assets/credentials.jpg"));
         credentials.setOpaque(true);
         credentials.setFocusPainted(false);
         credentials.setBorderPainted(false);
@@ -40,7 +41,7 @@ public class MenuView extends JFrame {
         credentials.addActionListener(new CredentialsActionListener());
 
         newLoadGame = new JButton("");
-        newLoadGame.setIcon(new ImageIcon(getClass().getResource("../../Assets/credentials.jpg")));
+        newLoadGame.setIcon(new ImageIcon("app/assets/credentials.jpg"));
         newLoadGame.setOpaque(true);
         newLoadGame.setFocusPainted(false);
         newLoadGame.setBorderPainted(false);
@@ -48,7 +49,7 @@ public class MenuView extends JFrame {
         newLoadGame.addActionListener(new NewLoadGameActionListener());
 
         help = new JButton("");
-        help.setIcon(new ImageIcon(getClass().getResource("../../Assets/credentials.jpg")));
+        help.setIcon(new ImageIcon("app/assets/credentials.jpg"));
         help.setOpaque(true);
         help.setFocusPainted(false);
         help.setBorderPainted(false);
@@ -65,14 +66,12 @@ public class MenuView extends JFrame {
         loginPanel.add(Box.createVerticalStrut(120));
         loginPanel.add(buttonPanel);
         buttonPanel.add(credentials);
-//        buttonPanel.add(Box.createHorizontalStrut(50));
         buttonPanel.add(newLoadGame);
-//        buttonPanel.add(Box.createHorizontalStrut(50));
         buttonPanel.add(help);
         buttonPanel.add(credentialsText);
         buttonPanel.add(newLoadGameText);
         buttonPanel.add(helpText);
-        this.add(loginPanel);
+        frame.add(loginPanel);
     }
 
     private class CredentialsActionListener implements ActionListener{
@@ -96,7 +95,4 @@ public class MenuView extends JFrame {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        new MenuView().setVisible(true);
-    }
 }
