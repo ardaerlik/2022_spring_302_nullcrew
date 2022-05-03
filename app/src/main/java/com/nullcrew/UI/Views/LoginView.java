@@ -10,8 +10,6 @@ public class LoginView extends AppView {
     private JButton register, login;
     private JTextField emailField, passwordField;
     private JLabel title, subtitle, forgetText;
-    private final int WIDTH = GameView.WIDTH/2;
-    private final int HEIGHT = GameView.HEIGHT/2;
 
     /**
 	 * Create the application.
@@ -25,9 +23,6 @@ public class LoginView extends AppView {
 	 * Initialize the contents of the frame.
 	 */
     private void initalize(){
-        frame.setBounds(0, 0, WIDTH, HEIGHT);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         loginPanel = new JPanel();
         loginPanel.setLayout(new BoxLayout( loginPanel, BoxLayout.PAGE_AXIS));
 
@@ -68,7 +63,6 @@ public class LoginView extends AppView {
         subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         forgetText = new JLabel("Forget my password");
         forgetText.setAlignmentX(Component.CENTER_ALIGNMENT);
-
 
         loginPanel.add(title);
         loginPanel.add(Box.createVerticalStrut(30));

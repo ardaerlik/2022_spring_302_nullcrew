@@ -1,22 +1,20 @@
 package com.nullcrew.UI.Views;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 public class MenuView extends AppView {
     private JPanel loginPanel, buttonPanel;
     private JButton credentials, newLoadGame, help;
     private JLabel title, credentialsText, newLoadGameText, helpText;
-    private final int WIDTH = GameView.WIDTH/2;
-    private final int HEIGHT = GameView.HEIGHT/2;
 
     /**
 	 * Create the application.
 	 */
-    public MenuView() throws IOException {
+    public MenuView() {
     	super(new JFrame());
         initialize();
     }
@@ -24,10 +22,7 @@ public class MenuView extends AppView {
     /**
 	 * Initialize the contents of the frame.
 	 */
-    public void initialize() throws IOException {
-        frame.setBounds(0, 0, WIDTH, HEIGHT);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+    public void initialize() {
         loginPanel = new JPanel();
         loginPanel.setLayout(new BoxLayout( loginPanel, BoxLayout.PAGE_AXIS));
         buttonPanel = new JPanel();
@@ -38,7 +33,7 @@ public class MenuView extends AppView {
 
 
         credentials = new JButton("");
-        credentials.setIcon(new ImageIcon(getClass().getResource("../../Assets/credentials.jpg")));
+        credentials.setIcon(new ImageIcon("app/assets/credentials.jpg"));
         credentials.setOpaque(true);
         credentials.setFocusPainted(false);
         credentials.setBorderPainted(false);
@@ -46,7 +41,7 @@ public class MenuView extends AppView {
         credentials.addActionListener(new CredentialsActionListener());
 
         newLoadGame = new JButton("");
-        newLoadGame.setIcon(new ImageIcon(getClass().getResource("../../Assets/credentials.jpg")));
+        newLoadGame.setIcon(new ImageIcon("app/assets/credentials.jpg"));
         newLoadGame.setOpaque(true);
         newLoadGame.setFocusPainted(false);
         newLoadGame.setBorderPainted(false);
@@ -54,7 +49,7 @@ public class MenuView extends AppView {
         newLoadGame.addActionListener(new NewLoadGameActionListener());
 
         help = new JButton("");
-        help.setIcon(new ImageIcon(getClass().getResource("../../Assets/credentials.jpg")));
+        help.setIcon(new ImageIcon("app/assets/credentials.jpg"));
         help.setOpaque(true);
         help.setFocusPainted(false);
         help.setBorderPainted(false);

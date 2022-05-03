@@ -36,25 +36,14 @@ public class GameView extends AppView {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame.setBounds(0, 0, WIDTH, HEIGHT);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		BorderLayout borderLayout = new BorderLayout();
 		frame.getContentPane().setLayout(borderLayout);
 
 		topPanel = new TopPanel(this);
-		topPanel.setPreferredSize(new Dimension(WIDTH,172));
 		frame.getContentPane().add(topPanel,BorderLayout.NORTH);
 
 		gamePanel = new GamePanel(this);
-		gamePanel.setPreferredSize(new Dimension(WIDTH,762));
 		frame.getContentPane().add(gamePanel,BorderLayout.CENTER);
-
-		belowPanel = new JPanel();
-		belowPanel.setBackground(Color.CYAN);
-		gamePanel.setPreferredSize(new Dimension(WIDTH,500));
-		frame.getContentPane().add(belowPanel,BorderLayout.SOUTH);
-		
-		frame.setMinimumSize(new Dimension(1024,768));
 	}
 	
 	public void createAsteroids() {
@@ -115,4 +104,5 @@ public class GameView extends AppView {
 	public int[] getNumOfAsteroidTypes() {
 		return numOfAsteroidTypes;
 	}
+	
 }
