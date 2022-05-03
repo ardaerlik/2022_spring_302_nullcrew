@@ -1,26 +1,32 @@
 package com.nullcrew.UI.Views;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class MenuView extends JFrame {
+public class MenuView extends AppView {
     private JPanel loginPanel, buttonPanel;
     private JButton credentials, newLoadGame, help;
     private JLabel title, credentialsText, newLoadGameText, helpText;
     private final int WIDTH = GameView.WIDTH/2;
     private final int HEIGHT = GameView.HEIGHT/2;
 
+    /**
+	 * Create the application.
+	 */
     public MenuView() throws IOException {
-        createComponents();
+    	super(new JFrame());
+        initialize();
     }
 
-    public void createComponents() throws IOException {
-        this.setBounds(0, 0, WIDTH, HEIGHT);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    /**
+	 * Initialize the contents of the frame.
+	 */
+    public void initialize() throws IOException {
+        frame.setBounds(0, 0, WIDTH, HEIGHT);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         loginPanel = new JPanel();
         loginPanel.setLayout(new BoxLayout( loginPanel, BoxLayout.PAGE_AXIS));
@@ -65,14 +71,12 @@ public class MenuView extends JFrame {
         loginPanel.add(Box.createVerticalStrut(120));
         loginPanel.add(buttonPanel);
         buttonPanel.add(credentials);
-//        buttonPanel.add(Box.createHorizontalStrut(50));
         buttonPanel.add(newLoadGame);
-//        buttonPanel.add(Box.createHorizontalStrut(50));
         buttonPanel.add(help);
         buttonPanel.add(credentialsText);
         buttonPanel.add(newLoadGameText);
         buttonPanel.add(helpText);
-        this.add(loginPanel);
+        frame.add(loginPanel);
     }
 
     private class CredentialsActionListener implements ActionListener{
@@ -96,7 +100,4 @@ public class MenuView extends JFrame {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        new MenuView().setVisible(true);
-    }
 }
