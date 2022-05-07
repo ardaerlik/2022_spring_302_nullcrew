@@ -1,10 +1,12 @@
 package com.nullcrew.Utilities;
 
 import com.nullcrew.Domain.Models.Game;
+import com.nullcrew.Domain.Models.User;
 
 public final class FileManagerAdapter implements DataStrategy {
 	private static FileManagerAdapter instance = new FileManagerAdapter();
 	private FileManager fileManager;
+	private User user;
 	
 	public static FileManagerAdapter getInstance() {
 		if (instance == null) {
@@ -58,6 +60,16 @@ public final class FileManagerAdapter implements DataStrategy {
 	public void resetPassword(String email, String newPassword, String forgotKey) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Override
+	public User getUser() {
+		return user;
 	}
 	
 }
