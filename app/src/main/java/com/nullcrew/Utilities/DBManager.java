@@ -9,12 +9,15 @@ import com.mongodb.ServerApiVersion;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
+import com.nullcrew.Domain.Models.Constants;
 import com.nullcrew.Domain.Models.Game;
+import com.nullcrew.Domain.Models.User;
 
 public final class DBManager implements DataStrategy {
 	private static DBManager instance = new DBManager();
 	private MongoClient client;
 	private MongoDatabase database;
+	private User user;
 
 	public static DBManager getInstance() {
 		if (instance == null) {
@@ -28,7 +31,7 @@ public final class DBManager implements DataStrategy {
 	}
 	
 	public void connectDB() {
-		ConnectionString connectionString = new ConnectionString("mongodb+srv://nullcrew:NullCrew2022@cluster0.wcrf4.mongodb.net/alien_asteroid_game?retryWrites=true&w=majority");
+		ConnectionString connectionString = new ConnectionString(Constants.DatabaseResponses.DATABASE_CREDENTIALS);
 		MongoClientSettings settings = MongoClientSettings.builder()
 		        .applyConnectionString(connectionString)
 		        .serverApi(ServerApi.builder()
@@ -36,20 +39,19 @@ public final class DBManager implements DataStrategy {
 		            .build())
 		        .build();
 		client = MongoClients.create(settings);
-		database = client.getDatabase("alien_asteroid_game");
+		database = client.getDatabase(Constants.DatabaseResponses.DATABASE_NAME);
 	}
 	
 	public void closeDB() {
 		client.close();
 	}
-	
-	public void registerUser(String email, String password) {
-		Document tmp = new Document("aaa", "aa.")
-				.append("email", email)
-				.append("password", password);
-		
-		database.getCollection("users_test").insertOne(tmp);
-		closeDB();
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
@@ -59,15 +61,27 @@ public final class DBManager implements DataStrategy {
 	}
 
 	@Override
-	public Game loadTheGame(String gameId) {
+	public void loadTheGame(String gameId) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
-	public boolean registerUser() {
+	public void registerUser(String email, String password, String forgotKey) {
 		// TODO Auto-generated method stub
-		return false;
+		
+	}
+
+	@Override
+	public void loginUser(String email, String password) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resetPassword(String email, String newPassword, String forgotKey) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

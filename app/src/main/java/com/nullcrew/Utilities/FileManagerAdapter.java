@@ -22,6 +22,14 @@ public final class FileManagerAdapter implements DataStrategy {
 		this.fileManager = fileManager;
 	}
 
+	public FileManager getFileManager() {
+		return fileManager;
+	}
+
+	public void setFileManager(FileManager fileManager) {
+		this.fileManager = fileManager;
+	}
+
 	@Override
 	public void saveTheGame(Game game) {
 		// TODO Auto-generated method stub
@@ -29,23 +37,27 @@ public final class FileManagerAdapter implements DataStrategy {
 	}
 
 	@Override
-	public Game loadTheGame(String gameId) {
+	public void loadTheGame(String gameId) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
-	public boolean registerUser() {
+	public void registerUser(String email, String password, String forgotKey) {
 		// TODO Auto-generated method stub
-		return false;
+		
 	}
 
-	public FileManager getFileManager() {
-		return fileManager;
+	@Override
+	public void loginUser(String email, String password) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void setFileManager(FileManager fileManager) {
-		this.fileManager = fileManager;
+	@Override
+	public void resetPassword(String email, String newPassword, String forgotKey) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

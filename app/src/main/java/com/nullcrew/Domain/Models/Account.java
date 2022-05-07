@@ -64,6 +64,14 @@ public class Account {
 		this.savedGames = savedGames;
 	}
 
+	public String getForgotKey() {
+		return forgotKey;
+	}
+
+	public void setForgotKey(String forgotKey) {
+		this.forgotKey = forgotKey;
+	}
+	
 	@Override
 	public String toString() {
 		return "Account [accountId=" + accountId + ", email=" + email + ", password=" + password + "]";
