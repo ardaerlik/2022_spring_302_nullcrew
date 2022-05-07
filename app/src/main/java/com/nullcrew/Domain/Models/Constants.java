@@ -11,5 +11,9 @@ public interface Constants {
 		int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		int SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 	}
+	
+	interface DatabaseResponses {
+		
+	}
 
 }
