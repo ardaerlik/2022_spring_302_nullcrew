@@ -6,6 +6,7 @@ public class Account {
 	private String accountId;
 	private String email;
 	private String password;
+	private String forgotKey;
 	private ArrayList<Game> savedGames;
 	
 	public Account() {
@@ -15,17 +16,19 @@ public class Account {
 		this.accountId = accountId;
 		this.email = "";
 		this.password = "";
+		this.forgotKey = "";
 		this.savedGames = new ArrayList<Game>();
 	}
 	
-	public Account(String accountId, String email, String password) {
+	public Account(String accountId, String email, String password, String forgotKey) {
 		this(accountId);
 		this.email = email;
 		this.password = password;
+		this.forgotKey = forgotKey;
 	}
 	
-	public Account(String accountId, String email, String password, ArrayList<Game> savedGames) {
-		this(accountId, email, password);
+	public Account(String accountId, String email, String password, String forgotKey, ArrayList<Game> savedGames) {
+		this(accountId, email, password, forgotKey);
 		this.savedGames = savedGames;
 	}
 
