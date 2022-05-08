@@ -31,9 +31,8 @@ public class LoginView extends AppView {
         register = new JButton("Register");
         register.setSize(200,40);
         register.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        register.setBackground(new Color(59, 89, 182));
         register.setBackground(Color.BLUE);
-        register.setForeground(Color.WHITE);
+        register.setForeground(Color.BLUE);
         register.setFocusPainted(false);
         register.setFont(new Font("Arial", Font.BOLD, 12));
         register.setPreferredSize( new Dimension( 200, 24 ));
@@ -43,9 +42,8 @@ public class LoginView extends AppView {
         login = new JButton("Login");
         login.setSize(200,40);
         login.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        login.setBackground(new Color(59, 89, 182));
         login.setBackground(Color.BLUE);
-        login.setForeground(Color.WHITE);
+        login.setForeground(Color.BLUE);
         login.setFocusPainted(false);
         login.setFont(new Font("Arial", Font.BOLD, 12));
         login.setPreferredSize( new Dimension( 200, 24 ));

@@ -34,7 +34,7 @@ public class MenuView extends AppView {
         midPanel = new JPanel();
 
         credentials = new JButton("");
-        credentials.setIcon(new ImageIcon(((new ImageIcon("assets/info.png")).getImage()).getScaledInstance(130, 70, java.awt.Image.SCALE_SMOOTH))); //if you can not see the image, then check the image path!
+        credentials.setIcon(new ImageIcon(((new ImageIcon("assets/info.png")).getImage()).getScaledInstance(130, 70, java.awt.Image.SCALE_SMOOTH)));
         credentials.setOpaque(true);
         credentials.setFocusPainted(false);
         credentials.setBorderPainted(false);
@@ -59,12 +59,9 @@ public class MenuView extends AppView {
 
         title = new JLabel("Alien Asteroid Game");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        credentialsText = new JLabel("Credentials",  SwingConstants.CENTER);
         credentialsText = new JLabel("",  SwingConstants.CENTER);
         newLoadGameText = new JLabel("",  SwingConstants.CENTER);
         helpText = new JLabel("",  SwingConstants.CENTER);
-//        newLoadGameText = new JLabel("New/Load Game",  SwingConstants.CENTER);
-//        helpText = new JLabel("Help Screen",  SwingConstants.CENTER);
 
         loginPanel.add(title);
         loginPanel.add(Box.createVerticalStrut(120));
