@@ -356,15 +356,34 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		float rate_y =((float)gameView.getFrame().getHeight()/(float) gameView.getInitialHeight());
 		double size_x=(double)rate_x;
 		double size_y= (double)rate_y;
+		Rectangle2D temp_paddle=new Rectangle2D.Double(gameView.getGameController().getPaddle().getX(),
+				gameView.getGameController().getPaddle().getY(),
+				gameView.getGameController().getPaddle().getWidth(),
+				gameView.getGameController().getPaddle().getHeight()
+				);
+		Rectangle2D temp_ball=new Rectangle2D.Double(gameView.getGameController().getBall().getX(),
+				gameView.getGameController().getBall().getY(),
+				gameView.getGameController().getBall().getWidth(),
+				gameView.getGameController().getBall().getHeight()
+				);
 		if (mouseEvent.getButton() == MouseEvent.BUTTON1 && draggedAsteroid != null) { // this is left click.
+			boolean success;
 			int x = (int)(mouseEvent.getX()/size_x);
 			int y = (int)(mouseEvent.getY()/size_y);
-//			System.out.println(initialX+", "+initialY);
-			draggedAsteroid.setX(initialX);
-			draggedAsteroid.setY(initialY);
-			boolean success = gameView.getGameController().addAsteroid(draggedAsteroid, x, y);
+			Rectangle2D temp_asteroid= new Rectangle2D.Double(x,y,draggedAsteroid.getWidth(),draggedAsteroid.getHeight());
+			if(temp_ball.intersects(temp_asteroid)||temp_paddle.intersects(temp_asteroid)) {
+				success=false;
+			}
+			else if(temp_asteroid.getCenterY()>=temp_paddle.getCenterY() || 0>temp_asteroid.getCenterY()){
+				success=false;
+			}
+			else {
+				draggedAsteroid.setX(initialX);
+				draggedAsteroid.setY(initialY);
+				success = gameView.getGameController().addAsteroid(draggedAsteroid, x, y);
+			}
 			if (!success) {
-				JOptionPane.showMessageDialog(null, "Can not drop over an existing asteroid!", "Error",
+				JOptionPane.showMessageDialog(null, "Can not drop the dragged asteroid on this position", "Error",
 						JOptionPane.ERROR_MESSAGE);
 //				System.out.println(initialX+", "+initialY);
 				gameView.getGameController().addAsteroid(draggedAsteroid, initialX, initialY);
@@ -394,6 +413,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			int x = (int)(mouseEvent.getX()/size_x);
 			int y = (int)(mouseEvent.getY()/size_y);
 			draggedAsteroid = gameView.getGameController().dragAsteroid(x, y);
+			if(draggedAsteroid==null) {
+				return;
+			}
 			initialX = draggedAsteroid.getX();
 			initialY = draggedAsteroid.getY();
 		}else{
