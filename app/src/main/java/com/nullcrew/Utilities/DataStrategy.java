@@ -6,7 +6,7 @@ import com.nullcrew.Domain.Models.User;
 public interface DataStrategy {
 	public abstract void saveTheGame(Game game);
 	
-	public abstract void loadTheGame(String gameId);
+	public abstract void loadTheGames();
 	
 	public abstract void registerUser(String email, String password, String forgotKey);
 	

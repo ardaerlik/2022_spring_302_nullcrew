@@ -39,7 +39,7 @@ public final class FileManagerAdapter implements DataStrategy {
 	}
 
 	@Override
-	public void loadTheGame(String gameId) {
+	public void loadTheGames() {
 		// TODO Auto-generated method stub
 		
 	}

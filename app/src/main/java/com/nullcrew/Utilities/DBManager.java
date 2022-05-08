@@ -6,6 +6,7 @@ import java.util.Iterator;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerApi;
@@ -69,9 +70,8 @@ public final class DBManager implements DataStrategy {
 	}
 
 	@Override
-	public void loadTheGame(String gameId) {
-		// TODO Auto-generated method stub
-		
+	public void loadTheGames() {
+		user.getAccount().setSavedGames(getGamesWithObjectIds(user.getSavedGameIds()));
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public final class DBManager implements DataStrategy {
 					.append("email", email)
 					.append("password", password)
 					.append("forgotkey", forgotKey)
-					.append("savedGamesIds", new ArrayList<ObjectId>());
+					.append("savedGameIds", new ArrayList<ObjectId>());
 			
 			InsertOneResult result = database.getCollection(Constants.DatabaseResponses.USERS_COLLECTION)
 					.insertOne(document);
@@ -97,9 +97,19 @@ public final class DBManager implements DataStrategy {
 	}
 
 	@Override
-	public void loginUser(String email, String password) {
-		// TODO Auto-generated method stub
-		
+	public synchronized void loginUser(String email, String password) {
+		if (userExists(email)) {
+			// TODO: Notify login observers
+		} else {
+			ObjectId checkedCredentials = checkCredentials(email, password);
+			
+			if (checkedCredentials != null) {
+				user = getUserWithObjectId(checkedCredentials);
+				// TODO: Notify login observers
+			} else {
+				// TODO: Notify login observers
+			}
+		}
 	}
 
 	@Override
@@ -124,7 +134,7 @@ public final class DBManager implements DataStrategy {
 		this.database = database;
 	}
 	
-	private boolean userExists(String email) {
+	private synchronized boolean userExists(String email) {
 		FindIterable<Document> users = database.getCollection(Constants.DatabaseResponses.USERS_COLLECTION).find(new Document());
 		
 		Iterator<Document> iterator = users.iterator();
@@ -135,6 +145,39 @@ public final class DBManager implements DataStrategy {
 		}
 		
 		return true;
+	}
+	
+	private synchronized ObjectId checkCredentials(String email, String password) {
+		FindIterable<Document> users = database.getCollection(Constants.DatabaseResponses.USERS_COLLECTION).find(new Document());
+		
+		Iterator<Document> iterator = users.iterator();
+		while (iterator.hasNext()) {
+			Document document = (Document) iterator.next();
+			
+			if (document.get("email").equals(email)) {
+				if (document.get("password").equals(password)) {
+					return (ObjectId) document.get("_id");
+				} else {
+					return null;
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	private synchronized User getUserWithObjectId(ObjectId objectId) {		
+		BasicDBObject query = new BasicDBObject();
+		query.put("_id", objectId);
+		
+		Document document = database.getCollection(Constants.DatabaseResponses.USERS_COLLECTION).find(query).first();
+		User user = new User(document);
+		
+		return user;
+	}
+	
+	private synchronized ArrayList<Game> getGamesWithObjectIds(ArrayList<ObjectId> objectIds) {
+		return null;
 	}
 
 }
