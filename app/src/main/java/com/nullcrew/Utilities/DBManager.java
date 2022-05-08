@@ -82,12 +82,12 @@ public final class DBManager implements DataStrategy {
 					.insertOne(document);
 			
 			if (result.getInsertedId() != null) {
-				// TODO: Notify register observers
+				notifyAuthObservers(DatabaseResponses.REGISTER_ACCEPTED);
 			} else {
-				// TODO: Notify register observers and login process
+				notifyAuthObservers(DatabaseResponses.DATABASE_ERROR);
 			}
 		} else {
-			// TODO: Notify register observers
+			notifyAuthObservers(DatabaseResponses.EMAIL_HAS_ACCOUNT);
 		}
 	}
 
@@ -227,6 +227,7 @@ public final class DBManager implements DataStrategy {
 			authObserver.loginRejected(response);
 			return;
 		}
+		// TODO: Observers
 	}
 	
 	public MongoClient getClient() {

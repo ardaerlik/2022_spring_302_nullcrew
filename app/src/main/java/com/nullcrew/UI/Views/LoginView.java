@@ -14,7 +14,7 @@ import java.awt.event.MouseEvent;
 public class LoginView extends AppView {
     private JPanel loginPanel;
     private JButton register, login;
-    private JTextField emailField, passwordField;
+    private JTextField emailField, passwordField, forgotKeyField;
     private JLabel title, subtitle, forgetText;
     private LoginController loginController;
 
@@ -64,6 +64,11 @@ public class LoginView extends AppView {
         passwordField.setPreferredSize( new Dimension( 200, 24 ));
         passwordField.setMaximumSize( passwordField.getPreferredSize());
         passwordField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        forgotKeyField = new JTextField("Password recovery hint");
+        forgotKeyField.setPreferredSize( new Dimension( 200, 24 ));
+        forgotKeyField.setMaximumSize( emailField.getPreferredSize());
+        forgotKeyField.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         title = new JLabel("Welcome to the Alien Asteroid Game");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -80,6 +85,8 @@ public class LoginView extends AppView {
         loginPanel.add(Box.createVerticalStrut(10));
         loginPanel.add(emailField);
         loginPanel.add(passwordField);
+        loginPanel.add(forgotKeyField);
+        forgotKeyField.setVisible(false);
         loginPanel.add(Box.createVerticalStrut(40));
         loginPanel.add(register);
         loginPanel.add(Box.createVerticalStrut(10));
@@ -92,13 +99,17 @@ public class LoginView extends AppView {
     private class RegisterActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            System.out.println("Register");
+        	forgotKeyField.setVisible(true);
+        	subtitle.setText("Please register with your credentials");
+        	loginController.registerInfoEntered(emailField.getText(), passwordField.getText(), forgotKeyField.getText());
         }
     }
 
     private class LoginActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
+        	forgotKeyField.setVisible(false);
+        	subtitle.setText("Please login with your credentials");
         	loginController.loginInfoEntered(emailField.getText(), passwordField.getText());
         }
     }

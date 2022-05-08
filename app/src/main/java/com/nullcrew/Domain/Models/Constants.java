@@ -20,6 +20,9 @@ public interface Constants {
 		String LOGIN_ACCEPTED = "Login successfully";
 		String WRONG_PASSWORD = "Wrong password";
 		String WRONG_EMAIL = "Wrong email address";
+		String REGISTER_ACCEPTED = "Register successfully";
+		String EMAIL_HAS_ACCOUNT = "Email has taken";
+		String DATABASE_ERROR = "Database error has occured";
 	}
 
 }

@@ -21,6 +21,12 @@ public class LoginController extends AppController implements AuthObserver {
 		.getDataStrategy()
 		.loginUser(email, password);
 	}
+	
+	public void registerInfoEntered(String email, String password, String hint) {
+		AlienAsteroidGame.getInstance()
+		.getDataStrategy()
+		.registerUser(email, password, hint);
+	}
 
 	@Override
 	public void loginAccepted(User user, String response) {
@@ -35,13 +41,13 @@ public class LoginController extends AppController implements AuthObserver {
 
 	@Override
 	public void registerAccepted(User user, String response) {
-		// TODO Auto-generated method stub
-		
+		super.changeView(AppViewFactory.getInstance()
+				.createAppView(AppViewType.MenuView));
 	}
 
 	@Override
 	public void registerRejected(String response) {
-		// TODO Auto-generated method stub
+		System.out.println(response);
 		
 	}
 
