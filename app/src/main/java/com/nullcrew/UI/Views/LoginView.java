@@ -1,6 +1,10 @@
 package com.nullcrew.UI.Views;
 
 import javax.swing.*;
+
+import com.nullcrew.AlienAsteroidGame;
+import com.nullcrew.Domain.Controllers.LoginController;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,12 +16,14 @@ public class LoginView extends AppView {
     private JButton register, login;
     private JTextField emailField, passwordField;
     private JLabel title, subtitle, forgetText;
+    private LoginController loginController;
 
     /**
 	 * Create the application.
 	 */
     public LoginView() {
     	super(new JFrame());
+    	loginController = new LoginController(this, AlienAsteroidGame.getInstance());
         initalize();
     }
 
@@ -93,7 +99,7 @@ public class LoginView extends AppView {
     private class LoginActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            System.out.println("Login");
+        	loginController.loginInfoEntered(emailField.getText(), passwordField.getText());
         }
     }
 

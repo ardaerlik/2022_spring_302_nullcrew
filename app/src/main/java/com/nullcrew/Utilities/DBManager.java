@@ -21,6 +21,7 @@ import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.InsertOneResult;
 import com.nullcrew.Domain.Models.Constants;
+import com.nullcrew.Domain.Models.Constants.DatabaseResponses;
 import com.nullcrew.Domain.Models.Game;
 import com.nullcrew.Domain.Models.User;
 
@@ -29,6 +30,7 @@ public final class DBManager implements DataStrategy {
 	private MongoClient client;
 	private MongoDatabase database;
 	private User user;
+	private AuthObserver authObserver;
 
 	public static DBManager getInstance() {
 		if (instance == null) {
@@ -96,12 +98,12 @@ public final class DBManager implements DataStrategy {
 			
 			if (checkedCredentials != null) {
 				user = getUserWithObjectId(checkedCredentials);
-				// TODO: Notify login observers
+				notifyAuthObservers(DatabaseResponses.LOGIN_ACCEPTED);
 			} else {
-				// TODO: Notify login observers
+				notifyAuthObservers(DatabaseResponses.WRONG_PASSWORD);
 			}
 		} else {
-			// TODO: Notify login observers
+			notifyAuthObservers(DatabaseResponses.WRONG_EMAIL);
 		}
 	}
 
@@ -201,6 +203,29 @@ public final class DBManager implements DataStrategy {
 			return true;
 		} catch (MongoException e) {
 			return false;
+		}
+	}
+	
+	@Override
+	public void subscribeAuthObserver(AuthObserver observer) {
+		this.authObserver = observer;
+	}
+	
+	@Override
+	public void notifyAuthObservers(String response) {
+		if (response.equals(DatabaseResponses.LOGIN_ACCEPTED)) {
+			authObserver.loginAccepted(user, response);
+			return;
+		}
+		
+		if (response.equals(DatabaseResponses.WRONG_EMAIL)) {
+			authObserver.loginRejected(response);
+			return;
+		}
+		
+		if (response.equals(DatabaseResponses.WRONG_PASSWORD)) {
+			authObserver.loginRejected(response);
+			return;
 		}
 	}
 	
