@@ -71,5 +71,17 @@ public final class FileManagerAdapter implements DataStrategy {
 	public User getUser() {
 		return user;
 	}
+
+	@Override
+	public void subscribeAuthObserver(AuthObserver observer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifyAuthObservers(String response) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

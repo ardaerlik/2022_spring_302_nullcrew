@@ -19,9 +19,9 @@ public final class AppViewFactory {
 		case GameView:
 			return new GameView();
 		case LoginView:
-			return new GameView();
+			return new LoginView();
 		case MenuView:
-			return new GameView();
+			return new MenuView();
 		default:
 			throw new IllegalArgumentException("Illegal AppView type");
 		}

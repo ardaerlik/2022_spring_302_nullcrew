@@ -17,4 +17,8 @@ public interface DataStrategy {
 	public abstract void setUser(User user);
 	
 	public abstract User getUser();
+	
+	public abstract void subscribeAuthObserver(AuthObserver observer);
+	
+	public abstract void notifyAuthObservers(String response);
 }

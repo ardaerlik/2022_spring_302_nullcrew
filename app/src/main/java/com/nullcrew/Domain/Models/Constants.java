@@ -17,6 +17,12 @@ public interface Constants {
 		String DATABASE_NAME = "alien_asteroid_game";
 		String USERS_COLLECTION = "users_test";
 		String GAMES_COLLECTION = "games_test";
+		String LOGIN_ACCEPTED = "Login successfully";
+		String WRONG_PASSWORD = "Wrong password";
+		String WRONG_EMAIL = "Wrong email address";
+		String REGISTER_ACCEPTED = "Register successfully";
+		String EMAIL_HAS_ACCOUNT = "Email has taken";
+		String DATABASE_ERROR = "Database error has occured";
 	}
 
 }
