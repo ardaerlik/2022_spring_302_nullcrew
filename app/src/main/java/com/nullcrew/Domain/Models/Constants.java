@@ -11,5 +11,12 @@ public interface Constants {
 		int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		int SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 	}
+	
+	interface DatabaseResponses {
+		String DATABASE_CREDENTIALS = "mongodb+srv://nullcrew:NullCrew2022@cluster0.wcrf4.mongodb.net/alien_asteroid_game?retryWrites=true&w=majority";
+		String DATABASE_NAME = "alien_asteroid_game";
+		String USERS_COLLECTION = "users_test";
+		String GAMES_COLLECTION = "games_test";
+	}
 
 }
