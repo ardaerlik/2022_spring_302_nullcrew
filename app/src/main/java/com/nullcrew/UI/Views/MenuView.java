@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MenuView extends AppView {
-    private JPanel loginPanel, buttonPanel;
+    private JPanel loginPanel, midPanel, buttonPanel;
     private JButton credentials, newLoadGame, help;
     private JLabel title, credentialsText, newLoadGameText, helpText;
 
@@ -30,10 +30,11 @@ public class MenuView extends AppView {
         layout.setVgap(10);
         layout.setHgap(10);
         buttonPanel.setLayout(layout);
-
+        buttonPanel.setMaximumSize(new Dimension((int)(GameView.WIDTH*0.5), (int)(GameView.HEIGHT*0.5)));
+        midPanel = new JPanel();
 
         credentials = new JButton("");
-        credentials.setIcon(new ImageIcon("app/assets/credentials.jpg"));
+        credentials.setIcon(new ImageIcon(((new ImageIcon("assets/info.png")).getImage()).getScaledInstance(130, 70, java.awt.Image.SCALE_SMOOTH)));
         credentials.setOpaque(true);
         credentials.setFocusPainted(false);
         credentials.setBorderPainted(false);
@@ -41,7 +42,7 @@ public class MenuView extends AppView {
         credentials.addActionListener(new CredentialsActionListener());
 
         newLoadGame = new JButton("");
-        newLoadGame.setIcon(new ImageIcon("app/assets/credentials.jpg"));
+        newLoadGame.setIcon(new ImageIcon(((new ImageIcon("assets/new_game.png")).getImage()).getScaledInstance(200, 70, java.awt.Image.SCALE_SMOOTH)));
         newLoadGame.setOpaque(true);
         newLoadGame.setFocusPainted(false);
         newLoadGame.setBorderPainted(false);
@@ -49,7 +50,7 @@ public class MenuView extends AppView {
         newLoadGame.addActionListener(new NewLoadGameActionListener());
 
         help = new JButton("");
-        help.setIcon(new ImageIcon("app/assets/credentials.jpg"));
+        help.setIcon(new ImageIcon(((new ImageIcon("assets/help.png")).getImage()).getScaledInstance(110, 70, java.awt.Image.SCALE_SMOOTH)));
         help.setOpaque(true);
         help.setFocusPainted(false);
         help.setBorderPainted(false);
@@ -58,11 +59,13 @@ public class MenuView extends AppView {
 
         title = new JLabel("Alien Asteroid Game");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        credentialsText = new JLabel("Credentials");
-        newLoadGameText = new JLabel("New/Load Game");
-        helpText = new JLabel("Help Screen");
+        credentialsText = new JLabel("",  SwingConstants.CENTER);
+        newLoadGameText = new JLabel("",  SwingConstants.CENTER);
+        helpText = new JLabel("",  SwingConstants.CENTER);
 
         loginPanel.add(title);
+        loginPanel.add(Box.createVerticalStrut(120));
+        loginPanel.add(midPanel);
         loginPanel.add(Box.createVerticalStrut(120));
         loginPanel.add(buttonPanel);
         buttonPanel.add(credentials);

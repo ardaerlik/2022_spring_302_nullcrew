@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
 public class LoginView extends AppView {
     private JPanel loginPanel;
@@ -29,10 +31,10 @@ public class LoginView extends AppView {
         register = new JButton("Register");
         register.setSize(200,40);
         register.setAlignmentX(Component.CENTER_ALIGNMENT);
-        register.setBackground(new Color(59, 89, 182));
-        register.setForeground(Color.WHITE);
+        register.setBackground(Color.BLUE);
+        register.setForeground(Color.BLUE);
         register.setFocusPainted(false);
-        register.setFont(new Font("Tahoma", Font.BOLD, 12));
+        register.setFont(new Font("Arial", Font.BOLD, 12));
         register.setPreferredSize( new Dimension( 200, 24 ));
         register.setMaximumSize( register.getPreferredSize());
         register.addActionListener(new RegisterActionListener());
@@ -40,10 +42,10 @@ public class LoginView extends AppView {
         login = new JButton("Login");
         login.setSize(200,40);
         login.setAlignmentX(Component.CENTER_ALIGNMENT);
-        login.setBackground(new Color(59, 89, 182));
-        login.setForeground(Color.WHITE);
+        login.setBackground(Color.BLUE);
+        login.setForeground(Color.BLUE);
         login.setFocusPainted(false);
-        login.setFont(new Font("Tahoma", Font.BOLD, 12));
+        login.setFont(new Font("Arial", Font.BOLD, 12));
         login.setPreferredSize( new Dimension( 200, 24 ));
         login.setMaximumSize( login.getPreferredSize());
         login.addActionListener(new LoginActionListener());
@@ -63,7 +65,9 @@ public class LoginView extends AppView {
         subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         forgetText = new JLabel("Forget my password");
         forgetText.setAlignmentX(Component.CENTER_ALIGNMENT);
+        forgetText.addMouseListener( new ForgetActionListener());
 
+        loginPanel.add(Box.createVerticalStrut(GameView.HEIGHT/3));
         loginPanel.add(title);
         loginPanel.add(Box.createVerticalStrut(30));
         loginPanel.add(subtitle);
@@ -93,4 +97,22 @@ public class LoginView extends AppView {
         }
     }
 
+    private class ForgetActionListener implements MouseListener {
+        @Override
+        public void mouseClicked(MouseEvent mouseEvent) {
+            System.out.println("Forget");
+        }
+
+        @Override
+        public void mouseExited(MouseEvent mouseEvent) {}
+
+        @Override
+        public void mouseEntered(MouseEvent mouseEvent) {}
+
+        @Override
+        public void mouseReleased(MouseEvent mouseEvent) {}
+
+        @Override
+        public void mousePressed(MouseEvent mouseEvent) {}
+    }
 }

@@ -2,6 +2,8 @@ package com.nullcrew;
 
 import com.nullcrew.UI.Views.AppView;
 import com.nullcrew.UI.Views.GameView;
+import com.nullcrew.UI.Views.MenuView;
+import com.nullcrew.UI.Views.LoginView;
 import com.nullcrew.Utilities.DBManager;
 import com.nullcrew.Utilities.DataStrategy;
 
@@ -26,9 +28,10 @@ public final class AlienAsteroidGame {
 	}
 	
 	public void startApp() {
-		dbManager = DBManager.getInstance();
-		dbManager.connectDB();
-		changeView(null, new GameView());
+//		dbManager = DBManager.getInstance();
+//		dbManager.connectDB();
+//		changeView(null, new GameView());
+		changeView(null, new LoginView());
 	}
 	
 	public void exitApp() {
