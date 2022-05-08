@@ -15,6 +15,8 @@ public interface Constants {
 	interface DatabaseResponses {
 		String DATABASE_CREDENTIALS = "mongodb+srv://nullcrew:NullCrew2022@cluster0.wcrf4.mongodb.net/alien_asteroid_game?retryWrites=true&w=majority";
 		String DATABASE_NAME = "alien_asteroid_game";
+		String USERS_COLLECTION = "users_test";
+		String GAMES_COLLECTION = "games_test";
 	}
 
 }
