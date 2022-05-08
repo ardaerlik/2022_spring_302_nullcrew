@@ -26,6 +26,16 @@ public final class User {
 		this.savedGameIds = savedGameIds;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public User(Document document) {
+		this.account = new Account(
+				(ObjectId) document.get("_id"),
+				(String) document.get("email"),
+				(String) document.get("password"),
+				(String) document.get("forgotKey"));
+		this.savedGameIds = (ArrayList<ObjectId>) document.get("savedGameIds");
+	}
+	
 	public void login(Account account, ArrayList<ObjectId> savedGameIds) {
 		this.account = account;
 		this.savedGameIds = savedGameIds;
