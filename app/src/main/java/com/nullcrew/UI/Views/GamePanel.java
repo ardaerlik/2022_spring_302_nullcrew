@@ -374,13 +374,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			if(temp_ball.intersects(temp_asteroid)||temp_paddle.intersects(temp_asteroid)) {
 				success=false;
 			}
+			else if(temp_asteroid.getCenterY()>=temp_paddle.getCenterY() || 0>temp_asteroid.getCenterY()){
+				success=false;
+			}
 			else {
 				draggedAsteroid.setX(initialX);
 				draggedAsteroid.setY(initialY);
 				success = gameView.getGameController().addAsteroid(draggedAsteroid, x, y);
 			}
 			if (!success) {
-				JOptionPane.showMessageDialog(null, "Can not drop over an existing asteroid, the paddle or ball!", "Error",
+				JOptionPane.showMessageDialog(null, "Can not drop the dragged asteroid on this position", "Error",
 						JOptionPane.ERROR_MESSAGE);
 //				System.out.println(initialX+", "+initialY);
 				gameView.getGameController().addAsteroid(draggedAsteroid, initialX, initialY);
@@ -410,6 +413,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			int x = (int)(mouseEvent.getX()/size_x);
 			int y = (int)(mouseEvent.getY()/size_y);
 			draggedAsteroid = gameView.getGameController().dragAsteroid(x, y);
+			if(draggedAsteroid==null) {
+				return;
+			}
 			initialX = draggedAsteroid.getX();
 			initialY = draggedAsteroid.getY();
 		}else{
