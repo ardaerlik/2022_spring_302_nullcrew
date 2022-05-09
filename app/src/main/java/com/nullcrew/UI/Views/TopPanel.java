@@ -117,7 +117,6 @@ public class TopPanel extends JPanel {
 					gameView.createAsteroids();
 					gameView.getGameController().setBall(new Ball(GameObjectFactory.BALL_X, GameObjectFactory.BALL_Y, 17, 17));
 					gameView.getGameController().setPaddle(new Paddle(GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
-					gameView.getGamePanel().resumeTheGame();
 				}
 			}
 		});
