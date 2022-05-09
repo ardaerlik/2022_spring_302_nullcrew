@@ -38,7 +38,7 @@ public class LoginView extends AppView {
         register.setSize(200,40);
         register.setAlignmentX(Component.CENTER_ALIGNMENT);
         register.setBackground(Color.BLUE);
-        register.setForeground(Color.BLUE);
+        register.setForeground(Color.WHITE);
         register.setFocusPainted(false);
         register.setFont(new Font("Arial", Font.BOLD, 12));
         register.setPreferredSize( new Dimension( 200, 24 ));
@@ -49,7 +49,7 @@ public class LoginView extends AppView {
         login.setSize(200,40);
         login.setAlignmentX(Component.CENTER_ALIGNMENT);
         login.setBackground(Color.BLUE);
-        login.setForeground(Color.BLUE);
+        login.setForeground(Color.WHITE);
         login.setFocusPainted(false);
         login.setFont(new Font("Arial", Font.BOLD, 12));
         login.setPreferredSize( new Dimension( 200, 24 ));
