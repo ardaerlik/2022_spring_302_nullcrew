@@ -37,13 +37,13 @@ public class GameController extends AppController {
 		asteroidList = new ArrayList<>();
 	}
 
-	public boolean addAsteroid(Asteroid toBeAdded, int newX, int newY) {
+	public boolean addAsteroid(Asteroid toBeAdded, double newX, double newY) {
 		for (Asteroid a : asteroidList) {
 			if (newX >= a.getX() && newX <= a.getX() + GameObjectFactory.ASTEROID_WIDTH && newY >= a.getY()
 					&& newY <= a.getY() + GameObjectFactory.ASTEROID_HEIGHT) {
 				return false;
 			}
-		}
+		} 
 		toBeAdded.setX(newX);
 		toBeAdded.setY(newY);
 		asteroidList.add(toBeAdded);
@@ -60,8 +60,8 @@ public class GameController extends AppController {
 			if (asteroid == null) {
 				continue;
 			}
-			if (new Rectangle(ball.getX(), ball.getY(), ball.getWidth(), ball.getHeight()).intersects(new Rectangle(
-					asteroid.getX(), asteroid.getY(), asteroid.getWidth() + 1, asteroid.getHeight() + 1))) {
+			if (new Rectangle((int)ball.getX(), (int)ball.getY(), ball.getWidth(), ball.getHeight()).intersects(new Rectangle(
+					(int)asteroid.getX(), (int)asteroid.getY(), asteroid.getWidth() + 1, asteroid.getHeight() + 1))) {
 
 				if ((asteroid instanceof ExplosiveAsteroid)) {
 					((ExplosiveAsteroid) asteroid).hit_nearby((GameView) view);
@@ -174,7 +174,16 @@ public class GameController extends AppController {
 				ball.getHeight());
 
 		if ((intersect_ball).intersects(intersect_paddle)) {
-			ball.setVelocityY((-ball.getVelocityY()));
+			
+			double paddleDegree = Math.toRadians(this.getPaddle().getRotationDegree());
+			if (paddleDegree == 0) ball.setVelocityY(-ball.getVelocityY());
+			else {
+				double angle = Math.PI - Math.atan(ball.getVelocityY()/ball.getVelocityX()) - paddleDegree;
+				
+				ball.setVelocityX(Math.cos(angle)*ball.getVelocityX() + Math.sin(angle)*ball.getVelocityY());
+				ball.setVelocityY((-Math.sin(angle)*ball.getVelocityX() + Math.cos(angle)*ball.getVelocityY()));
+			}
+			
 
 		}
 	}

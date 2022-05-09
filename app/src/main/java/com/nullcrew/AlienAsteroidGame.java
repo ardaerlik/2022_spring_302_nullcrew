@@ -32,7 +32,7 @@ public final class AlienAsteroidGame {
 		dataStrategy = dbManager;
 		
 		dbManager.connectDB();
-		changeView(null, new LoginView());
+		changeView(null, new GameView());
 	}
 	
 	public void exitApp() {
