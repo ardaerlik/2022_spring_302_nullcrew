@@ -31,14 +31,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	private Timer gameTimerUI;
 	public static GameMode gameMode;
 	public static Graphics paddleGraphics, asteroidGraphics, ballGraphics;
-	private final int MAX_ROWS = 7;
+	private final int MAX_ROWS = 11;
 	private final int MAX_COLUMNS = 15;
 	private final int MARGIN_LEFT = 50;
 	private final int MARGIN_RIGHT = 50;
 	private final int MARGIN_TOP = 50;
 	private final int MARGIN_BOTTOM = 200;
 	private final int WIDTH = 1536;
-	private final int HEIGHT = 705;
+	private final int HEIGHT = 1116;
 	public static List<GameObject> list_objects;
 	private ArrayList<MoveDirection> pressedKeys;
 	private int pressedKeysLoc;

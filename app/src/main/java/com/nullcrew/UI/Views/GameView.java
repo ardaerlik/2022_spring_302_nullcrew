@@ -44,12 +44,15 @@ public class GameView extends AppView {
 
 		gamePanel = new GamePanel(this);
 		frame.getContentPane().add(gamePanel,BorderLayout.CENTER);
+		
+		
 	}
 	
 	public void createAsteroids() {
-		int[] locSpaces = { gamePanel.getXLocationSpace(), gamePanel.getYLocationSpace() };
+		int[] locSpaces = { gamePanel.getXLocationSpace(), gamePanel.getYLocationSpace()*5/6 };
 		int[] margins = { gamePanel.getLeftMargin(), gamePanel.getTopMargin(), gamePanel.getRightMargin(),
-				gamePanel.getBottomMargin() };
+				gamePanel.getBottomMargin() };		
+				
 		int[] maxRowsColumns = { gamePanel.getMaxRows(), gamePanel.getMaxColumns() };
 		List<Asteroid> asteroidList = GameObjectFactory.createAsteroids(numOfAsteroidTypes, locSpaces, margins,
 				maxRowsColumns);
