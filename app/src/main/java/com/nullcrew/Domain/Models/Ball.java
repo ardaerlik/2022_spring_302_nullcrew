@@ -2,31 +2,31 @@ package com.nullcrew.Domain.Models;
 
 public class Ball extends GameObject {
 
-	private final int initialVelocityX = 3;
-	private final int initialVelocityY = -3;
+	private final double initialVelocityX = 3;
+	private final double initialVelocityY = -3;
 
-	private int velocityX;
-	private int velocityY;
+	private double velocityX;
+	private double velocityY;
 
-	public Ball(int x, int y, int width, int height) {
+	public Ball(double x, double y, int width, int height) {
 		super(x, y, width, height);
 		velocityX = initialVelocityX;
 		velocityY = initialVelocityY;
 	}
 
-	public int getVelocityX() {
+	public double getVelocityX() {
 		return velocityX;
 	}
 
-	public int getVelocityY() {
+	public double getVelocityY() {
 		return velocityY;
 	}
 
-	public void setVelocityX(int velocityX) {
+	public void setVelocityX(double velocityX) {
 		this.velocityX = velocityX;
 	}
 
-	public void setVelocityY(int velocityY) {
+	public void setVelocityY(double velocityY) {
 		this.velocityY = velocityY;
 	}
 

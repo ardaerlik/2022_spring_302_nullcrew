@@ -1,5 +1,17 @@
 package com.nullcrew.Domain.Models;
 
-public class PowerUp {
+import org.bson.Document;
+
+public abstract class PowerUp extends GameObject {
+
+	public PowerUp(double x, double y, int width, int height) {
+		super(x, y, width, height);
+		// TODO Auto-generated constructor stub
+	}
+
+	public Document getDocument() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

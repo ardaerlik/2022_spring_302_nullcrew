@@ -45,7 +45,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	private int pressedKeysLocInt;
 	private boolean isValidLocation;
 	private Asteroid draggedAsteroid;
-	private int initialX, initialY;
+	private double initialX, initialY;
 
 	/**
 	 * Create the panel.
@@ -127,8 +127,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				ballGraphics = g;
 
 				Graphics2D g2 = (Graphics2D) GamePanel.ballGraphics;
-				g2.fillOval(gameView.getGameController().getBall().getX(),
-						gameView.getGameController().getBall().getY(),
+				g2.fillOval((int)gameView.getGameController().getBall().getX(),
+						(int)gameView.getGameController().getBall().getY(),
 						gameView.getGameController().getBall().getWidth(),
 						gameView.getGameController().getBall().getHeight());
 			}
@@ -140,7 +140,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				List<Asteroid> asteroidList = gameView.getGameController().getAsteroidList();
 				for (Asteroid a : asteroidList) {
 					g2.setColor(a.getColor());
-					g2.fill3DRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), true);
+					g2.fill3DRect((int)a.getX(), (int)a.getY(), a.getWidth(), a.getHeight(), true);
 				}
 				g.setColor(Color.BLACK);
 			}
@@ -243,7 +243,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		paintObjects(g);
 		if(draggedAsteroid != null){
 			g.setColor(draggedAsteroid.getColor());
-			g.fill3DRect(draggedAsteroid.getX(), draggedAsteroid.getY(), draggedAsteroid.getWidth(), draggedAsteroid.getHeight(), true);
+			g.fill3DRect((int)draggedAsteroid.getX(), (int)draggedAsteroid.getY(), draggedAsteroid.getWidth(), draggedAsteroid.getHeight(), true);
 		}
 	}
 

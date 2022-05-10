@@ -11,7 +11,7 @@ public class ExplosiveAsteroid extends Asteroid {
 	private int lives;
 	private int hit_range;
 
-	public ExplosiveAsteroid(int x, int y, int width, int height, double speed) {
+	public ExplosiveAsteroid(double x, double y, int width, int height, double speed) {
 		super(x, y, width, height, speed, Color.BLACK, AsteroidType.Explosive);
 		lives = 1;
 		hit_range = 150;
@@ -43,8 +43,8 @@ public class ExplosiveAsteroid extends Asteroid {
 				if (astr instanceof ExplosiveAsteroid) {
 					continue;
 				}
-				if (new Rectangle(this.x, this.y, 100, 100)
-						.intersects(new Rectangle(astr.x, astr.y, astr.getWidth(), astr.getHeight()))) {
+				if (new Rectangle((int)this.x, (int)this.y, 100, 100)
+						.intersects(new Rectangle((int)astr.x, (int)astr.y, astr.getWidth(), astr.getHeight()))) {
 
 					temp_list.remove(astr);
 				}

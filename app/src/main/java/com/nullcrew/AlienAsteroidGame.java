@@ -29,12 +29,11 @@ public final class AlienAsteroidGame {
 	}
 	
 	public void startApp() {
-//		dbManager = DBManager.getInstance();
-//		dataStrategy = dbManager;
-//
-//		dbManager.connectDB();
-//		changeView(null, new LoginView());
-		changeView(null, new NewGameView());
+		dbManager = DBManager.getInstance();
+		dataStrategy = dbManager;
+		
+		dbManager.connectDB();
+		changeView(null, new GameView());
 	}
 	
 	public void exitApp() {

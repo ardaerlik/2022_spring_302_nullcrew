@@ -8,7 +8,7 @@ import com.nullcrew.UI.Views.GameView;
 public class SimpleAsteroid extends Asteroid {
 	private int lives;
 
-	public SimpleAsteroid(int x, int y, int width, int height, double speed) {
+	public SimpleAsteroid(double x, double y, int width, int height, double speed) {
 		super(x, y, width, height, speed, Color.RED, AsteroidType.Simple);
 		lives = 1;
 	}
