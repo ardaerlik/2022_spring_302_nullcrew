@@ -11,9 +11,9 @@ public class GameObjectFactory {
 	public static final int ASTEROID_WIDTH = 20;
 	public static final int ASTEROID_HEIGHT = 20;
 	public static final int PADDLE_X = 100;
-	public static final int PADDLE_Y = 705;
+	public static final int PADDLE_Y = 905;
 	public static final int BALL_X = 155;
-	public static final int BALL_Y = 675;
+	public static final int BALL_Y = 875;
 
 	public static Paddle createPaddle() {
 		return new Paddle(PADDLE_X, PADDLE_Y, 120, 10);
