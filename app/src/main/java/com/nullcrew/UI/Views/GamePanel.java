@@ -46,7 +46,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	private boolean isValidLocation;
 	private Asteroid draggedAsteroid;
 	private double initialX, initialY;
-
 	/**
 	 * Create the panel.
 	 */
@@ -172,10 +171,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
-
-		Rectangle2D rect = new Rectangle2D.Double(gameView.getGameController().getPaddle().getX(),
-				gameView.getGameController().getPaddle().getY(), gameView.getGameController().getPaddle().getWidth(),
-				gameView.getGameController().getPaddle().getHeight());
 		float rate_x= ((float)gameView.getFrame().getWidth()/(float) gameView.getInitialWidth());
 		float rate_y =((float)gameView.getFrame().getHeight()/(float) gameView.getInitialHeight());
 		double size_x=(double)rate_x;
@@ -187,9 +182,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 						+ gameView.getGameController().getPaddle().getWidth() / 2,
 				gameView.getGameController().getPaddle().getY()
 						- gameView.getGameController().getPaddle().getHeight() / 2);
-
-		Shape s = transform.createTransformedShape(rect);
-
+		gameView.getGameController().getPaddle().getObjShape().setTransform(transform);
+		gameView.getGameController().getPaddle().changeShape();
+		Shape s = transform.createTransformedShape(gameView.getGameController().getPaddle().getObjShape().getRect());
+		gameView.getGameController().getPaddle().getObjShape().setShape(s);
+		gameView.getGameController().getPaddle().changeShape();
 		g2d.fill(s);
 		g2d.draw(s);
 	}
