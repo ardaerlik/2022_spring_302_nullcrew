@@ -3,7 +3,7 @@ package com.nullcrew.Domain.Models;
 import java.awt.Color;
 import java.util.List;
 
-import com.nullcrew.UI.Views.GameView;
+import com.nullcrew.Domain.Controllers.GameController;
 
 public class FirmAsteroid extends Asteroid {
 	private int lives;
@@ -18,9 +18,9 @@ public class FirmAsteroid extends Asteroid {
 	}
 
 	@Override
-	public void hit(GameView gameView) {
+	public void hit(GameController gameController) {
 
-		List<Asteroid> list = gameView.getGameController().getAsteroidList();
+		List<Asteroid> list = gameController.getAsteroidList();
 
 		if (this.getHeight() == 30) {
 			this.setHeight(25);
@@ -30,7 +30,7 @@ public class FirmAsteroid extends Asteroid {
 			this.setWidth(20);
 		} else {
 			list.remove(this);
-			gameView.getGameController().setAsteroids(list);
+			gameController.setAsteroids(list);
 		}
 	}
 

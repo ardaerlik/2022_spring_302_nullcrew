@@ -3,7 +3,7 @@ package com.nullcrew.Domain.Models;
 import java.awt.Color;
 import java.util.List;
 
-import com.nullcrew.UI.Views.GameView;
+import com.nullcrew.Domain.Controllers.GameController;
 
 public class SimpleAsteroid extends Asteroid {
 	private int lives;
@@ -18,11 +18,11 @@ public class SimpleAsteroid extends Asteroid {
 	}
 
 	@Override
-	public void hit(GameView gameView) {
-		List<Asteroid> list = gameView.getGameController().getAsteroidList();
+	public void hit(GameController gameController) {
+		List<Asteroid> list = gameController.getAsteroidList();
 
 		list.remove(this);
-		gameView.getGameController().setAsteroids(list);
+		gameController.setAsteroids(list);
 	}
 
 	@Override

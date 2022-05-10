@@ -64,10 +64,10 @@ public class GameController extends AppController {
 					(int)asteroid.getX(), (int)asteroid.getY(), asteroid.getWidth() + 1, asteroid.getHeight() + 1))) {
 
 				if ((asteroid instanceof ExplosiveAsteroid)) {
-					((ExplosiveAsteroid) asteroid).hit_nearby((GameView) view);
-					asteroid.hit((GameView) view);
+					((ExplosiveAsteroid) asteroid).hit_nearby(this);
+					asteroid.hit(this);
 				} else {
-					asteroid.hit((GameView) view);
+					asteroid.hit(this);
 				}
 				return asteroid;
 			}

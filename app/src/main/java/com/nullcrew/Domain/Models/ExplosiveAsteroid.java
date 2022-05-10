@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.nullcrew.UI.Views.GameView;
+import com.nullcrew.Domain.Controllers.GameController;
 
 public class ExplosiveAsteroid extends Asteroid {
 	private int lives;
@@ -22,10 +22,10 @@ public class ExplosiveAsteroid extends Asteroid {
 	}
 
 	@Override
-	public void hit(GameView gameView) {
-		List<Asteroid> list = gameView.getGameController().getAsteroidList();
+	public void hit(GameController gameController) {
+		List<Asteroid> list = gameController.getAsteroidList();
 		list.remove(this);
-		gameView.getGameController().setAsteroids(list);
+		gameController.setAsteroids(list);
 
 	}
 
@@ -34,8 +34,8 @@ public class ExplosiveAsteroid extends Asteroid {
 		return new ExplosiveAsteroid(this.x, this.y, this.width, this.height, super.getSpeed());
 	}
 
-	public void hit_nearby(GameView gameView) {
-		List<Asteroid> list = gameView.getGameController().getAsteroidList();
+	public void hit_nearby(GameController gameController) {
+		List<Asteroid> list = gameController.getAsteroidList();
 		List<Asteroid> temp_list = list.stream().map(x -> (Asteroid) x).collect(Collectors.toList());
 
 		if (list != null && list.size() != 0) {
@@ -53,7 +53,7 @@ public class ExplosiveAsteroid extends Asteroid {
 
 		}
 
-		gameView.getGameController().setAsteroids(temp_list);
+		gameController.setAsteroids(temp_list);
 	}
 
 }
