@@ -42,6 +42,13 @@ public class GameController extends AppController {
 					&& newY <= a.getY() + GameObjectFactory.ASTEROID_HEIGHT) {
 				return false;
 			}
+			if(a==toBeAdded) {
+				continue;
+			}
+			if(new Rectangle2D.Double(newX,newY,toBeAdded.getWidth(),toBeAdded.getHeight()).intersects(
+					new Rectangle2D.Double(a.getX(),a.getY(),a.getWidth(),a.getHeight()))) {
+				return false;
+			}
 		} 
 		toBeAdded.setX(newX);
 		toBeAdded.setY(newY);
