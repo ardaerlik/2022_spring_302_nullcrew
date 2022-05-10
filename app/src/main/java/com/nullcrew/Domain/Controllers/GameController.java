@@ -14,7 +14,6 @@ import com.nullcrew.Domain.Models.AsteroidType;
 import com.nullcrew.Domain.Models.Ball;
 import com.nullcrew.Domain.Models.ExplosiveAsteroid;
 import com.nullcrew.Domain.Models.GameMode;
-import com.nullcrew.Domain.Models.GameObject;
 import com.nullcrew.Domain.Models.GameObjectFactory;
 import com.nullcrew.Domain.Models.MessageType;
 import com.nullcrew.Domain.Models.MoveDirection;
@@ -64,10 +63,10 @@ public class GameController extends AppController {
 					(int)asteroid.getX(), (int)asteroid.getY(), asteroid.getWidth() + 1, asteroid.getHeight() + 1))) {
 
 				if ((asteroid instanceof ExplosiveAsteroid)) {
-					((ExplosiveAsteroid) asteroid).hit_nearby((GameView) view);
-					asteroid.hit((GameView) view);
+					((ExplosiveAsteroid) asteroid).hit_nearby(this);
+					asteroid.hit(this);
 				} else {
-					asteroid.hit((GameView) view);
+					asteroid.hit(this);
 				}
 				return asteroid;
 			}
@@ -155,18 +154,18 @@ public class GameController extends AppController {
 	}
 
 	public void paddleHitBall() {
-		Rectangle2D rect = new Rectangle2D.Double(((GameView) view).getGameController().getPaddle().getX(),
-				((GameView) view).getGameController().getPaddle().getY(), 
-				((GameView) view).getGameController().getPaddle().getWidth(),
-				((GameView) view).getGameController().getPaddle().getHeight());
+		Rectangle2D rect = new Rectangle2D.Double(getPaddle().getX(),
+				getPaddle().getY(), 
+				getPaddle().getWidth(),
+				getPaddle().getHeight());
 
 		AffineTransform transform = new AffineTransform();
 
-		transform.rotate(Math.toRadians(((GameView) view).getGameController().getPaddle().getRotationDegree()),
-				((GameView) view).getGameController().getPaddle().getX()
-						+ ((GameView) view).getGameController().getPaddle().getWidth() / 2,
-				((GameView) view).getGameController().getPaddle().getY()
-						- ((GameView) view).getGameController().getPaddle().getHeight() / 2);
+		transform.rotate(Math.toRadians(getPaddle().getRotationDegree()),
+				getPaddle().getX()
+						+ getPaddle().getWidth() / 2,
+				getPaddle().getY()
+						- getPaddle().getHeight() / 2);
 
 		Shape s = transform.createTransformedShape(rect);
 		Rectangle2D intersect_paddle = s.getBounds2D();
@@ -194,7 +193,7 @@ public class GameController extends AppController {
 		}
 		switch (direction) {
 		case RIGHT: {
-			if (paddle.getX() + ((GameView) view).getGameController().getPaddle().getWidth() < ((GameView) view).getInitialWidth()) {
+			if (paddle.getX() + getPaddle().getWidth() < ((GameView) view).getInitialWidth()) {
 				paddle.setX(paddle.getX() + paddle.velocity);
 			}
 			break;

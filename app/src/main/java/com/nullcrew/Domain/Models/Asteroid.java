@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import org.bson.Document;
 
-import com.nullcrew.UI.Views.GameView;
+import com.nullcrew.Domain.Controllers.GameController;
 
 public abstract class Asteroid extends GameObject {
 	private double speed;
@@ -24,7 +24,7 @@ public abstract class Asteroid extends GameObject {
 		return speed;
 	}
 
-	public abstract void hit(GameView gameView);
+	public abstract void hit(GameController gameController);
 
 	public Color getColor() {
 		return color;
