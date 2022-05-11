@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nullcrew.AlienAsteroidGame;
+import com.nullcrew.Domain.Models.Alien;
 import com.nullcrew.Domain.Models.Asteroid;
 import com.nullcrew.Domain.Models.AsteroidType;
 import com.nullcrew.Domain.Models.Ball;
@@ -29,6 +30,7 @@ public class GameController extends AppController {
 	private List<Asteroid> asteroidList;
 	private Ball ball;
 	private Paddle paddle;
+	private Alien alien;
 	public GameController(GameView gameView, AlienAsteroidGame app) {
 		super(gameView, app);
 		asteroidList = new ArrayList<>();
@@ -155,6 +157,10 @@ public class GameController extends AppController {
 
 	public Paddle getPaddle() {
 		return paddle;
+	}
+	
+	public Alien getAlien() {
+		return alien;
 	}
 
 	public void paddleHitBall() {
@@ -286,6 +292,10 @@ public class GameController extends AppController {
 
 	public void setPaddle(Paddle paddle) {
 		this.paddle = paddle;
+	}
+	
+	public void setAlien(Alien alien) {
+		this.alien = alien;
 	}
 
 }

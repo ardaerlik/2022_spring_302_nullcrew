@@ -10,6 +10,8 @@ import com.nullcrew.UI.Views.GamePanel;
 public class GameObjectFactory {
 	public static final int ASTEROID_WIDTH = 20;
 	public static final int ASTEROID_HEIGHT = 20;
+	public static final int ALIEN_WIDTH = 40;
+	public static final int ALIEN_HEIGHT = 40;
 	public static final int PADDLE_X = 100;
 	public static final int PADDLE_Y = 1005;
 	public static final int BALL_X = 155;
@@ -21,6 +23,24 @@ public class GameObjectFactory {
 
 	public static Ball createBall() {
 		return new Ball(BALL_X, BALL_Y, 17, 17);
+	}
+	
+	public static Alien createAlien() {
+		
+		int random = new Random().nextInt(3);
+		
+		switch (random) {
+			case 0:
+				return new RepairingAlien(0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
+			case 1:
+				return new CooperativeAlien(0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
+			case 2:
+				return new ProtectingAlien(0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
+			case 3:
+				return new TimeWastingAlien(0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
+		}
+		
+		return null;
 	}
 
 	public static List<Asteroid> createAsteroids(int[] numOfAsteroidTypes, int[] locSpaces, int[] margins,

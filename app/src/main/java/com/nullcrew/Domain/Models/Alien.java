@@ -22,6 +22,19 @@ public abstract class Alien extends GameObject {
 	
 	public abstract void hit(GameController gameController);
 
+	
+	public double getSpeed() {
+		return speed;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public AlienType getType() {
+		return type;
+	}
+
 	public Document getDocument() {
 		Document document = new Document()
 				.append("speed", speed)

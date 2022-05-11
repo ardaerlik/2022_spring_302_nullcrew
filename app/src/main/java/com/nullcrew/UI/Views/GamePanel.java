@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import com.nullcrew.Domain.Models.Alien;
 import com.nullcrew.Domain.Models.Asteroid;
 import com.nullcrew.Domain.Models.Ball;
 import com.nullcrew.Domain.Models.GameMode;
@@ -30,7 +31,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	private GameView gameView;
 	private Timer gameTimerUI;
 	public static GameMode gameMode;
-	public static Graphics paddleGraphics, asteroidGraphics, ballGraphics;
+	public static Graphics paddleGraphics, asteroidGraphics, ballGraphics, alienGraphics;
 	private final int MAX_ROWS = 11;
 	private final int MAX_COLUMNS = 15;
 	private final int MARGIN_LEFT = 50;
@@ -60,6 +61,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		initialX=-1;
 		initialY=-1;
 
+		createAlien();
 		createGameObjects();
 		configureUI();
 
@@ -82,6 +84,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		gameView.getGameController().setBall(GameObjectFactory.createBall());
 		list_objects.add(gameView.getGameController().getPaddle());
 		list_objects.add(gameView.getGameController().getBall());
+	}
+	
+	public void createAlien() {
+		gameView.getGameController().setAlien(GameObjectFactory.createAlien());
+		list_objects.add(gameView.getGameController().getAlien());
 	}
 
 	private void configureUI() {
@@ -142,6 +149,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 					g2.fill3DRect((int)a.getX(), (int)a.getY(), a.getWidth(), a.getHeight(), true);
 				}
 				g.setColor(Color.BLACK);
+			}
+			
+			if (object instanceof Alien) {
+				g.setColor(Color.BLUE);
+				alienGraphics = g;
+				Graphics2D g2 = (Graphics2D) GamePanel.alienGraphics;
+				
+				Alien alien = gameView.getGameController().getAlien();
+				g2.setColor(alien.getColor());
+				g2.fill3DRect((int)alien.getX(), (int)alien.getY(), alien.getWidth(), alien.getHeight(), true);
+				
 			}
 		}
 	}
