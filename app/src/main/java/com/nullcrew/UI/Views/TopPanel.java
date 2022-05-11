@@ -100,7 +100,7 @@ public class TopPanel extends JPanel {
 					JOptionPane.showMessageDialog(null, "Total min threshold (at least 75) is violated!", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				} else if (msg == MessageType.MaxThresholdErrorTotal) {
-					JOptionPane.showMessageDialog(null, "Total max threshold (at most 105) is violated!", "Error",
+					JOptionPane.showMessageDialog(null, "Total max threshold (at most 165) is violated!", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				} else if (msg == MessageType.MinThresholdErrorFirm) {
 					JOptionPane.showMessageDialog(null, "Firm min threshold (at least 10) is violated!", "Error",

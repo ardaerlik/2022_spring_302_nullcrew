@@ -21,7 +21,7 @@ import com.nullcrew.UI.Views.GamePanel;
 import com.nullcrew.UI.Views.GameView;
 
 public class GameController extends AppController {
-	public static final int MAX_NUM_ASTEROIDS = 105;
+	public static final int MAX_NUM_ASTEROIDS = 165;
 	public static final int MIN_NUM_ASTEROIDS = 75;
 	public static final int MIN_NUM_EXPLOSIVE = 5;
 	public static final int MIN_NUM_FIRM = 10;
