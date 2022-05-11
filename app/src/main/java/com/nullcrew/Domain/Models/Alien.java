@@ -1,17 +1,33 @@
 package com.nullcrew.Domain.Models;
 
+import java.awt.Color;
+
 import org.bson.Document;
 
-public abstract class Alien extends GameObject {
+import com.nullcrew.Domain.Controllers.GameController;
 
-	public Alien(double x, double y, int width, int height) {
+public abstract class Alien extends GameObject {
+	private double speed;
+	private Color color;
+	private AlienType type;
+	private String alienType;
+
+	public Alien(double x, double y, int width, int height, double speed, Color color, AlienType type) {
 		super(x, y, width, height);
-		// TODO Auto-generated constructor stub
+		this.speed = speed;
+		this.color = color;
+		this.type = type;
+		this.alienType = type.toString();	
 	}
+	
+	public abstract void hit(GameController gameController);
 
 	public Document getDocument() {
-		// TODO Auto-generated method stub
-		return null;
+		Document document = new Document()
+				.append("speed", speed)
+				.append("type", alienType);
+		
+		return document;
 	}
 	
 	
