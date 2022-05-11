@@ -43,7 +43,7 @@ public class ExplosiveAsteroid extends Asteroid {
 				if (astr instanceof ExplosiveAsteroid) {
 					continue;
 				}
-				if (new Rectangle((int)this.x, (int)this.y, 100, 100)
+				if (new Rectangle((int)this.x, (int)this.y, hit_range, hit_range)
 						.intersects(new Rectangle((int)astr.x, (int)astr.y, astr.getWidth(), astr.getHeight()))) {
 
 					temp_list.remove(astr);

@@ -371,7 +371,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			if(temp_ball.intersects(temp_asteroid)||temp_paddle.intersects(temp_asteroid)) {
 				success=false;
 			}
-			else if(temp_asteroid.getCenterY()>=temp_paddle.getCenterY() || 0>temp_asteroid.getCenterY()){
+			else if(temp_asteroid.getCenterY()>=temp_paddle.getCenterY() || 0>temp_asteroid.getCenterY()-temp_asteroid.getHeight()/2){
+				success=false;
+			}
+			else if((temp_asteroid.getCenterX()+temp_asteroid.getWidth()/2)>=gameView.getInitialWidth()) {
+				success=false;
+			}
+			else if(temp_asteroid.getCenterY()+temp_asteroid.getHeight()*3>=gameView.getGameController().getPaddle().getY()) {
 				success=false;
 			}
 			else {
@@ -379,6 +385,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				draggedAsteroid.setY(initialY);
 				success = gameView.getGameController().addAsteroid(draggedAsteroid, x, y);
 			}
+			
 			if (!success) {
 				JOptionPane.showMessageDialog(null, "Can not drop the dragged asteroid on this position", "Error",
 						JOptionPane.ERROR_MESSAGE);
