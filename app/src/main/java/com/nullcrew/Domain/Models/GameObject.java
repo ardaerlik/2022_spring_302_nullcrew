@@ -1,6 +1,9 @@
 package com.nullcrew.Domain.Models;
 
-public abstract class GameObject {
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+public abstract class GameObject{
+	protected ObjectShape object_shape;
 	protected double x;
 	protected double y;
 	protected int width;
@@ -14,14 +17,22 @@ public abstract class GameObject {
 		this.height = height;
 		initial_width=width;
 		initial_height=height;
+		object_shape = new ObjectShape();
+		object_shape.setRect(new Rectangle2D.Double(x,y,width,height));
+		object_shape.setTransform(new AffineTransform());
+		object_shape.setShape(object_shape.getTransform().createTransformedShape(object_shape.getRect()));
 	}
-
+	public void changeShape() {
+		object_shape.setRect(new Rectangle2D.Double(x,y,width,height));
+		object_shape.setShape(object_shape.getTransform().createTransformedShape(object_shape.getRect()));
+	}
 	public double getX() {
 		return x;
 	}
 
 	public void setX(double x) {
 		this.x = x;
+		changeShape();
 	}
 
 	public double getY() {
@@ -30,6 +41,7 @@ public abstract class GameObject {
 
 	public void setY(double y) {
 		this.y = y;
+		changeShape();
 	}
 
 	public int getWidth() {
@@ -38,6 +50,7 @@ public abstract class GameObject {
 
 	public void setWidth(int width) {
 		this.width = width;
+		changeShape();
 	}
 
 	public int getHeight() {
@@ -46,6 +59,10 @@ public abstract class GameObject {
 
 	public void setHeight(int height) {
 		this.height = height;
+		changeShape();
+	}
+	public ObjectShape getObjShape() {
+		return object_shape;
 	}
 	public int getInitialWidth(){
 		return initial_width;

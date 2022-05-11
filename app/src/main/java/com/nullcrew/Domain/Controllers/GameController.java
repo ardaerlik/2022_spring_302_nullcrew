@@ -1,10 +1,9 @@
 package com.nullcrew.Domain.Controllers;
 
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-
+import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +29,6 @@ public class GameController extends AppController {
 	private List<Asteroid> asteroidList;
 	private Ball ball;
 	private Paddle paddle;
-
 	public GameController(GameView gameView, AlienAsteroidGame app) {
 		super(gameView, app);
 		asteroidList = new ArrayList<>();
@@ -59,8 +57,7 @@ public class GameController extends AppController {
 			if (asteroid == null) {
 				continue;
 			}
-			if (new Rectangle((int)ball.getX(), (int)ball.getY(), ball.getWidth(), ball.getHeight()).intersects(new Rectangle(
-					(int)asteroid.getX(), (int)asteroid.getY(), asteroid.getWidth() + 1, asteroid.getHeight() + 1))) {
+			if(ball.getObjShape().getShape().intersects(asteroid.getObjShape().getRect())) {
 
 				if ((asteroid instanceof ExplosiveAsteroid)) {
 					((ExplosiveAsteroid) asteroid).hit_nearby(this);
@@ -154,36 +151,11 @@ public class GameController extends AppController {
 	}
 
 	public void paddleHitBall() {
-		Rectangle2D rect = new Rectangle2D.Double(getPaddle().getX(),
-				getPaddle().getY(), 
-				getPaddle().getWidth(),
-				getPaddle().getHeight());
-
-		AffineTransform transform = new AffineTransform();
-
-		transform.rotate(Math.toRadians(getPaddle().getRotationDegree()),
-				getPaddle().getX()
-						+ getPaddle().getWidth() / 2,
-				getPaddle().getY()
-						- getPaddle().getHeight() / 2);
-
-		Shape s = transform.createTransformedShape(rect);
-		Rectangle2D intersect_paddle = s.getBounds2D();
-		Rectangle2D intersect_ball = new Rectangle2D.Double(ball.getX(), ball.getY(), ball.getWidth(),
-				ball.getHeight());
-
-		if ((intersect_ball).intersects(intersect_paddle)) {
+		Rectangle2D rectx= new Rectangle2D.Double(paddle.getX(),paddle.getY(),paddle.getInitialWidth()+2,paddle.getInitialHeight()+2);
+		Shape s= paddle.getObjShape().getTransform().createTransformedShape(rectx);
+		if (s.intersects(ball.getObjShape().getRect())){
 			
-			double paddleDegree = Math.toRadians(this.getPaddle().getRotationDegree());
-			if (paddleDegree == 0) ball.setVelocityY(-ball.getVelocityY());
-			else {
-				double angle = Math.PI - Math.atan(ball.getVelocityY()/ball.getVelocityX()) - paddleDegree;
-				
-				ball.setVelocityX(Math.cos(angle)*ball.getVelocityX() + Math.sin(angle)*ball.getVelocityY());
-				ball.setVelocityY((-Math.sin(angle)*ball.getVelocityX() + Math.cos(angle)*ball.getVelocityY()));
-			}
-			
-
+			ball.setVelocityY((-ball.getVelocityY()));
 		}
 	}
 
