@@ -19,6 +19,8 @@ public class GiftAsteroid extends Asteroid {
 
 	@Override
 	public void hit(GameController gameController) {
+		
+		gameController.appearAsteroid();
 
 		List<Asteroid> list = gameController.getAsteroidList();
 

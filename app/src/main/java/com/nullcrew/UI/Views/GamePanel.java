@@ -61,7 +61,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		initialX=-1;
 		initialY=-1;
 
-		createAlien();
+		
 		createGameObjects();
 		configureUI();
 
@@ -322,6 +322,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	public void actionPerformed(ActionEvent e) {
 		gameView.getGameController().ballMoved();
 		gameView.getGameController().paddleHitBall();
+		//gameView.getGameController().protectingAlienMoved();
 		Asteroid asteroid = gameView.getGameController().ballHitAsteroid();
 		if (asteroid != null) {
 			gameView.getGameController().reflectFromAsteroid(asteroid);

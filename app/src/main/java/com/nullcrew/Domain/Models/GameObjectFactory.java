@@ -35,7 +35,7 @@ public class GameObjectFactory {
 			case 1:
 				return new CooperativeAlien(0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
 			case 2:
-				return new ProtectingAlien(0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
+				return new ProtectingAlien(0, 820, ALIEN_WIDTH, ALIEN_HEIGHT);
 			case 3:
 				return new TimeWastingAlien(0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
 		}

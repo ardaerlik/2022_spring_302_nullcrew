@@ -27,6 +27,10 @@ public abstract class Alien extends GameObject {
 		return speed;
 	}
 
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
+
 	public Color getColor() {
 		return color;
 	}

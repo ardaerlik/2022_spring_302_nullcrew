@@ -57,6 +57,10 @@ public class GameController extends AppController {
 		return true;
 	}
 
+	public void appearAsteroid() {
+		((GameView) view).getGamePanel().createAlien();
+	}
+	
 	public Asteroid ballHitAsteroid() {
 		if (getAsteroidList() == null || getAsteroidList().size() == 0) {
 			return null;
@@ -97,6 +101,19 @@ public class GameController extends AppController {
 		ball.setX(ball.getX() + ball.getVelocityX());
 		ball.setY(ball.getY() + ball.getVelocityY());
 
+	}
+	
+	public void protectingAlienMoved() {
+		if (GamePanel.gameMode == GameMode.PAUSED) {
+			return;
+		}
+		if (0 >= alien.getX()) {
+			alien.setSpeed(-alien.getSpeed());
+		}
+		if (alien.getX() + alien.getWidth() >= ((GameView) view).getInitialWidth()) {
+			alien.setSpeed(-alien.getSpeed());
+		}
+		alien.setX(alien.getX() + alien.getSpeed());
 	}
 
 	public MessageType checkNumAsteroids(int[] numOfAsteroidTypes) { // simple, firm, explosive, gift

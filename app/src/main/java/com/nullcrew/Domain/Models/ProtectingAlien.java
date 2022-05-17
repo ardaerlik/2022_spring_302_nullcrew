@@ -10,7 +10,7 @@ public class ProtectingAlien extends Alien {
 	
 
 	public ProtectingAlien(double x, double y, int width, int height) {
-		super(x, y, width, height, 0, Color.ORANGE, AlienType.Protecting);
+		super(x, y, width, height, 20, Color.PINK, AlienType.Protecting);
 		// TODO Auto-generated constructor stub
 	}
 
