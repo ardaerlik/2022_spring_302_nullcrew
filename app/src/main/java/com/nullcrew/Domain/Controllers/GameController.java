@@ -31,6 +31,7 @@ public class GameController extends AppController {
 	private Ball ball;
 	private Paddle paddle;
 	private Alien alien;
+
 	public GameController(GameView gameView, AlienAsteroidGame app) {
 		super(gameView, app);
 		asteroidList = new ArrayList<>();

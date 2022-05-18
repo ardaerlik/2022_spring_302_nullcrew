@@ -6,16 +6,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import com.nullcrew.Domain.Controllers.MenuController;
+import com.nullcrew.AlienAsteroidGame;
+
 public class MenuView extends AppView {
     private JPanel loginPanel, midPanel, buttonPanel;
     private JButton credentials, newLoadGame, help;
     private JLabel title, credentialsText, newLoadGameText, helpText;
+    private MenuController menuController;
 
     /**
 	 * Create the application.
 	 */
     public MenuView() {
     	super(new JFrame());
+        menuController = new MenuController(this, AlienAsteroidGame.getInstance());
         initialize();
     }
 
@@ -80,21 +85,21 @@ public class MenuView extends AppView {
     private class CredentialsActionListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            System.out.println("Credentials");
+            menuController.creditsClicked();
         }
     }
 
     private class NewLoadGameActionListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            System.out.println("New/Load Game");
+            menuController.newGameClicked();
         }
     }
 
     private class HelpActionListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            System.out.println("Help Screen");
+            menuController.helpClicked();
         }
     }
 

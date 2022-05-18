@@ -10,6 +10,7 @@ public abstract class GameObject{
 	protected int height;
 	private int initial_width;
 	private int initial_height;
+
 	public GameObject(double x, double y, int width, int height) {
 		this.x = x;
 		this.y = y;
@@ -22,10 +23,12 @@ public abstract class GameObject{
 		object_shape.setTransform(new AffineTransform());
 		object_shape.setShape(object_shape.getTransform().createTransformedShape(object_shape.getRect()));
 	}
+
 	public void changeShape() {
 		object_shape.setRect(new Rectangle2D.Double(x,y,width,height));
 		object_shape.setShape(object_shape.getTransform().createTransformedShape(object_shape.getRect()));
 	}
+
 	public double getX() {
 		return x;
 	}
