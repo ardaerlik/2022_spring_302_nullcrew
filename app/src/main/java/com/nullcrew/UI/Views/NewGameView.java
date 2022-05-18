@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Domain.Controllers.LoginController;
+import com.nullcrew.Domain.Controllers.NewGameController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,12 +20,15 @@ public class NewGameView extends AppView {
     private String[] updateLabels, scoreLabels;
     private final int GRID_ROWS = 2;
     private final int GRID_COLUMNS = 5;
+    private JButton backButton;
+    private NewGameController newGameController;
 
     /**
      * Create the application.
      */
     public NewGameView() {
         super(new JFrame());
+        newGameController = new NewGameController(this, AlienAsteroidGame.getInstance());
         initalize();
     }
 
@@ -79,6 +83,9 @@ public class NewGameView extends AppView {
             gameButtons[i].addActionListener( new GameButtonActionListener());
         }
 
+        backButton = new JButton("Back");
+        backButton.addActionListener( new BackActionListener());
+
         newGamePanel.add(Box.createVerticalStrut(30));
         newGamePanel.add(title);
         newGamePanel.add(Box.createVerticalStrut(30));
@@ -88,6 +95,8 @@ public class NewGameView extends AppView {
             buttonPanel.add(b);
         }
         newGamePanel.add(buttonPanel);
+        newGamePanel.add(Box.createVerticalStrut(30));
+        newGamePanel.add(backButton);
         frame.add(newGamePanel);
     }
 
@@ -110,6 +119,13 @@ public class NewGameView extends AppView {
                 }
             }
 
+        }
+    }
+
+    private class BackActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            newGameController.backClicked();
         }
     }
 }

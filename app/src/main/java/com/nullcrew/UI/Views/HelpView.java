@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Domain.Controllers.LoginController;
+import com.nullcrew.Domain.Controllers.HelpsController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,12 +15,15 @@ import java.awt.event.MouseEvent;
 public class HelpView extends AppView {
     private JPanel helpPanel, asteroidPanel;
     private JLabel title, simpleText, firmText, giftText, expText;
+    private JButton backButton;
+    private HelpsController helpsController;
 
     /**
      * Create the application.
      */
     public HelpView() {
         super(new JFrame());
+        helpsController = new HelpsController(this, AlienAsteroidGame.getInstance());
         initalize();
     }
 
@@ -50,6 +54,9 @@ public class HelpView extends AppView {
         giftText = new JLabel( "<html><img src=\"file:assets/gift.png\"> &emsp; Gift asteroids: These asteroids can be destroyed in one hit like simple ones. However, they are hiding inside power-ups or triggers for the aliens to start repairing or protecting the wall.</html>");
         giftText.setForeground(Color.LIGHT_GRAY);
 
+        backButton = new JButton("Back");
+        backButton.addActionListener( new BackActionListener());
+
         asteroidPanel.add(simpleText);
         asteroidPanel.add(firmText);
         asteroidPanel.add(expText);
@@ -61,6 +68,14 @@ public class HelpView extends AppView {
         helpPanel.add(asteroidPanel);
         helpPanel.add(Box.createVerticalStrut(40));
         frame.add(helpPanel);
+        helpPanel.add(Box.createVerticalStrut(30));
+        helpPanel.add(backButton);
     }
 
+    private class BackActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            helpsController.backClicked();
+        }
+    }
 }
