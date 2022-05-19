@@ -60,7 +60,7 @@ public class GameObjectFactory {
 		return asteroids;
 	}
 
-	private static List<Asteroid> createSimple(int numSimple){
+	public static List<Asteroid> createSimple(int numSimple){
 		List<Asteroid> asteroids = new ArrayList<>();
 		for (int i = 0; i < numSimple; i++) {
 			SimpleAsteroid simpleAsteroid = new SimpleAsteroid(0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
@@ -72,7 +72,7 @@ public class GameObjectFactory {
 		return asteroids;
 	}
 
-	private static List<Asteroid> createFirm(int numFirm){
+	public static List<Asteroid> createFirm(int numFirm){
 		List<Asteroid> asteroids = new ArrayList<>();
 		for (int i = 0; i < numFirm; i++) {
 			Random rand = new Random();
@@ -86,7 +86,7 @@ public class GameObjectFactory {
 		return asteroids;
 	}
 
-	private static List<Asteroid> createExplosive(int numExplosive){
+	public static List<Asteroid> createExplosive(int numExplosive){
 		List<Asteroid> asteroids = new ArrayList<>();
 		for (int i = 0; i < numExplosive; i++) {
 			ExplosiveAsteroid explosiveAsteroid = new ExplosiveAsteroid(0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
@@ -98,7 +98,7 @@ public class GameObjectFactory {
 		return asteroids;
 	}
 
-	private static List<Asteroid> createGift(int numGift){
+	public static List<Asteroid> createGift(int numGift){
 		List<Asteroid> asteroids = new ArrayList<>();
 		for (int i = 0; i < numGift; i++) {
 			GiftAsteroid giftAsteroid = new GiftAsteroid(0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
