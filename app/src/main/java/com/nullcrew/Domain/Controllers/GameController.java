@@ -27,7 +27,7 @@ public class GameController extends AppController {
 	public static final int MIN_NUM_EXPLOSIVE = 5;
 	public static final int MIN_NUM_FIRM = 10;
 	public static final int MIN_NUM_GIFT = 10;
-	private List<Asteroid> asteroidList;
+	private static List<Asteroid> asteroidList;
 	private Ball ball;
 	private Paddle paddle;
 	private Alien alien;
@@ -36,7 +36,10 @@ public class GameController extends AppController {
 		asteroidList = new ArrayList<>();
 	}
 
-	public boolean addAsteroid(Asteroid toBeAdded, double newX, double newY) {
+	public static boolean addAsteroid(Asteroid toBeAdded, double newX, double newY) {
+		if(toBeAdded==null||newX<0||newY<0||newX>1536||newY>1152) {
+			return false;
+		}
 		for (Asteroid a : asteroidList) {
 			if (newX >= a.getX() && newX <= a.getX() + GameObjectFactory.ASTEROID_WIDTH && newY >= a.getY()
 					&& newY <= a.getY() + GameObjectFactory.ASTEROID_HEIGHT) {
@@ -53,7 +56,7 @@ public class GameController extends AppController {
 		toBeAdded.setX(newX);
 		toBeAdded.setY(newY);
 		asteroidList.add(toBeAdded);
-		((GameView) view).getGamePanel().repaint();
+		//((GameView) view).getGamePanel().repaint();
 		return true;
 	}
 
