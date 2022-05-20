@@ -402,6 +402,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				draggedAsteroid.setX(initialX);
 				draggedAsteroid.setY(initialY);
 				success = gameView.getGameController().addAsteroid(draggedAsteroid, x, y);
+				gameView.getGamePanel().repaint();
 			}
 			
 			if (!success) {
@@ -409,6 +410,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 						JOptionPane.ERROR_MESSAGE);
 //				System.out.println(initialX+", "+initialY);
 				gameView.getGameController().addAsteroid(draggedAsteroid, initialX, initialY);
+				gameView.getGamePanel().repaint();
 			}
 			draggedAsteroid=null;
 			initialX=-1;
