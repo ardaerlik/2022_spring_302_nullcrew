@@ -27,7 +27,7 @@ public class GameController extends AppController {
 	public static final int MIN_NUM_EXPLOSIVE = 5;
 	public static final int MIN_NUM_FIRM = 10;
 	public static final int MIN_NUM_GIFT = 10;
-	private static List<Asteroid> asteroidList;
+	public static List<Asteroid> asteroidList;
 	private Ball ball;
 	private Paddle paddle;
 	private Alien alien;
