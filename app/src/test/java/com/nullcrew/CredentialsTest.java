@@ -25,10 +25,6 @@ class CredentialsTest {
 	DBManager dbManager;
 
 	/**
-	 * REQUIRES:
-	 * MODIFIES:
-	 * EFFECTS:
-	 * 
 	 * @throws java.lang.Exception
 	 */
 	@BeforeEach
@@ -38,9 +34,9 @@ class CredentialsTest {
 	}
 
 	/**
-	 * REQUIRES:
-	 * MODIFIES:
-	 * EFFECTS:
+	 * @requires DBManager instance is created, MongoClient is opened, and both arguments are null
+	 * @effects throws NullPointerException
+	 * @modifies None
 	 */
 	@Test
 	@DisplayName("throws NullPointerException when both arguments are null")
@@ -52,9 +48,9 @@ class CredentialsTest {
 	}
 	
 	/**
-	 * REQUIRES:
-	 * MODIFIES:
-	 * EFFECTS:
+	 * @requires DBManager instance is created, MongoClient is opened, and password is null
+	 * @effects throws NullPointerException
+	 * @modifies None
 	 */
 	@Test
 	@DisplayName("throws NullPointerException when password is null")
@@ -66,9 +62,9 @@ class CredentialsTest {
 	}
 	
 	/**
-	 * REQUIRES:
-	 * MODIFIES:
-	 * EFFECTS:
+	 * @requires DBManager instance is created, MongoClient is opened, and email is null
+	 * @effects throws NullPointerException
+	 * @modifies None
 	 */
 	@Test
 	@DisplayName("throws NullPointerException when email is null")
@@ -80,16 +76,16 @@ class CredentialsTest {
 	}
 	
 	/**
-	 * REQUIRES:
-	 * MODIFIES:
-	 * EFFECTS:
+	 * @requires DBManager instance is created, MongoClient is opened, and email is not valid
+	 * @effects throws IllegalArgumentException
+	 * @modifies None
 	 */
 	@Test
 	@DisplayName("throws IllegalArgumentException when email is not a valid by REGEX")
 	void test4() {
 		assertThrows(IllegalArgumentException.class,
 				() -> {
-					dbManager.checkCredentials("aerlik20@ku.", "123456");
+					dbManager.checkCredentials("aerlik20@", "123456");
 				});
 		assertThrows(IllegalArgumentException.class,
 				() -> {
@@ -105,36 +101,36 @@ class CredentialsTest {
 	@DisplayName("when valid arguments are passed")
 	class ValidArguments {
 		/**
-		 * REQUIRES:
-		 * MODIFIES:
-		 * EFFECTS:
+		 * @requires DBManager instance is created, MongoClient is opened, and email is not found
+		 * @effects returns null
+		 * @modifies database instance
 		 */
 		@Test
-		@DisplayName("return null if the email is not found")
+		@DisplayName("returns null if the email is not found")
 		void test5() {
 			ObjectId userId = dbManager.checkCredentials("wrong@email.com", "123456");
 			assertNull(userId);
 		}
 		
 		/**
-		 * REQUIRES:
-		 * MODIFIES:
-		 * EFFECTS:
+		 * @requires DBManager instance is created, MongoClient is opened, and password is wrong
+		 * @effects returns null
+		 * @modifies database instance
 		 */
 		@Test
-		@DisplayName("return null if the password is wrong")
+		@DisplayName("returns null if the password is wrong")
 		void test6() {
 			ObjectId userId = dbManager.checkCredentials("arda.erlik@gmail.com", "wrong");
 			assertNull(userId);
 		}
 		
 		/**
-		 * REQUIRES:
-		 * MODIFIES:
-		 * EFFECTS:
+		 * @requires DBManager instance is created and MongoClient is opened
+		 * @effects returns the ObjectId of the user email
+		 * @modifies database instance
 		 */
 		@Test
-		@DisplayName("return userId if the email is not found")
+		@DisplayName("returns userId if the email is found")
 		void test7() {
 			ObjectId userId = dbManager.checkCredentials("arda.erlik@gmail.com", "1234567");
 			assertNotNull(userId);
@@ -152,10 +148,6 @@ class CredentialsTest {
 	}
 	
 	/**
-	 * REQUIRES:
-	 * MODIFIES:
-	 * EFFECTS:
-	 * 
 	 * @throws java.lang.Exception
 	 */
 	@AfterEach

@@ -147,7 +147,7 @@ public final class DBManager implements DataStrategy {
 			throw new NullPointerException("Email and password can not be null");
 		}
 		
-		String regex = "^(.+)@(.+)$";
+		String regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
 		Pattern pattern = Pattern.compile(regex);
 		if (!pattern.matcher(email).matches()) {
 			throw new IllegalArgumentException("Email argument is not valid");
