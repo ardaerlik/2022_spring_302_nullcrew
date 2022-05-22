@@ -13,7 +13,7 @@ import org.bson.types.ObjectId;
  * account.savedGames.size() >= 0}
  * <p>
  * The rep invariant is
- * account.totalScore != null && account.savedGames != null && Integer.MIN_VALUE < account.totalScore, 
+ * account.totalScore >= 0 && account.savedGames != null && Integer.MAX_VALUE > account.totalScore, 
  * account.totalScore should be int.
  */
 public class Account {
@@ -48,9 +48,20 @@ public class Account {
 	}
 
 	public void calculateTotalScore() {
+		if (totalScore < 0) {
+			throw new IllegalArgumentException();
+		}
+		
+		if (savedGames == null) {
+			throw new NullPointerException();
+		}
 		
 		for (int i = 0; i < savedGames.size(); i++) {
-			totalScore += savedGames.get(i).getScore();
+			if (totalScore < Integer.MAX_VALUE) {
+				totalScore += savedGames.get(i).getScore();
+			} else {
+				throw new ArithmeticException();
+			}
 		}
 	}
 	
