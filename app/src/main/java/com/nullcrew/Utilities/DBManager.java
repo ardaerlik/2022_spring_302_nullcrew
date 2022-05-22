@@ -2,6 +2,7 @@ package com.nullcrew.Utilities;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.regex.Pattern;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -141,7 +142,17 @@ public final class DBManager implements DataStrategy {
 		return false;
 	}
 	
-	private synchronized ObjectId checkCredentials(String email, String password) {
+	public synchronized ObjectId checkCredentials(String email, String password) {
+		if (email == null || password == null) {
+			throw new NullPointerException("Email and password can not be null");
+		}
+		
+		String regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
+		Pattern pattern = Pattern.compile(regex);
+		if (!pattern.matcher(email).matches()) {
+			throw new IllegalArgumentException("Email argument is not valid");
+		}
+		
 		FindIterable<Document> users = database.getCollection(Constants.DatabaseResponses.USERS_COLLECTION).find(new Document());
 		
 		Iterator<Document> iterator = users.iterator();
