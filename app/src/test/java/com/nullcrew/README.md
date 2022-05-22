@@ -18,6 +18,8 @@ Source test code can be found under app/src/test/java/com/nullcrew
 - CredentialsTest.java -> DBManager - checkCredentials
 - GameControllerTest.java -> GameController - addAsteroid
 - GameObjectFactoryTest.java -> GameObjectFactory - createAsteroids
+- GameController.java -> GameController - ballHitAsteroid
+- GameController.java -> GameControlelr - dragAsteroid
 
 </br>
 
@@ -36,8 +38,8 @@ All tests are passed.
 
 Group Member Name | Work Detail
 --- | ---
-Arda Erlik | CredentialsTest, test management, documentation
-Atakan Özkan | GameControllerTest
-Buğrahan Yaman | 
-Can Köz | GameObjectFactoryTest
-Muhammed Ali Kerdiğe | 
+Arda Erlik | CredentialsTest, test management, documentation, creation of Account tests
+Atakan Özkan | GameControllerTest, creation of Account tests
+Buğrahan Yaman | GameControllerTest, representation invariant, documentation, creation of Account tests
+Can Köz | GameObjectFactoryTest, creation of repOk, documentation, creation of Account tests
+Muhammed Ali Kerdiğe | GameControllerTest, abstraction function
