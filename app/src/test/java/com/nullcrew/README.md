@@ -18,8 +18,8 @@ Source test code can be found under app/src/test/java/com/nullcrew
 - CredentialsTest.java -> DBManager - checkCredentials
 - GameControllerTest.java -> GameController - addAsteroid
 - GameObjectFactoryTest.java -> GameObjectFactory - createAsteroids
-- GameController.java -> GameController - ballHitAsteroid
-- GameController.java -> GameControlelr - dragAsteroid
+- GameControllerTest.java -> GameController - ballHitAsteroid
+- GameControllerTest.java -> GameControlelr - dragAsteroid
 
 </br>
 
