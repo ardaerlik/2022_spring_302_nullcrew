@@ -2,6 +2,7 @@ package com.nullcrew.Utilities;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.regex.Pattern;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -141,7 +142,36 @@ public final class DBManager implements DataStrategy {
 		return false;
 	}
 	
-	private synchronized ObjectId checkCredentials(String email, String password) {
+	/**
+	 * Checks the credentials of the given email with password on the database
+	 * 
+	 * @requires
+	 * <li>DBManager instance is created</li>
+	 * <li>MongoClient is opened</li>
+	 * <li>MongoDatabase is created</li>
+	 * @effects 
+	 * <li>if email or password is null throws NullPointerException</li>
+	 * <li>		else if email is not matched with REGEX throws IllegalArgumentException</li>
+	 * <li>		else if email is not found returns null</li>
+	 * <li>		else if password is not correct returns null</li>
+	 * <li>		else returns userId of the email</li>
+	 * @modifies 
+	 * <li>database instance</li>
+	 * @param email 		String value of email address of the user
+	 * @param password 		String value of password of the user
+	 * @return ObjectId of the given email address or null
+	 */
+	public synchronized ObjectId checkCredentials(String email, String password) {
+		if (email == null || password == null) {
+			throw new NullPointerException("Email and password can not be null");
+		}
+		
+		String regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
+		Pattern pattern = Pattern.compile(regex);
+		if (!pattern.matcher(email).matches()) {
+			throw new IllegalArgumentException("Email argument is not valid");
+		}
+		
 		FindIterable<Document> users = database.getCollection(Constants.DatabaseResponses.USERS_COLLECTION).find(new Document());
 		
 		Iterator<Document> iterator = users.iterator();

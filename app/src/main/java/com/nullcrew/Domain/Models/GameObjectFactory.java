@@ -43,14 +43,25 @@ public class GameObjectFactory {
 		return null;
 	}
 
-	public static List<Asteroid> createAsteroids(int[] numOfAsteroidTypes, int[] locSpaces, int[] margins,
-			int[] maxRowsColumns) {
-		List<Asteroid> asteroids = new ArrayList<>();
-		int numSimple = numOfAsteroidTypes[0];
-		int numFirm = numOfAsteroidTypes[1];
-		int numExplosive = numOfAsteroidTypes[2];
-		int numGift = numOfAsteroidTypes[3];
 
+	public static List<Asteroid> createAsteroids(int[] numOfAsteroidTypes, int[] locSpaces, int[] margins, int[] maxRowsColumns) {
+		//REQUIRES: numOfAsteroidTypes != null && numOfAsteroidTypes.length == 4 && locSpaces != null && locSpaces.length == 2 && margins != null && margins.length == 4 && maxRowsColumns != null && maxRowsColumns.length == 2
+		//MODIFIES: nothing is modified
+		//EFFECTS: creates different types of Asteroids and appends them to the list of Asteroid objects, then returns the list
+		List<Asteroid> asteroids = new ArrayList<>();
+
+		asteroids.addAll( createSimple(numOfAsteroidTypes[0]));
+		asteroids.addAll( createFirm(numOfAsteroidTypes[1]));
+		asteroids.addAll( createExplosive(numOfAsteroidTypes[2]));
+		asteroids.addAll( createGift(numOfAsteroidTypes[3]));
+
+		Collections.shuffle(asteroids);
+		placeAsteroids(asteroids, numOfAsteroidTypes, locSpaces, margins, maxRowsColumns);
+		return asteroids;
+	}
+
+	public static List<Asteroid> createSimple(int numSimple){
+		List<Asteroid> asteroids = new ArrayList<>();
 		for (int i = 0; i < numSimple; i++) {
 			SimpleAsteroid simpleAsteroid = new SimpleAsteroid(0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
 			if (GamePanel.list_objects != null) {
@@ -58,6 +69,11 @@ public class GameObjectFactory {
 			}
 			asteroids.add(simpleAsteroid);
 		}
+		return asteroids;
+	}
+
+	public static List<Asteroid> createFirm(int numFirm){
+		List<Asteroid> asteroids = new ArrayList<>();
 		for (int i = 0; i < numFirm; i++) {
 			Random rand = new Random();
 			int lives = rand.nextInt(3) * 5;
@@ -67,6 +83,11 @@ public class GameObjectFactory {
 			}
 			asteroids.add(firmAsteroid);
 		}
+		return asteroids;
+	}
+
+	public static List<Asteroid> createExplosive(int numExplosive){
+		List<Asteroid> asteroids = new ArrayList<>();
 		for (int i = 0; i < numExplosive; i++) {
 			ExplosiveAsteroid explosiveAsteroid = new ExplosiveAsteroid(0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
 			if (GamePanel.list_objects != null) {
@@ -74,6 +95,11 @@ public class GameObjectFactory {
 			}
 			asteroids.add(explosiveAsteroid);
 		}
+		return asteroids;
+	}
+
+	public static List<Asteroid> createGift(int numGift){
+		List<Asteroid> asteroids = new ArrayList<>();
 		for (int i = 0; i < numGift; i++) {
 			GiftAsteroid giftAsteroid = new GiftAsteroid(0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
 			if (GamePanel.list_objects != null) {
@@ -81,8 +107,6 @@ public class GameObjectFactory {
 			}
 			asteroids.add(giftAsteroid);
 		}
-		Collections.shuffle(asteroids);
-		placeAsteroids(asteroids, numOfAsteroidTypes, locSpaces, margins, maxRowsColumns);
 		return asteroids;
 	}
 

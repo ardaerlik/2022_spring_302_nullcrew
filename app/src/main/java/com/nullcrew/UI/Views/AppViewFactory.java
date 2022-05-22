@@ -22,6 +22,12 @@ public final class AppViewFactory {
 			return new LoginView();
 		case MenuView:
 			return new MenuView();
+		case HelpView:
+			return new HelpView();
+		case NewGameView:
+			return new NewGameView();
+		case CreditsView:
+			return new CreditsView();
 		default:
 			throw new IllegalArgumentException("Illegal AppView type");
 		}

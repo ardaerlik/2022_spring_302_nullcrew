@@ -17,6 +17,7 @@ import javax.swing.Timer;
 
 import com.nullcrew.Domain.Models.Alien;
 import com.nullcrew.Domain.Models.Asteroid;
+import com.nullcrew.Domain.Models.AsteroidType;
 import com.nullcrew.Domain.Models.Ball;
 import com.nullcrew.Domain.Models.GameMode;
 import com.nullcrew.Domain.Models.GameObject;
@@ -146,7 +147,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				List<Asteroid> asteroidList = gameView.getGameController().getAsteroidList();
 				for (Asteroid a : asteroidList) {
 					g2.setColor(a.getColor());
-					g2.fill3DRect((int)a.getX(), (int)a.getY(), a.getWidth(), a.getHeight(), true);
+					if(a.getType() == AsteroidType.Explosive){
+						g2.fillOval( (int) a.getX(), (int) a.getY(), a.getWidth(), a.getHeight());
+					}else {
+						g2.fill3DRect( (int) a.getX(), (int) a.getY(), a.getWidth(), a.getHeight(), true);
+					}
 				}
 				g.setColor(Color.BLACK);
 			}

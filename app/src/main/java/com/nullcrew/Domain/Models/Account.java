@@ -5,14 +5,27 @@ import java.util.ArrayList;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+/**
+ * OVERVIEW: Account is a class which contains the prior scores of a user along with their e mail, accountId.
+ * <p>
+ * The abstraction function is
+ * AF(x) = {account.totalScore < Integer.MAX_VALUE && account.totalScore >= 0 && account.savedGames.size() <= 8 && 
+ * account.savedGames.size() >= 0}
+ * <p>
+ * The rep invariant is
+ * account.totalScore >= 0 && account.savedGames != null && Integer.MAX_VALUE > account.totalScore && account.savedGames.size() <= 8 && account.savedGames.size() >= 0, 
+ * account.totalScore should be int.
+ */
 public class Account {
 	private ObjectId accountId;
 	private String email;
 	private String password;
 	private String forgotKey;
 	private ArrayList<Game> savedGames;
+	private int totalScore;
 	
 	public Account() {
+		this.savedGames = new ArrayList<Game>();
 	}
 
 	public Account(ObjectId accountId) {
@@ -35,6 +48,43 @@ public class Account {
 		this.savedGames = savedGames;
 	}
 
+	public void calculateTotalScore() {
+		if (totalScore < 0) {
+			throw new IllegalArgumentException();
+		}
+		
+		if (savedGames == null) {
+			throw new NullPointerException();
+		}
+		
+		for (int i = 0; i < savedGames.size(); i++) {
+			if (totalScore < Integer.MAX_VALUE) {
+				totalScore += savedGames.get(i).getScore();
+			} else {
+				throw new ArithmeticException();
+			}
+		}
+	}
+	
+	public void addGame(Game game) {
+		if (game == null) {
+			throw new NullPointerException();
+		}
+		
+		if (savedGames.size() < 8) {
+			savedGames.add(game);
+		}
+	}
+	
+	public boolean repOk() {
+        if (totalScore >= 0 && totalScore < Integer.MAX_VALUE 
+        		&& savedGames.size() >= 0 && savedGames.size() <= 8) {
+        	return true;
+        } else {
+        	return false;
+        }
+    }
+	
 	public ObjectId getAccountId() {
 		return accountId;
 	}
