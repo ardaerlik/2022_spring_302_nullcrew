@@ -1,10 +1,6 @@
 package com.nullcrew.Domain.Controllers;
 
-import java.awt.geom.Rectangle2D;
-
 import com.nullcrew.AlienAsteroidGame;
-import com.nullcrew.Domain.Models.Asteroid;
-import com.nullcrew.Domain.Models.GameObjectFactory;
 import com.nullcrew.UI.Views.AppView;
 
 public class AppController {
