@@ -5,12 +5,24 @@ import java.util.ArrayList;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+/**
+ * OVERVIEW: Account is a class which contains the prior scores of a user along with their e mail, accountId.
+ * <p>
+ * The abstraction function is
+ * AF(x) = {account.totalScore < Integer.MAX_VALUE && account.totalScore>=0 && account.savedGames.size() <= 8 && 
+ * account.savedGames.size() >= 0}
+ * <p>
+ * The rep invariant is
+ * account.totalScore != null && account.savedGames != null && Integer.MIN_VALUE < account.totalScore, 
+ * account.totalScore should be int.
+ */
 public class Account {
 	private ObjectId accountId;
 	private String email;
 	private String password;
 	private String forgotKey;
 	private ArrayList<Game> savedGames;
+	private int totalScore;
 	
 	public Account() {
 	}
@@ -35,6 +47,13 @@ public class Account {
 		this.savedGames = savedGames;
 	}
 
+	public void calculateTotalScore() {
+		
+		for (int i = 0; i < savedGames.size(); i++) {
+			totalScore += savedGames.get(i).getScore();
+		}
+	}
+	
 	public ObjectId getAccountId() {
 		return accountId;
 	}
