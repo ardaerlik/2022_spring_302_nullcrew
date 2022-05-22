@@ -9,11 +9,11 @@ import org.bson.types.ObjectId;
  * OVERVIEW: Account is a class which contains the prior scores of a user along with their e mail, accountId.
  * <p>
  * The abstraction function is
- * AF(x) = {account.totalScore < Integer.MAX_VALUE && account.totalScore>=0 && account.savedGames.size() <= 8 && 
+ * AF(x) = {account.totalScore < Integer.MAX_VALUE && account.totalScore >= 0 && account.savedGames.size() <= 8 && 
  * account.savedGames.size() >= 0}
  * <p>
  * The rep invariant is
- * account.totalScore >= 0 && account.savedGames != null && Integer.MAX_VALUE > account.totalScore, 
+ * account.totalScore >= 0 && account.savedGames != null && Integer.MAX_VALUE > account.totalScore && account.savedGames.size() <= 8 && account.savedGames.size() >= 0, 
  * account.totalScore should be int.
  */
 public class Account {
@@ -64,6 +64,15 @@ public class Account {
 			}
 		}
 	}
+	
+	public boolean repOk() {
+        if (totalScore >= 0 && totalScore < Integer.MAX_VALUE 
+        		&& savedGames.size() >= 0 && savedGames.size() <= 8) {
+        	return true;
+        } else {
+        	return false;
+        }
+    }
 	
 	public ObjectId getAccountId() {
 		return accountId;
