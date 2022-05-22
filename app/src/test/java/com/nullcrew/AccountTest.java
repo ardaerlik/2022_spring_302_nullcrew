@@ -23,5 +23,35 @@ public class AccountTest {
 	void init() throws Exception {
 		account = new Account();
 	}
+	
+	@DisplayName("calculateScore throws IllegalArgumentException when totalScore < 0")
+	@Test
+	void test1() {
+		
+	}
+	
+	@DisplayName("calculateScore throws ArithmeticException when totalScore > Integer.MAX_VALUE")
+	@Test
+	void test2() {
+		
+	}
+	
+	@DisplayName("calculateScore throws NullPointerException when savedGames == null")
+	@Test
+	void test3() {
+		
+	}
+	
+	@DisplayName("addGame throws NullPointerException when game == null")
+	@Test
+	void test4() {
+		
+	}
+	
+	@DisplayName("addGame succesfully adds new game into account")
+	@Test
+	void test5() {
+		
+	}
 
 }

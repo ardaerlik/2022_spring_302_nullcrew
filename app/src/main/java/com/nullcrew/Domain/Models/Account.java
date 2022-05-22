@@ -65,6 +65,16 @@ public class Account {
 		}
 	}
 	
+	public void addGame(Game game) {
+		if (game == null) {
+			throw new NullPointerException();
+		}
+		
+		if (savedGames.size() < 8) {
+			savedGames.add(game);
+		}
+	}
+	
 	public boolean repOk() {
         if (totalScore >= 0 && totalScore < Integer.MAX_VALUE 
         		&& savedGames.size() >= 0 && savedGames.size() <= 8) {
