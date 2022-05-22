@@ -6,10 +6,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 
 import com.nullcrew.Domain.Models.*;
+import com.nullcrew.UI.Views.GameView;
 import com.nullcrew.Domain.Controllers.GameController;
 public class GameControllerTest {
 	@Test void addSimpleAsteroidTest() {
-		GameController controller = new GameController(null,null);
+		GameController controller = new GameController(new GameView(),AlienAsteroidGame.getInstance());
 		controller.asteroidList= new ArrayList<>();
 		controller.asteroidList.add(new SimpleAsteroid(500,604,20,20,20));
 		controller.asteroidList.add(new GiftAsteroid(920,1020,20,20,20));
@@ -19,7 +20,7 @@ public class GameControllerTest {
 		assertFalse(controller.addAsteroid(null,25,25),"Asteroid cannot be null and return false");
 	}
 	@Test void addFirmAsteroidTest() {
-		GameController controller = new GameController(null,null);
+		GameController controller = new GameController(new GameView(),AlienAsteroidGame.getInstance());
 		controller.asteroidList= new ArrayList<>();
 		controller.asteroidList.add(new SimpleAsteroid(500,604,20,20,20));
 		controller.asteroidList.add(new GiftAsteroid(920,1020,20,20,20));
@@ -29,7 +30,7 @@ public class GameControllerTest {
 		assertFalse(controller.addAsteroid(null,25,25),"Asteroid cannot be null and return false");
 	}
 	@Test void addGiftAsteroidTest() {
-		GameController controller = new GameController(null,null);
+		GameController controller = new GameController(new GameView(),AlienAsteroidGame.getInstance());
 		controller.asteroidList= new ArrayList<>();
 		controller.asteroidList.add(new SimpleAsteroid(500,604,20,20,20));
 		controller.asteroidList.add(new GiftAsteroid(920,1020,20,20,20));
@@ -39,7 +40,7 @@ public class GameControllerTest {
 		assertFalse(controller.addAsteroid(null,25,25),"Asteroid cannot be null and return false");
 	}
 	@Test void addExplosiveAsteroidTest() {
-		GameController controller = new GameController(null,null);
+		GameController controller = new GameController(new GameView(),AlienAsteroidGame.getInstance());
 		controller.asteroidList= new ArrayList<>();
 		controller.asteroidList.add(new SimpleAsteroid(500,604,20,20,20));
 		controller.asteroidList.add(new GiftAsteroid(920,1020,20,20,20));
@@ -49,7 +50,7 @@ public class GameControllerTest {
 		assertFalse(controller.addAsteroid(null,25,25),"Asteroid cannot be null and return false");
 	}
 	@Test void addAsteroidOnCollisionTest() {
-		GameController controller = new GameController(null,null);
+		GameController controller = new GameController(new GameView(),AlienAsteroidGame.getInstance());
 		controller.asteroidList= new ArrayList<>();
 		controller.asteroidList.add(new SimpleAsteroid(500,604,20,20,20));
 		controller.asteroidList.add(new GiftAsteroid(920,1020,20,20,20));
