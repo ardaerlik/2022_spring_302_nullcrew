@@ -1,11 +1,12 @@
-package com.nullcrew.Domain.Controllers;
+package com.nullcrew;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import com.nullcrew.*;
+
+import com.nullcrew.Domain.Controllers.GameController;
 import com.nullcrew.Domain.Models.Asteroid;
 import com.nullcrew.Domain.Models.Ball;
 import com.nullcrew.Domain.Models.FirmAsteroid;
