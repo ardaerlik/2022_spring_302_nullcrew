@@ -38,6 +38,9 @@ public class GameController extends AppController {
 	}
 
 	public boolean addAsteroid(Asteroid toBeAdded, double newX, double newY) {
+		if(toBeAdded==null||newX<0||newY<0||newX>1536|newY>1116) {
+			return false;
+		}
 		for (Asteroid a : asteroidList) {
 			if (newX >= a.getX() && newX <= a.getX() + GameObjectFactory.ASTEROID_WIDTH && newY >= a.getY()
 					&& newY <= a.getY() + GameObjectFactory.ASTEROID_HEIGHT) {
