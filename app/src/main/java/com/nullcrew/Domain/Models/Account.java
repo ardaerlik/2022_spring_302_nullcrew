@@ -25,6 +25,7 @@ public class Account {
 	private int totalScore;
 	
 	public Account() {
+		this.savedGames = new ArrayList<Game>();
 	}
 
 	public Account(ObjectId accountId) {
