@@ -17,7 +17,13 @@ public class ProtectingAlien extends Alien {
 	@Override
 	public void hit(GameController gameController) {
 		// TODO Auto-generated method stub
+		double posX = (double) this.getX() - gameController.getBall().getX();
+		double posY = (double) this.getY() - gameController.getBall().getY();
+		double angle = Math.atan2(posY - 0, posX - (double) 1) * (180 / Math.PI);
 		
+		if (45d <= angle && angle <= 135d) {
+			gameController.setAlien(null);
+		}
 	}
 
 	

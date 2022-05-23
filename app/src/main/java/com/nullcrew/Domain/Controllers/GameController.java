@@ -87,6 +87,7 @@ public class GameController extends AppController {
 	
 	public Alien ballHitAlien() {
 		if (ball.getObjShape().getShape().intersects(alien.getObjShape().getRect())) {
+			reflectFromAlien(alien);
 			alien.hit(this);
 			return alien;
 		}

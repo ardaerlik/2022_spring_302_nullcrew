@@ -16,7 +16,7 @@ public class CooperativeAlien extends Alien {
 	@Override
 	public void hit(GameController gameController) {
 		// TODO Auto-generated method stub
-		
+		gameController.setAlien(null);
 	}
 
 	
