@@ -103,11 +103,14 @@ public class GameController extends AppController {
 
 	}
 	
-	public void protectingAlienMoved() {
+	public void alienMoved() {
 		if (GamePanel.gameMode == GameMode.PAUSED) {
 			return;
-		}
-		if (0 >= alien.getX()) {
+		}/*
+		System.out.println(alien.getSpeed());
+		System.out.print("***  ");
+		System.out.println(alien.getX());*/
+		if (0 > alien.getX()) {
 			alien.setSpeed(-alien.getSpeed());
 		}
 		if (alien.getX() + alien.getWidth() >= ((GameView) view).getInitialWidth()) {
