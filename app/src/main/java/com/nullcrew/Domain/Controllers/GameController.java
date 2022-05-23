@@ -84,6 +84,14 @@ public class GameController extends AppController {
 		}
 		return null;
 	}
+	
+	public Alien ballHitAlien() {
+		if (ball.getObjShape().getShape().intersects(alien.getObjShape().getRect())) {
+			alien.hit(this);
+			return alien;
+		}
+		return null;
+	}
 
 	public void ballMoved() {
 		if (GamePanel.gameMode == GameMode.PAUSED) {
@@ -261,6 +269,25 @@ public class GameController extends AppController {
 		}
 	}
 
+	public void reflectFromAlien(Alien collided_alien) {
+		double posX = (double) collided_alien.getX() - ball.getX();
+		double posY = (double) collided_alien.getY() - ball.getY();
+		double angle = Math.atan2(posY - 0, posX - (double) 1) * (180 / Math.PI);
+		if (45d <= angle && angle <= 135d) {
+			ball.setVelocityY(-ball.getVelocityY());
+		}
+		if ((135d <= angle && angle <= 180d) || (0 >= angle && angle >= -45d)) {
+			ball.setVelocityX(-ball.getVelocityX());
+		}
+		if (-45d >= angle && angle >= -135d) {
+			ball.setVelocityY(-ball.getVelocityY());
+		}
+		if ((0d <= angle && angle <= 45d) || (-135d >= angle && angle <= -180d)) {
+			ball.setVelocityX(-ball.getVelocityX());
+		}
+	}
+	
+	
 	public Object[] removeAsteroid(int x, int y) {
 		MessageType msg = null;
 		Asteroid toBeRemoved = null;
