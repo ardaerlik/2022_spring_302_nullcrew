@@ -21,4 +21,8 @@ public interface DataStrategy {
 	public abstract void subscribeAuthObserver(AuthObserver observer);
 	
 	public abstract void notifyAuthObservers(String response);
+	
+	public abstract void subscribeSaveLoadObserver(SaveLoadObserver observer);
+	
+	public abstract void notifySaveLoadObserver(String response);
 }
