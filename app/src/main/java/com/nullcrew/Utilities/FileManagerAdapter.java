@@ -83,5 +83,17 @@ public final class FileManagerAdapter implements DataStrategy {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void subscribeSaveLoadObserver(SaveLoadObserver observer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifySaveLoadObserver(String response) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

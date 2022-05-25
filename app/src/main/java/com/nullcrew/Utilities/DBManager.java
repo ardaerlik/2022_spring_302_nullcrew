@@ -61,8 +61,36 @@ public final class DBManager implements DataStrategy {
 	}
 
 	@Override
-	public void saveTheGame(Game game) {
-		// TODO Auto-generated method stub
+	public void saveTheGame(Game game) {	
+		if (game.getGameId() == null) {
+			InsertOneResult result = database.getCollection(Constants.DatabaseResponses.GAMES_COLLECTION)
+					.insertOne(game.getDocument());
+			
+			if (result.getInsertedId() != null) {
+				game.setGameId(result.getInsertedId().asObjectId().getValue());
+				user.getSavedGameIds().add(result.getInsertedId().asObjectId().getValue());
+				notifySaveLoadObserver(DatabaseResponses.NEW_GAME_SAVED);
+			} else {
+				notifySaveLoadObserver(DatabaseResponses.DATABASE_ERROR);
+			}
+		} else {
+			Document query = new Document().append("_id", game.getGameId());
+			
+			Bson updates = Updates.combine(Updates.set("asteroids", game.getList_of_asteroid_documents()),
+					Updates.set("score", game.getScore()),
+					Updates.set("lives", game.getLives()),
+					Updates.set("powerups", game.getList_of_powerup_documents()),
+					Updates.set("aliens", game.getList_of_alien_documents()));
+			UpdateOptions options = new UpdateOptions().upsert(true);
+			
+			try {
+				database.getCollection(Constants.DatabaseResponses.GAMES_COLLECTION)
+						.updateOne(query, updates, options);
+				notifySaveLoadObserver(DatabaseResponses.GAME_UPDATED);
+			} catch (MongoException e) {
+				notifySaveLoadObserver(DatabaseResponses.DATABASE_ERROR);
+			}
+		}
 	}
 
 	@Override
@@ -258,6 +286,18 @@ public final class DBManager implements DataStrategy {
 			return;
 		}
 		// TODO: Observers
+	}
+	
+	@Override
+	public void subscribeSaveLoadObserver(SaveLoadObserver observer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifySaveLoadObserver(String response) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	public MongoClient getClient() {
