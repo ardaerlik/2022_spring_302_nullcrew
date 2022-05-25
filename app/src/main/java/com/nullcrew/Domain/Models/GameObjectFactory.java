@@ -27,7 +27,7 @@ public class GameObjectFactory {
 	
 	public static Alien createAlien() {
 		
-		int random = new Random().nextInt(3);
+		int random = new Random().nextInt(4);
 		
 		switch (random) {
 			case 0:

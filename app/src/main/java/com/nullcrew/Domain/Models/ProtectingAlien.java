@@ -26,6 +26,12 @@ public class ProtectingAlien extends Alien {
 		}
 	}
 
+	@Override
+	public void act(GameController gameController) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 }

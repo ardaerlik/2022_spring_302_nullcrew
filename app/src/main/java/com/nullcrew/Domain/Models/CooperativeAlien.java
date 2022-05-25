@@ -19,6 +19,12 @@ public class CooperativeAlien extends Alien {
 		gameController.setAlien(null);
 	}
 
+	@Override
+	public void act(GameController gameController) {
+		// TODO Auto-generated method stub
+		gameController.destroyAsteroidRow();
+	}
+
 	
 	
 }

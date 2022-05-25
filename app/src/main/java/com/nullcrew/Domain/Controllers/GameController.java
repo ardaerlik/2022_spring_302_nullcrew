@@ -6,6 +6,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Domain.Models.Alien;
@@ -59,6 +60,19 @@ public class GameController extends AppController {
 
 	public void appearAsteroid() {
 		((GameView) view).getGamePanel().createAlien();
+		this.getAlien().act(this);
+	}
+	
+	public void destroyAsteroidRow() {
+		if (getAsteroidList() == null || getAsteroidList().size() == 0) {
+			return;
+		}
+		int r = new Random().nextInt(asteroidList.size()/15);
+		
+		for (int i = 0; i < 15; i++) {
+			if (asteroidList.size() < 15*r) break;
+			asteroidList.remove(15*r);
+		}
 	}
 	
 	public Asteroid ballHitAsteroid() {
@@ -192,6 +206,7 @@ public class GameController extends AppController {
 		return alien;
 	}
 
+	
 	public void paddleHitBall() {
 		Rectangle2D rectx= new Rectangle2D.Double(paddle.getX(),paddle.getY(),paddle.getInitialWidth()+2,paddle.getInitialHeight()+2);
 		Shape s= paddle.getObjShape().getTransform().createTransformedShape(rectx);

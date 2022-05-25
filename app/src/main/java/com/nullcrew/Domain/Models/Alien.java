@@ -22,6 +22,7 @@ public abstract class Alien extends GameObject {
 	
 	public abstract void hit(GameController gameController);
 
+	public abstract void act(GameController gameController);
 	
 	public double getSpeed() {
 		return speed;
