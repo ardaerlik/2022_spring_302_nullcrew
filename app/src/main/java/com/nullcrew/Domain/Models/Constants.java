@@ -23,6 +23,8 @@ public interface Constants {
 		String REGISTER_ACCEPTED = "Register successfully";
 		String EMAIL_HAS_ACCOUNT = "Email has taken";
 		String DATABASE_ERROR = "Database error has occured";
+		String NEW_GAME_SAVED = "New game saved";
+		String GAME_UPDATED = "Game updated";
 	}
 
 }

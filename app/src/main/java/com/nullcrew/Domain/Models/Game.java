@@ -46,7 +46,6 @@ public class Game  {
 	
 	public Document getDocument() {
 		Document document = new Document()
-				.append("_id", gameId)
 				.append("asteroids", list_of_asteroid_documents)
 				.append("score", score)
 				.append("lives", lives)
