@@ -12,7 +12,9 @@ public class ChancePowerUp extends PowerUp{
 	@Override
 	public void use() {
 		// TODO Auto-generated method stub
-		
+		this.getGameController().getGame().setLives(
+				this.getGameController().getGame().getLives()+1
+				);
 	}
 
 
