@@ -12,8 +12,8 @@ public abstract class Alien extends GameObject {
 	private AlienType type;
 	private String alienType;
 
-	public Alien(double x, double y, int width, int height, double speed, Color color, AlienType type) {
-		super(x, y, width, height);
+	public Alien(GameController gameController, double x, double y, int width, int height, double speed, Color color, AlienType type) {
+		super(gameController, x, y, width, height);
 		this.speed = speed;
 		this.color = color;
 		this.type = type;

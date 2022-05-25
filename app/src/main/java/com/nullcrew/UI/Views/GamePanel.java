@@ -52,6 +52,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	 * Create the panel.
 	 */
 	public GamePanel(GameView gameView) {
+		GameObjectFactory.gameController = gameView.getGameController();
 		this.gameView = gameView;
 		list_objects = new ArrayList<GameObject>();
 		

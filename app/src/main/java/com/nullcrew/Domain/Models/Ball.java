@@ -1,5 +1,7 @@
 package com.nullcrew.Domain.Models;
 
+import com.nullcrew.Domain.Controllers.GameController;
+
 public class Ball extends GameObject {
 
 	private final double initialVelocityX = 3;
@@ -8,8 +10,8 @@ public class Ball extends GameObject {
 	private double velocityX;
 	private double velocityY;
 
-	public Ball(double x, double y, int width, int height) {
-		super(x, y, width, height);
+	public Ball(GameController gameController,double x, double y, int width, int height) {
+		super(gameController,x, y, width, height);
 		velocityX = initialVelocityX;
 		velocityY = initialVelocityY;
 	}
