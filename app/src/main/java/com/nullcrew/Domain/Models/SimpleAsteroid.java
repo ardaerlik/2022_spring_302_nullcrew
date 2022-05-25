@@ -8,8 +8,8 @@ import com.nullcrew.Domain.Controllers.GameController;
 public class SimpleAsteroid extends Asteroid {
 	private int lives;
 
-	public SimpleAsteroid(double x, double y, int width, int height, double speed) {
-		super(x, y, width, height, speed, Color.RED, AsteroidType.Simple);
+	public SimpleAsteroid(GameController gameController,double x, double y, int width, int height, double speed) {
+		super(gameController,x, y, width, height, speed, Color.RED, AsteroidType.Simple);
 		lives = 1;
 	}
 
@@ -27,7 +27,7 @@ public class SimpleAsteroid extends Asteroid {
 
 	@Override
 	public Asteroid clone() {
-		return new SimpleAsteroid(this.x, this.y, this.width, this.height, super.getSpeed());
+		return new SimpleAsteroid(this.getGameController(),this.x, this.y, this.width, this.height, super.getSpeed());
 	}
 
 }

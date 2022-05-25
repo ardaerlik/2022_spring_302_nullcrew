@@ -11,8 +11,8 @@ public class ExplosiveAsteroid extends Asteroid {
 	private int lives;
 	private int hit_range;
 
-	public ExplosiveAsteroid(double x, double y, int width, int height, double speed) {
-		super(x, y, width, height, speed, Color.BLACK, AsteroidType.Explosive);
+	public ExplosiveAsteroid(GameController gameController,double x, double y, int width, int height, double speed) {
+		super(gameController,x, y, width, height, speed, Color.BLACK, AsteroidType.Explosive);
 		lives = 1;
 		hit_range = 150;
 	}
@@ -31,7 +31,7 @@ public class ExplosiveAsteroid extends Asteroid {
 
 	@Override
 	public Asteroid clone() {
-		return new ExplosiveAsteroid(this.x, this.y, this.width, this.height, super.getSpeed());
+		return new ExplosiveAsteroid(this.getGameController(),this.x, this.y, this.width, this.height, super.getSpeed());
 	}
 
 	public void hit_nearby(GameController gameController) {

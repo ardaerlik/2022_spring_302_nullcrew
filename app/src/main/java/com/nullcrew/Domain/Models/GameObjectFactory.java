@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import com.nullcrew.Domain.Controllers.GameController;
 import com.nullcrew.UI.Views.GamePanel;
 
 public class GameObjectFactory {
@@ -16,13 +17,13 @@ public class GameObjectFactory {
 	public static final int PADDLE_Y = 1005;
 	public static final int BALL_X = 155;
 	public static final int BALL_Y = 975;
-
+	public static GameController gameController;
 	public static Paddle createPaddle() {
-		return new Paddle(PADDLE_X, PADDLE_Y, 120, 10);
+		return new Paddle(gameController,PADDLE_X, PADDLE_Y, 120, 10);
 	}
 
 	public static Ball createBall() {
-		return new Ball(BALL_X, BALL_Y, 17, 17);
+		return new Ball(gameController,BALL_X, BALL_Y, 17, 17);
 	}
 	
 	public static Alien createAlien() {
@@ -31,13 +32,13 @@ public class GameObjectFactory {
 		
 		switch (random) {
 			case 0:
-				return new RepairingAlien(0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
+				return new RepairingAlien(gameController,0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
 			case 1:
-				return new CooperativeAlien(0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
+				return new CooperativeAlien(gameController,0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
 			case 2:
-				return new ProtectingAlien(0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
+				return new ProtectingAlien(gameController,0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
 			case 3:
-				return new TimeWastingAlien(0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
+				return new TimeWastingAlien(gameController,0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
 		}
 		
 		return null;
@@ -63,7 +64,7 @@ public class GameObjectFactory {
 	public static List<Asteroid> createSimple(int numSimple){
 		List<Asteroid> asteroids = new ArrayList<>();
 		for (int i = 0; i < numSimple; i++) {
-			SimpleAsteroid simpleAsteroid = new SimpleAsteroid(0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
+			SimpleAsteroid simpleAsteroid = new SimpleAsteroid(gameController,0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
 			if (GamePanel.list_objects != null) {
 				GamePanel.list_objects.add(simpleAsteroid);
 			}
@@ -77,7 +78,7 @@ public class GameObjectFactory {
 		for (int i = 0; i < numFirm; i++) {
 			Random rand = new Random();
 			int lives = rand.nextInt(3) * 5;
-			FirmAsteroid firmAsteroid = new FirmAsteroid(0, 0, ASTEROID_WIDTH + lives, ASTEROID_HEIGHT + lives, 0);
+			FirmAsteroid firmAsteroid = new FirmAsteroid(gameController,0, 0, ASTEROID_WIDTH + lives, ASTEROID_HEIGHT + lives, 0);
 			if (GamePanel.list_objects != null) {
 				GamePanel.list_objects.add(firmAsteroid);
 			}
@@ -89,7 +90,7 @@ public class GameObjectFactory {
 	public static List<Asteroid> createExplosive(int numExplosive){
 		List<Asteroid> asteroids = new ArrayList<>();
 		for (int i = 0; i < numExplosive; i++) {
-			ExplosiveAsteroid explosiveAsteroid = new ExplosiveAsteroid(0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
+			ExplosiveAsteroid explosiveAsteroid = new ExplosiveAsteroid(gameController,0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
 			if (GamePanel.list_objects != null) {
 				GamePanel.list_objects.add(explosiveAsteroid);
 			}
@@ -101,7 +102,7 @@ public class GameObjectFactory {
 	public static List<Asteroid> createGift(int numGift){
 		List<Asteroid> asteroids = new ArrayList<>();
 		for (int i = 0; i < numGift; i++) {
-			GiftAsteroid giftAsteroid = new GiftAsteroid(0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
+			GiftAsteroid giftAsteroid = new GiftAsteroid(gameController,0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
 			if (GamePanel.list_objects != null) {
 				GamePanel.list_objects.add(giftAsteroid);
 			}
@@ -145,6 +146,14 @@ public class GameObjectFactory {
 				}
 			}
 		}
+	}
+
+	public GameController getGameController() {
+		return gameController;
+	}
+
+	public void setGameController(GameController gameController) {
+		this.gameController = gameController;
 	}
 
 }

@@ -2,6 +2,8 @@ package com.nullcrew.Domain.Models;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+
+import com.nullcrew.Domain.Controllers.GameController;
 public abstract class GameObject{
 	protected ObjectShape object_shape;
 	protected double x;
@@ -10,14 +12,17 @@ public abstract class GameObject{
 	protected int height;
 	private int initial_width;
 	private int initial_height;
+	private GameController gameController;
 
-	public GameObject(double x, double y, int width, int height) {
+	public GameObject(GameController gameController, double x, double y, int width, int height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.gameController = gameController;
 		initial_width=width;
 		initial_height=height;
+		
 		object_shape = new ObjectShape();
 		object_shape.setRect(new Rectangle2D.Double(x,y,width,height));
 		object_shape.setTransform(new AffineTransform());
@@ -64,13 +69,25 @@ public abstract class GameObject{
 		this.height = height;
 		changeShape();
 	}
+	
 	public ObjectShape getObjShape() {
 		return object_shape;
 	}
+	
 	public int getInitialWidth(){
 		return initial_width;
 	}
+	
 	public int getInitialHeight(){
 		return initial_height;
 	}
+
+	public GameController getGameController() {
+		return gameController;
+	}
+
+	public void setGameController(GameController gameController) {
+		this.gameController = gameController;
+	}
+	
 }

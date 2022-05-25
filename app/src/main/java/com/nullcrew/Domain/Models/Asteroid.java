@@ -12,8 +12,8 @@ public abstract class Asteroid extends GameObject {
 	private AsteroidType type;
 	private String asteroidType;
 
-	public Asteroid(double x, double y, int width, int height, double speed, Color color, AsteroidType type) {
-		super(x, y, width, height);
+	public Asteroid(GameController gameController,double x, double y, int width, int height, double speed, Color color, AsteroidType type) {
+		super(gameController,x, y, width, height);
 		this.speed = speed;
 		this.color = color;
 		this.type = type;

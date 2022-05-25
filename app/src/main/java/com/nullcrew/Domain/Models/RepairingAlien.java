@@ -8,8 +8,8 @@ public class RepairingAlien extends Alien{
 	
 	
 
-	public RepairingAlien(double x, double y, int width, int height) {
-		super(x, y, width, height, 0, Color.DARK_GRAY, AlienType.Repairing);
+	public RepairingAlien(GameController gameController,double x, double y, int width, int height) {
+		super(gameController,x, y, width, height, 0, Color.DARK_GRAY, AlienType.Repairing);
 		// TODO Auto-generated constructor stub
 	}
 

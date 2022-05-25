@@ -9,8 +9,8 @@ public class TimeWastingAlien extends Alien {
 	
 	
 
-	public TimeWastingAlien(double x, double y, int width, int height) {
-		super(x, y, width, height, 0, Color.YELLOW, AlienType.TimeWasting);
+	public TimeWastingAlien(GameController gameController,double x, double y, int width, int height) {
+		super(gameController,x, y, width, height, 0, Color.YELLOW, AlienType.TimeWasting);
 		// TODO Auto-generated constructor stub
 	}
 

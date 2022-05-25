@@ -13,11 +13,13 @@ import com.nullcrew.Domain.Models.Asteroid;
 import com.nullcrew.Domain.Models.AsteroidType;
 import com.nullcrew.Domain.Models.Ball;
 import com.nullcrew.Domain.Models.ExplosiveAsteroid;
+import com.nullcrew.Domain.Models.Game;
 import com.nullcrew.Domain.Models.GameMode;
 import com.nullcrew.Domain.Models.GameObjectFactory;
 import com.nullcrew.Domain.Models.MessageType;
 import com.nullcrew.Domain.Models.MoveDirection;
 import com.nullcrew.Domain.Models.Paddle;
+import com.nullcrew.Domain.Models.PowerUp;
 import com.nullcrew.UI.Views.GamePanel;
 import com.nullcrew.UI.Views.GameView;
 
@@ -28,9 +30,11 @@ public class GameController extends AppController {
 	public static final int MIN_NUM_FIRM = 10;
 	public static final int MIN_NUM_GIFT = 10;
 	private List<Asteroid> asteroidList;
+	private List<PowerUp> powerups;
 	private Ball ball;
 	private Paddle paddle;
 	private Alien alien;
+	private Game game;
 
 	public GameController(GameView gameView, AlienAsteroidGame app) {
 		super(gameView, app);
@@ -300,6 +304,14 @@ public class GameController extends AppController {
 	
 	public void setAlien(Alien alien) {
 		this.alien = alien;
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
 	}
 
 }
