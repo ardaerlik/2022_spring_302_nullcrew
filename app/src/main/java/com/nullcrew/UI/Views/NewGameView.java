@@ -13,7 +13,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 
 public class NewGameView extends AppView {
-    private JPanel newGamePanel, buttonPanel;
+    private JPanel newGamePanel, buttonPanel, titlePanel;
     private JButton startButton;
     private JButton[] gameButtons;
     private JLabel title;
@@ -39,7 +39,9 @@ public class NewGameView extends AppView {
         newGamePanel = new JPanel();
         newGamePanel.setBackground(Color.BLACK);
         newGamePanel.setLayout(new BoxLayout( newGamePanel, BoxLayout.PAGE_AXIS));
-
+        titlePanel = new JPanel();
+        titlePanel.setBackground(Color.BLACK);
+        titlePanel.setLayout(new BoxLayout( titlePanel, BoxLayout.LINE_AXIS));
         buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.BLACK);
         buttonPanel.setMaximumSize(new Dimension((int)(GameView.WIDTH*0.5), (int)(GameView.HEIGHT*0.5)));
@@ -86,8 +88,11 @@ public class NewGameView extends AppView {
         backButton = new JButton("Back");
         backButton.addActionListener( new BackActionListener());
 
-        newGamePanel.add(Box.createVerticalStrut(30));
-        newGamePanel.add(title);
+        newGamePanel.add(Box.createVerticalStrut(100));
+        titlePanel.add(title);
+        titlePanel.add(Box.createHorizontalStrut(200));
+        titlePanel.add(backButton);
+        newGamePanel.add(titlePanel);
         newGamePanel.add(Box.createVerticalStrut(30));
         newGamePanel.add(startButton);
         newGamePanel.add(Box.createVerticalStrut(40));
@@ -95,8 +100,7 @@ public class NewGameView extends AppView {
             buttonPanel.add(b);
         }
         newGamePanel.add(buttonPanel);
-        newGamePanel.add(Box.createVerticalStrut(30));
-        newGamePanel.add(backButton);
+        newGamePanel.add(Box.createVerticalStrut(400));
         frame.add(newGamePanel);
     }
 
