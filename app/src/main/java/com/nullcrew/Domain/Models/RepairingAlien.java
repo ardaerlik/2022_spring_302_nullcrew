@@ -18,6 +18,14 @@ public class RepairingAlien extends Alien{
 	@Override
 	public void hit(GameController gameController) {
 		// TODO Auto-generated method stub
+		gameController.setAlien(null);
+	}
+
+
+
+	@Override
+	public void act(GameController gameController) {
+		// TODO Auto-generated method stub
 		
 	}
 

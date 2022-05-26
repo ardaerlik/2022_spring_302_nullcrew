@@ -63,7 +63,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		initialX=-1;
 		initialY=-1;
 
-		createAlien();
+		
 		createGameObjects();
 		configureUI();
 
@@ -163,8 +163,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				Graphics2D g2 = (Graphics2D) GamePanel.alienGraphics;
 				
 				Alien alien = gameView.getGameController().getAlien();
-				g2.setColor(alien.getColor());
-				g2.fill3DRect((int)alien.getX(), (int)alien.getY(), alien.getWidth(), alien.getHeight(), true);
+				if (alien != null) {
+					g2.setColor(alien.getColor());
+					g2.fill3DRect((int)alien.getX(), (int)alien.getY(), alien.getWidth(), alien.getHeight(), true);
+				}
+				
 				
 			}
 		}
@@ -328,6 +331,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	public void actionPerformed(ActionEvent e) {
 		gameView.getGameController().ballMoved();
 		gameView.getGameController().paddleHitBall();
+		if (gameView.getGameController().getAlien() != null) {
+			gameView.getGameController().alienMoved();
+			gameView.getGameController().ballHitAlien();
+		}
 		Asteroid asteroid = gameView.getGameController().ballHitAsteroid();
 		if (asteroid != null) {
 			gameView.getGameController().reflectFromAsteroid(asteroid);
