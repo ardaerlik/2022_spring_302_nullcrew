@@ -1,5 +1,6 @@
 package com.nullcrew.Domain.Models;
 
+import java.util.List;
 import java.util.Random;
 
 import com.nullcrew.Domain.Controllers.GameController;
@@ -17,15 +18,19 @@ public class GangofBallPowerUp extends PowerUp{
 		for(int a=0;a<10;a++) {
 
 			Ball ball= GameObjectFactory.createBall();
-			ball.setX(this.getGameController().getBall().x);
-			ball.setY(this.getGameController().getBall().y);
+			ball.setX(this.getGameController().getBalls().get(0).x);
+			ball.setY(this.getGameController().getBalls().get(0).y);
 			ball.setVelocityX(
-					ball.getVelocityY()*Math.cos(Math.toRadians(new Random().nextDouble()*360f))
+					this.getGameController().getBalls().get(0).getVelocityY()*Math.cos(Math.toRadians(new Random().nextDouble()*360f))*1.5f
 					);
 			ball.setVelocityY(
-					ball.getVelocityX()*Math.sin(Math.toRadians(new Random().nextDouble()*360f))
+					this.getGameController().getBalls().get(0).getVelocityX()*Math.sin(Math.toRadians(new Random().nextDouble()*360f))*1.5f
 					);
 			GamePanel.list_objects.add(ball);
+			List<Ball> temp_list= getGameController().getBalls();
+			temp_list.add(ball);
+			this.getGameController().setBalls(temp_list);
+			System.out.println("Created balls");
 		}
 		// TODO Auto-generated method stub
 

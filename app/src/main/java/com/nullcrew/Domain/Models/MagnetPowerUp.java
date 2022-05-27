@@ -1,5 +1,8 @@
 package com.nullcrew.Domain.Models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.nullcrew.Domain.Controllers.GameController;
 
 public class MagnetPowerUp extends PowerUp{
@@ -12,14 +15,12 @@ public class MagnetPowerUp extends PowerUp{
 	@Override
 	public void use() {
 		// TODO Auto-generated method stub
-		this.getGameController().getBall().setX(
-				(GameObjectFactory.BALL_X-GameObjectFactory.PADDLE_X)+this.getGameController().getPaddle().x
-				);
-		this.getGameController().getBall().setY(
-				GameObjectFactory.BALL_Y
-				);
-		this.getGameController().getBall().setVelocityX(0);
-		this.getGameController().getBall().setVelocityY(0);
+		List<Ball> list= new ArrayList();
+		Ball ball= GameObjectFactory.createBall();
+		this.getGameController().freezeBallOnPaddle(ball);
+		list.add(ball);
+		this.getGameController().setBalls(list);
+
 	}
 
 }

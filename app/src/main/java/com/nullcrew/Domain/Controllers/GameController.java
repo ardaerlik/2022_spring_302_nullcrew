@@ -15,6 +15,7 @@ import com.nullcrew.Domain.Models.Ball;
 import com.nullcrew.Domain.Models.ExplosiveAsteroid;
 import com.nullcrew.Domain.Models.Game;
 import com.nullcrew.Domain.Models.GameMode;
+import com.nullcrew.Domain.Models.GameObject;
 import com.nullcrew.Domain.Models.GameObjectFactory;
 import com.nullcrew.Domain.Models.GiftAsteroid;
 import com.nullcrew.Domain.Models.MagnetPowerUp;
@@ -34,7 +35,7 @@ public class GameController extends AppController {
 	public static final int MIN_NUM_GIFT = 10;
 	private List<Asteroid> asteroidList;
 	private List<PowerUp> powerups;
-	private Ball ball;
+	private List<Ball> balls;
 	private Paddle paddle;
 	private Alien alien;
 	private Game game;
@@ -80,8 +81,10 @@ public class GameController extends AppController {
 			if (asteroid == null) {
 				continue;
 			}
+			for(Ball ball:balls) {
+				
 			if(ball.getObjShape().getShape().intersects(asteroid.getObjShape().getRect())) {
-
+				reflectFromObject(asteroid,ball);
 				if ((asteroid instanceof ExplosiveAsteroid)) {
 					((ExplosiveAsteroid) asteroid).hit_nearby(this);
 					asteroid.hit(this);
@@ -106,26 +109,45 @@ public class GameController extends AppController {
 				}
 				return asteroid;
 			}
+			}
 
 		}
 		return null;
 	}
-
-	public void ballMoved() {
-		if (GamePanel.gameMode == GameMode.PAUSED) {
+	public void ballHitBall() {
+		if(balls.size()<=1) {
 			return;
 		}
-		if (0 >= ball.getX()) {
-			ball.setVelocityX(-ball.getVelocityX());
+		for(Ball ball: balls) {
+			for(Ball collided_ball:balls) {
+				if(ball==collided_ball) {
+					continue;
+				}
+				if(ball.getObjShape().getShape().intersects(collided_ball.getObjShape().getShape().getBounds2D())){
+					reflectFromObject(ball,collided_ball);
+					reflectFromObject(collided_ball,ball);
+				}
+			}
 		}
-		if (ball.getX() + ball.getWidth() >= ((GameView) view).getInitialWidth()) {
-			ball.setVelocityX(-ball.getVelocityX());
+	}
+	public void ballMoved() {
+
+		for(Ball ball:balls) {
+			if (GamePanel.gameMode == GameMode.PAUSED) {
+				return;
+			}
+			if (0 >= ball.getX()) {
+				ball.setVelocityX(-ball.getVelocityX());
+			}
+			if (ball.getX() + ball.getWidth() >= ((GameView) view).getInitialWidth()) {
+				ball.setVelocityX(-ball.getVelocityX());
+			}
+			if (0 >= ball.getY()) {
+				ball.setVelocityY((-ball.getVelocityY()));
+			}
+			ball.setX(ball.getX() + ball.getVelocityX());
+			ball.setY(ball.getY() + ball.getVelocityY());
 		}
-		if (0 >= ball.getY()) {
-			ball.setVelocityY((-ball.getVelocityY()));
-		}
-		ball.setX(ball.getX() + ball.getVelocityX());
-		ball.setY(ball.getY() + ball.getVelocityY());
 
 	}
 	public void updateBoosts() {
@@ -186,8 +208,8 @@ public class GameController extends AppController {
 		return asteroidList;
 	}
 
-	public Ball getBall() {
-		return ball;
+	public List<Ball> getBalls() {
+		return balls;
 	}
 
 	public Paddle getPaddle() {
@@ -199,11 +221,11 @@ public class GameController extends AppController {
 	}
 
 	public void paddleHitBall() {
-		Rectangle2D rectx= new Rectangle2D.Double(paddle.getX(),paddle.getY(),paddle.getInitialWidth()+2,paddle.getInitialHeight()+2);
-		Shape s= paddle.getObjShape().getTransform().createTransformedShape(rectx);
-		if (s.intersects(ball.getObjShape().getRect())){
-			
-			ball.setVelocityY((-ball.getVelocityY()));
+		for(Ball ball:balls) {	
+			if (getPaddle().getObjShape().getShape().intersects(ball.getObjShape().getShape().getBounds2D())){
+				
+				ball.setVelocityY((-ball.getVelocityY()));
+			}
 		}
 	}
 	public void activatePowerUp(String key) {
@@ -220,6 +242,7 @@ public class GameController extends AppController {
 				powerUp=powerups.get(a);
 				powerups.get(a).use();
 				powerups.remove(a);
+				getPaddle().onMagnet=true;
 			}
 		}
 	}
@@ -279,12 +302,12 @@ public class GameController extends AppController {
 		}
 	}
 
-	public void reflectFromAsteroid(Asteroid collided_asteroid) {
-
+	public void reflectFromObject(GameObject collided_asteroid,Ball ball) {
+		
 		if (collided_asteroid == null) {
 			return;
 		}
-
+			
 		double posX = (double) collided_asteroid.getX() - ball.getX();
 		double posY = (double) collided_asteroid.getY() - ball.getY();
 		double angle = Math.atan2(posY - 0, posX - (double) 1) * (180 / Math.PI);
@@ -300,6 +323,19 @@ public class GameController extends AppController {
 		if ((0d <= angle && angle <= 45d) || (-135d >= angle && angle <= -180d)) {
 			ball.setVelocityX(-ball.getVelocityX());
 		}
+	}
+	public void freezeBallOnPaddle(Ball ball) {
+		if(ball==null) {
+			return;
+		}
+		ball.setX(
+				(GameObjectFactory.BALL_X-GameObjectFactory.PADDLE_X)+getPaddle().getX()
+				);
+		ball.setY(
+				GameObjectFactory.BALL_Y
+				);
+		ball.setVelocityX(0);
+		ball.setVelocityY(0);
 	}
 
 	public Object[] removeAsteroid(int x, int y) {
@@ -347,8 +383,8 @@ public class GameController extends AppController {
 		this.asteroidList = asteroidList;
 	}
 
-	public void setBall(Ball ball) {
-		this.ball = ball;
+	public void setBalls(List<Ball> balls) {
+		this.balls = balls;
 	}
 
 	public void setPaddle(Paddle paddle) {

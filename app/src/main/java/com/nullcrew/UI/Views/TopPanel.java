@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -118,7 +120,9 @@ public class TopPanel extends JPanel {
 					okButton.setText("Restart");
 					gameView.setNumOfAsteroidTypes(numOfAsteroidTypes);
 					gameView.createAsteroids();
-					gameView.getGameController().setBall(new Ball(gameView.getGameController(), GameObjectFactory.BALL_X, GameObjectFactory.BALL_Y, 17, 17));
+					List<Ball> list= new ArrayList();
+					list.add(new Ball(gameView.getGameController(), GameObjectFactory.BALL_X, GameObjectFactory.BALL_Y, 17, 17));
+					gameView.getGameController().setBalls(list);
 					gameView.getGameController().setPaddle(new Paddle(gameView.getGameController(), GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
 				}
 			}

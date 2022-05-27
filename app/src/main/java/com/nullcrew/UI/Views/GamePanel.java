@@ -82,9 +82,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	public void createGameObjects() {
 		gameView.getGameController().setPaddle(GameObjectFactory.createPaddle());
-		gameView.getGameController().setBall(GameObjectFactory.createBall());
+		List<Ball> list= new ArrayList();
+		list.add(GameObjectFactory.createBall());
+		gameView.getGameController().setBalls(list);
 		list_objects.add(gameView.getGameController().getPaddle());
-		list_objects.add(gameView.getGameController().getBall());
+		for(Ball ball: list) {
+			list_objects.add(ball);
+		}
+
 	}
 	
 	public void createAlien() {
@@ -134,10 +139,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				ballGraphics = g;
 
 				Graphics2D g2 = (Graphics2D) GamePanel.ballGraphics;
-				g2.fillOval((int)gameView.getGameController().getBall().getX(),
-						(int)gameView.getGameController().getBall().getY(),
-						gameView.getGameController().getBall().getWidth(),
-						gameView.getGameController().getBall().getHeight());
+				for(Ball ball:gameView.getGameController().getBalls()) {
+					g2.fillOval((int)ball.getX(),
+							(int)ball.getY(),
+							ball.getWidth(),
+							ball.getHeight());
+				}
+
 			}
 
 			if (object instanceof Asteroid) {
@@ -169,6 +177,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		}
 	}
 	
+
 	private void paintPaddle(Graphics g) {
 		if (pressedKeysLoc < pressedKeys.size()) {
 			if (pressedKeysLocInt == 0) {
@@ -308,12 +317,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				return;
 			}
 			gameView.getGameController().activatePowerUp("TallerPowerUp");
+			gameMode=GameMode.RESUMED;
 		}
 		case(KeyEvent.VK_M):{
 			if(gameMode==GameMode.PAUSED) {
 				return;
 			}
 			gameView.getGameController().activatePowerUp("MagnetPowerUp");
+			gameMode=GameMode.RESUMED;
 		}
 		case (KeyEvent.VK_ESCAPE): {
 			switch (gameMode) {
@@ -337,14 +348,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		repaint();
 		gameView.getGameController().ballMoved();
 		gameView.getGameController().paddleHitBall();
-		Asteroid asteroid = gameView.getGameController().ballHitAsteroid();
-		if (asteroid != null) {
-			gameView.getGameController().reflectFromAsteroid(asteroid);
+		gameView.getGameController().ballHitAsteroid();
+		gameView.getGameController().ballHitBall();
+		if(gameView.getGameController().getPaddle().onMagnet) {
+			gameView.getGameController().freezeBallOnPaddle(
+					gameView.getGameController().getBalls().get(0)
+					);
 		}
-
-		repaint();
 	}
 
 	@Override
@@ -379,6 +392,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void mousePressed(MouseEvent mouseEvent) {
+		if(gameMode == GameMode.PAUSED) {
+			return;
+		}
+		if(gameView.getGameController().getPaddle().onMagnet) {
+			gameView.getGameController().getBalls().get(0).setVelocityX(3);
+			gameView.getGameController().getBalls().get(0).setVelocityY(-3);
+			gameView.getGameController().getPaddle().onMagnet=false;
+		}
 	}
 
 
@@ -393,17 +414,21 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				gameView.getGameController().getPaddle().getWidth(),
 				gameView.getGameController().getPaddle().getHeight()
 				);
-		Rectangle2D temp_ball=new Rectangle2D.Double(gameView.getGameController().getBall().getX(),
-				gameView.getGameController().getBall().getY(),
-				gameView.getGameController().getBall().getWidth(),
-				gameView.getGameController().getBall().getHeight()
-				);
 		if (mouseEvent.getButton() == MouseEvent.BUTTON1 && draggedAsteroid != null) { // this is left click.
 			boolean success;
 			int x = (int)(mouseEvent.getX()/size_x);
 			int y = (int)(mouseEvent.getY()/size_y);
 			Rectangle2D temp_asteroid= new Rectangle2D.Double(x,y,draggedAsteroid.getWidth(),draggedAsteroid.getHeight());
-			if(temp_ball.intersects(temp_asteroid)||temp_paddle.intersects(temp_asteroid)) {
+			for(Ball ball:gameView.getGameController().getBalls()) {
+				Rectangle2D temp_ball=new Rectangle2D.Double(ball.getX(),
+						ball.getY(),
+						ball.getWidth(),
+						ball.getHeight());
+				if(temp_ball.intersects(temp_asteroid)) {
+					success=false;
+				}
+			}
+			if(temp_paddle.intersects(temp_asteroid)) {
 				success=false;
 			}
 			else if(temp_asteroid.getCenterY()>=temp_paddle.getCenterY() || 0>temp_asteroid.getCenterY()-temp_asteroid.getHeight()/2){

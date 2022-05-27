@@ -55,7 +55,7 @@ class BallHitAsteroidTest {
 		asteroidList.add(asteroid1);
 		
 		controller.setAsteroids(asteroidList);
-		controller.setBall(ball);
+		controller.setBalls(ball);
 		
 		Asteroid asteroid2 = controller.ballHitAsteroid();
 		Assertions.assertEquals(asteroid2,null);
@@ -72,7 +72,7 @@ class BallHitAsteroidTest {
 		asteroidList.add(asteroid1);
 		
 		controller.setAsteroids(asteroidList);
-		controller.setBall(ball);
+		controller.setBalls(ball);
 		
 		Asteroid asteroid2 = controller.ballHitAsteroid();
 		Assertions.assertEquals(asteroid2,asteroid1);

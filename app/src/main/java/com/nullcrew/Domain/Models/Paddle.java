@@ -12,7 +12,7 @@ public class Paddle extends GameObject {
 
 	public boolean onWrapPowerUp;
 	public boolean onTallerPowerUp;
-
+	public boolean onMagnet;
 	public Paddle(GameController gameController,int x, int y, int width, int height) {
 		super(gameController,x, y, width, height);
 		rotationDegree = 0;
