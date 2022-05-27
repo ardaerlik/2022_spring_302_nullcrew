@@ -102,7 +102,29 @@ public class GameObjectFactory {
 	public static List<Asteroid> createGift(int numGift){
 		List<Asteroid> asteroids = new ArrayList<>();
 		for (int i = 0; i < numGift; i++) {
-			GiftAsteroid giftAsteroid = new GiftAsteroid(gameController,0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
+			PowerUp powerup;
+			if(i==0) {
+				powerup= new TallerPowerUp(gameController, 0,0,0,0);
+			}
+			else if(i==1) {
+				powerup= new WrapPowerUp(gameController, 0,0,0,0);
+			}
+			else if(i==2) {
+				powerup= new ChancePowerUp(gameController, 0,0,0,0);
+			}
+			else if(i==3) {
+				powerup= new LaserPowerUp(gameController, 0,0,0,0);
+			}
+			else if(i==4) {
+				powerup= new MagnetPowerUp(gameController, 0,0,0,0);
+			}
+			else if(i==5) {
+				powerup= new GangofBallPowerUp(gameController, 0,0,0,0);
+			}
+			else {
+				powerup=null;
+			}
+			GiftAsteroid giftAsteroid = new GiftAsteroid(gameController,0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0,powerup);
 			if (GamePanel.list_objects != null) {
 				GamePanel.list_objects.add(giftAsteroid);
 			}

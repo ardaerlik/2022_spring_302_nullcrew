@@ -12,7 +12,7 @@ public class LaserPowerUp extends PowerUp{
 	@Override
 	public void use() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 

@@ -13,11 +13,13 @@ public class MagnetPowerUp extends PowerUp{
 	public void use() {
 		// TODO Auto-generated method stub
 		this.getGameController().getBall().setX(
-				this.getGameController().getPaddle().x
+				(GameObjectFactory.BALL_X-GameObjectFactory.PADDLE_X)+this.getGameController().getPaddle().x
 				);
 		this.getGameController().getBall().setY(
-				this.getGameController().getPaddle().y
+				GameObjectFactory.BALL_Y
 				);
+		this.getGameController().getBall().setVelocityX(0);
+		this.getGameController().getBall().setVelocityY(0);
 	}
 
 }

@@ -63,7 +63,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		initialX=-1;
 		initialY=-1;
 
-		createAlien();
 		createGameObjects();
 		configureUI();
 
@@ -303,6 +302,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			}
 			gameView.getGameController().paddleRotated(MoveDirection.DOWN);
 			break;
+		}
+		case(KeyEvent.VK_T):{
+			if(gameMode==GameMode.PAUSED) {
+				return;
+			}
+			gameView.getGameController().activatePowerUp("TallerPowerUp");
+		}
+		case(KeyEvent.VK_M):{
+			if(gameMode==GameMode.PAUSED) {
+				return;
+			}
+			gameView.getGameController().activatePowerUp("MagnetPowerUp");
 		}
 		case (KeyEvent.VK_ESCAPE): {
 			switch (gameMode) {

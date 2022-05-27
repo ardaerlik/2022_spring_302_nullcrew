@@ -15,6 +15,7 @@ public class TallerPowerUp extends PowerUp{
 		this.getGameController().getPaddle().setWidth(
 				(int)(this.getGameController().getPaddle().getWidth()*1.5f)
 				);
+		this.getGameController().getPaddle().onTallerPowerUp=true;
 	}
 
 

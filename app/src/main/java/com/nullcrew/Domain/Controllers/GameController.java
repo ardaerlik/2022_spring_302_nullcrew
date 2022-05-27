@@ -16,10 +16,13 @@ import com.nullcrew.Domain.Models.ExplosiveAsteroid;
 import com.nullcrew.Domain.Models.Game;
 import com.nullcrew.Domain.Models.GameMode;
 import com.nullcrew.Domain.Models.GameObjectFactory;
+import com.nullcrew.Domain.Models.GiftAsteroid;
+import com.nullcrew.Domain.Models.MagnetPowerUp;
 import com.nullcrew.Domain.Models.MessageType;
 import com.nullcrew.Domain.Models.MoveDirection;
 import com.nullcrew.Domain.Models.Paddle;
 import com.nullcrew.Domain.Models.PowerUp;
+import com.nullcrew.Domain.Models.TallerPowerUp;
 import com.nullcrew.UI.Views.GamePanel;
 import com.nullcrew.UI.Views.GameView;
 
@@ -35,10 +38,13 @@ public class GameController extends AppController {
 	private Paddle paddle;
 	private Alien alien;
 	private Game game;
-
+	private PowerUp powerUp;
+	private float estimated_boostTime=0f;
+	private long boost_start_time=0l;
 	public GameController(GameView gameView, AlienAsteroidGame app) {
 		super(gameView, app);
 		asteroidList = new ArrayList<>();
+		powerups=  new ArrayList<>();
 	}
 
 	public boolean addAsteroid(Asteroid toBeAdded, double newX, double newY) {
@@ -79,7 +85,23 @@ public class GameController extends AppController {
 				if ((asteroid instanceof ExplosiveAsteroid)) {
 					((ExplosiveAsteroid) asteroid).hit_nearby(this);
 					asteroid.hit(this);
-				} else {
+				}
+				else if (asteroid instanceof GiftAsteroid){ 
+					if(((GiftAsteroid) asteroid).powerup!=null){
+						if(((GiftAsteroid) asteroid).powerup instanceof MagnetPowerUp) {
+							powerups.add(((GiftAsteroid) asteroid).powerup);
+						}
+						else if(((GiftAsteroid) asteroid).powerup instanceof TallerPowerUp) {
+							powerups.add(((GiftAsteroid) asteroid).powerup);
+						}
+						else {
+							((GiftAsteroid) asteroid).powerup.use();
+							powerUp=((GiftAsteroid) asteroid).powerup;
+						}
+					}
+					asteroid.hit(this);
+				}
+				else {
 					asteroid.hit(this);
 				}
 				return asteroid;
@@ -106,7 +128,12 @@ public class GameController extends AppController {
 		ball.setY(ball.getY() + ball.getVelocityY());
 
 	}
-
+	public void updateBoosts() {
+		if(paddle.onTallerPowerUp) {
+			//int time_passed= System.currentTimeMillis()-
+			
+		}
+	}
 	public MessageType checkNumAsteroids(int[] numOfAsteroidTypes) { // simple, firm, explosive, gift
 		int total = 0;
 		for (int n : numOfAsteroidTypes) {
@@ -179,7 +206,23 @@ public class GameController extends AppController {
 			ball.setVelocityY((-ball.getVelocityY()));
 		}
 	}
-
+	public void activatePowerUp(String key) {
+		for(int a=0;a<powerups.size();a++) {
+			if(key=="TallerPowerUp"&&powerups.get(a) instanceof TallerPowerUp) {
+				powerUp=powerups.get(a);
+				powerups.get(a).use();
+				powerups.remove(a);
+				estimated_boostTime=30f;
+				boost_start_time=System.currentTimeMillis();
+				
+			}
+			if(key=="MagnetPowerUp"&&powerups.get(a) instanceof MagnetPowerUp) {
+				powerUp=powerups.get(a);
+				powerups.get(a).use();
+				powerups.remove(a);
+			}
+		}
+	}
 	public void paddleMoved(MoveDirection direction) {
 		if (GamePanel.gameMode == GameMode.PAUSED) {
 			return;
@@ -189,11 +232,21 @@ public class GameController extends AppController {
 			if (paddle.getX() + getPaddle().getWidth() < ((GameView) view).getInitialWidth()) {
 				paddle.setX(paddle.getX() + paddle.velocity);
 			}
+			else {
+				if(paddle.onWrapPowerUp) {
+					paddle.setX(0);
+				}
+			}
 			break;
 		}
 		case LEFT: {
 			if (paddle.getX() > 0) {
 				paddle.setX(paddle.getX() - paddle.velocity);
+			}
+			else {
+				if(paddle.onWrapPowerUp) {
+					paddle.setX(((GameView) view).getInitialWidth()-paddle.getWidth());
+				}
 			}
 			break;
 		}
@@ -312,6 +365,14 @@ public class GameController extends AppController {
 
 	public void setGame(Game game) {
 		this.game = game;
+	}
+
+	public List<PowerUp> getPowerups() {
+		return powerups;
+	}
+
+	public void setPowerups(List<PowerUp> powerups) {
+		this.powerups = powerups;
 	}
 
 }
