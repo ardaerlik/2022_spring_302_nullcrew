@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import com.nullcrew.Domain.Controllers.GameController;
 
 public class ExplosiveAsteroid extends Asteroid {
-	private int lives;
 	private int hit_range;
 
 	public ExplosiveAsteroid(GameController gameController,double x, double y, int width, int height, double speed) {

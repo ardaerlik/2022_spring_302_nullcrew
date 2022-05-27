@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,8 +21,10 @@ import javax.swing.event.PopupMenuListener;
 
 import com.nullcrew.Domain.Models.Ball;
 import com.nullcrew.Domain.Models.GameObjectFactory;
+import com.nullcrew.Domain.Models.MagnetPowerUp;
 import com.nullcrew.Domain.Models.MessageType;
 import com.nullcrew.Domain.Models.Paddle;
+import com.nullcrew.Domain.Models.TallerPowerUp;
 
 public class TopPanel extends JPanel {
 
@@ -53,6 +57,7 @@ public class TopPanel extends JPanel {
 		createOkButton();
 		createSwitchButton();
 		createPopupMenu();
+		createPowerUpView();
 		add(simpleLabel);
 		add(simpleField);
 		add(firmLabel);
@@ -115,13 +120,62 @@ public class TopPanel extends JPanel {
 					okButton.setText("Restart");
 					gameView.setNumOfAsteroidTypes(numOfAsteroidTypes);
 					gameView.createAsteroids();
-					gameView.getGameController().setBall(new Ball(gameView.getGameController(), GameObjectFactory.BALL_X, GameObjectFactory.BALL_Y, 17, 17));
+					List<Ball> list= new ArrayList();
+					list.add(new Ball(gameView.getGameController(), GameObjectFactory.BALL_X, GameObjectFactory.BALL_Y, 17, 17));
+					gameView.getGameController().setBalls(list);
 					gameView.getGameController().setPaddle(new Paddle(gameView.getGameController(), GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
 				}
 			}
 		});
 	}
+	private void createPowerUpView() {
+		JButton magnet_button;
+		JButton taller_button;
+		for(int a=0;a<gameView.getGameController().getPowerups().size();a++) {
+			if(gameView.getGameController().getPowerups().get(a) instanceof MagnetPowerUp) {
+				magnet_button= new JButton();
+				magnet_button.setVisible(true);
+				magnet_button.setBounds(10,100, 100, 25);
+				magnet_button.setText("Magnet PowerUp");
+				magnet_button.addActionListener(new ActionListener(){
 
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						gameView.getGamePanel().setFocusable(true);
+						gameView.getGamePanel().requestFocusInWindow();
+						for(int a=0;a<gameView.getGameController().getPowerups().size();a++) {
+							if(gameView.getGameController().getPowerups().get(a) instanceof MagnetPowerUp) {
+								gameView.getGameController().activatePowerUp("MagnetPowerUp");
+							}
+						}
+					
+					}
+				});
+				this.add(magnet_button);
+			}
+			if(gameView.getGameController().getPowerups().get(a) instanceof TallerPowerUp) {
+				taller_button= new JButton();
+				taller_button.setVisible(true);
+				taller_button.setBounds(30,200, 100, 25);
+				taller_button.setText("Taller PowerUp");
+				taller_button.addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						gameView.getGamePanel().setFocusable(true);
+						gameView.getGamePanel().requestFocusInWindow();
+						for(int a=0;a<gameView.getGameController().getPowerups().size();a++) {
+							if(gameView.getGameController().getPowerups().get(a) instanceof TallerPowerUp) {
+								gameView.getGameController().activatePowerUp("TallerPowerUp");			
+							}
+						}
+					}
+				});
+				this.add(taller_button);
+			}
+
+		}
+	}
 	private void createSwitchButton() {
 		switchButton = new JToggleButton("Switch Mode");
 		switchButton.setBounds(10, 100, 200, 25);

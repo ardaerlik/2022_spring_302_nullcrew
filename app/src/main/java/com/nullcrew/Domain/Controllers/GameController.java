@@ -16,11 +16,16 @@ import com.nullcrew.Domain.Models.Ball;
 import com.nullcrew.Domain.Models.ExplosiveAsteroid;
 import com.nullcrew.Domain.Models.Game;
 import com.nullcrew.Domain.Models.GameMode;
+import com.nullcrew.Domain.Models.GameObject;
 import com.nullcrew.Domain.Models.GameObjectFactory;
+import com.nullcrew.Domain.Models.GiftAsteroid;
+import com.nullcrew.Domain.Models.LaserBall;
+import com.nullcrew.Domain.Models.MagnetPowerUp;
 import com.nullcrew.Domain.Models.MessageType;
 import com.nullcrew.Domain.Models.MoveDirection;
 import com.nullcrew.Domain.Models.Paddle;
 import com.nullcrew.Domain.Models.PowerUp;
+import com.nullcrew.Domain.Models.TallerPowerUp;
 import com.nullcrew.UI.Views.GamePanel;
 import com.nullcrew.UI.Views.GameView;
 
@@ -32,14 +37,18 @@ public class GameController extends AppController {
 	public static final int MIN_NUM_GIFT = 10;
 	private List<Asteroid> asteroidList;
 	private List<PowerUp> powerups;
-	private Ball ball;
+	private List<Ball> balls;
+	private List<LaserBall> laser_balls;
 	private Paddle paddle;
 	private Alien alien;
 	private Game game;
-
+	private PowerUp powerUp;
+	private float estimated_boostTime=0f;
+	private long boost_start_time=0l;
 	public GameController(GameView gameView, AlienAsteroidGame app) {
 		super(gameView, app);
 		asteroidList = new ArrayList<>();
+		powerups=  new ArrayList<>();
 	}
 
 	public boolean addAsteroid(Asteroid toBeAdded, double newX, double newY) {
@@ -92,15 +101,33 @@ public class GameController extends AppController {
 			if (asteroid == null) {
 				continue;
 			}
-			if(ball.getObjShape().getShape().intersects(asteroid.getObjShape().getRect())) {
-
-				if ((asteroid instanceof ExplosiveAsteroid)) {
-					((ExplosiveAsteroid) asteroid).hit_nearby(this);
-					asteroid.hit(this);
-				} else {
-					asteroid.hit(this);
+			for(Ball ball:balls) {
+				if(ball.getObjShape().getShape().intersects(asteroid.getObjShape().getRect())) {
+					reflectFromObject(asteroid,ball);
+					if ((asteroid instanceof ExplosiveAsteroid)) {
+						((ExplosiveAsteroid) asteroid).hit_nearby(this);
+						asteroid.hit(this);
+					}
+					else if (asteroid instanceof GiftAsteroid){ 
+						if(((GiftAsteroid) asteroid).powerup!=null){
+							if(((GiftAsteroid) asteroid).powerup instanceof MagnetPowerUp) {
+								powerups.add(((GiftAsteroid) asteroid).powerup);
+							}
+							else if(((GiftAsteroid) asteroid).powerup instanceof TallerPowerUp) {
+								powerups.add(((GiftAsteroid) asteroid).powerup);
+							}
+							else {
+								((GiftAsteroid) asteroid).powerup.use();
+								powerUp=((GiftAsteroid) asteroid).powerup;
+							}
+						}
+						asteroid.hit(this);
+					}
+					else {
+						asteroid.hit(this);
+					}
+					return asteroid;
 				}
-				return asteroid;
 			}
 
 		}
@@ -116,31 +143,48 @@ public class GameController extends AppController {
 		return null;
 	}
 
-	public void ballMoved() {
-		if (GamePanel.gameMode == GameMode.PAUSED) {
+	public void ballHitBall() {
+		if(balls.size()<=1) {
 			return;
 		}
-		if (0 >= ball.getX()) {
-			ball.setVelocityX(-ball.getVelocityX());
+		for(Ball ball: balls) {
+			for(Ball collided_ball:balls) {
+				if(ball==collided_ball) {
+					continue;
+				}
+				if(ball.getObjShape().getShape().intersects(collided_ball.getObjShape().getShape().getBounds2D())){
+					reflectFromObject(ball,collided_ball);
+					reflectFromObject(collided_ball,ball);
+				}
+			}
 		}
-		if (ball.getX() + ball.getWidth() >= ((GameView) view).getInitialWidth()) {
-			ball.setVelocityX(-ball.getVelocityX());
+	}
+	
+	public void ballMoved() {
+
+		for(Ball ball:balls) {
+			if (GamePanel.gameMode == GameMode.PAUSED) {
+				return;
+			}
+			if (0 >= ball.getX()) {
+				ball.setVelocityX(-ball.getVelocityX());
+			}
+			if (ball.getX() + ball.getWidth() >= ((GameView) view).getInitialWidth()) {
+				ball.setVelocityX(-ball.getVelocityX());
+			}
+			if (0 >= ball.getY()) {
+				ball.setVelocityY((-ball.getVelocityY()));
+			}
+			ball.setX(ball.getX() + ball.getVelocityX());
+			ball.setY(ball.getY() + ball.getVelocityY());
 		}
-		if (0 >= ball.getY()) {
-			ball.setVelocityY((-ball.getVelocityY()));
-		}
-		ball.setX(ball.getX() + ball.getVelocityX());
-		ball.setY(ball.getY() + ball.getVelocityY());
 
 	}
 	
 	public void alienMoved() {
 		if (GamePanel.gameMode == GameMode.PAUSED) {
 			return;
-		}/*
-		System.out.println(alien.getSpeed());
-		System.out.print("***  ");
-		System.out.println(alien.getX());*/
+		}
 		if (0 > alien.getX()) {
 			alien.setSpeed(-alien.getSpeed());
 		}
@@ -148,6 +192,49 @@ public class GameController extends AppController {
 			alien.setSpeed(-alien.getSpeed());
 		}
 		alien.setX(alien.getX() + alien.getSpeed());
+	}
+
+	public void laserMoved() {
+		for(LaserBall laser:laser_balls) {
+			if(laser==null) {
+				return;
+			}
+			if (GamePanel.gameMode == GameMode.PAUSED) {
+				return;
+			}
+			laser.setX(laser.getX() + laser.getVelocityX());
+			laser.setY(laser.getY() + laser.getVelocityY());
+			if(laser.getY()<=0) {
+				laser.setHeight(0);
+				laser.setWidth(0);
+			}
+		}
+	}
+
+	public void laserHitAsteroid() {
+		for(LaserBall laser:laser_balls) {
+			if(laser==null) {continue;}
+			try {
+				for(Asteroid asteroid: asteroidList) {
+					if(asteroid==null) {continue;}
+					if(laser.getObjShape().getShape().intersects(asteroid.getObjShape().getShape().getBounds2D())) {
+						asteroid.setLives(0);
+						asteroid.hit(this);
+					}
+				}
+			}
+			catch(Exception e) {
+				System.out.println("Exception occured!");
+			}
+
+		}
+	}
+
+	public void updateBoosts() {
+		if(paddle.onTallerPowerUp) {
+			//int time_passed= System.currentTimeMillis()-
+			
+		}
 	}
 
 	public MessageType checkNumAsteroids(int[] numOfAsteroidTypes) { // simple, firm, explosive, gift
@@ -202,8 +289,8 @@ public class GameController extends AppController {
 		return asteroidList;
 	}
 
-	public Ball getBall() {
-		return ball;
+	public List<Ball> getBalls() {
+		return balls;
 	}
 
 	public Paddle getPaddle() {
@@ -214,13 +301,30 @@ public class GameController extends AppController {
 		return alien;
 	}
 
-	
 	public void paddleHitBall() {
-		Rectangle2D rectx= new Rectangle2D.Double(paddle.getX(),paddle.getY(),paddle.getInitialWidth()+2,paddle.getInitialHeight()+2);
-		Shape s= paddle.getObjShape().getTransform().createTransformedShape(rectx);
-		if (s.intersects(ball.getObjShape().getRect())){
-			
-			ball.setVelocityY((-ball.getVelocityY()));
+		for(Ball ball:balls) {	
+			if (getPaddle().getObjShape().getShape().intersects(ball.getObjShape().getShape().getBounds2D())){
+				
+				ball.setVelocityY((-ball.getVelocityY()));
+			}
+		}
+	}
+
+	public void activatePowerUp(String key) {
+		for(int a=0;a<powerups.size();a++) {
+			if(key=="TallerPowerUp"&&powerups.get(a) instanceof TallerPowerUp) {
+				powerUp=powerups.get(a);
+				powerups.get(a).use();
+				powerups.remove(a);
+				estimated_boostTime=30f;
+				boost_start_time=System.currentTimeMillis();
+			}
+			if(key=="MagnetPowerUp"&&powerups.get(a) instanceof MagnetPowerUp) {
+				powerUp=powerups.get(a);
+				powerups.get(a).use();
+				powerups.remove(a);
+				getPaddle().onMagnet=true;
+			}
 		}
 	}
 
@@ -233,11 +337,21 @@ public class GameController extends AppController {
 			if (paddle.getX() + getPaddle().getWidth() < ((GameView) view).getInitialWidth()) {
 				paddle.setX(paddle.getX() + paddle.velocity);
 			}
+			else {
+				if(paddle.onWrapPowerUp) {
+					paddle.setX(0);
+				}
+			}
 			break;
 		}
 		case LEFT: {
 			if (paddle.getX() > 0) {
 				paddle.setX(paddle.getX() - paddle.velocity);
+			}
+			else {
+				if(paddle.onWrapPowerUp) {
+					paddle.setX(((GameView) view).getInitialWidth()-paddle.getWidth());
+				}
 			}
 			break;
 		}
@@ -270,12 +384,12 @@ public class GameController extends AppController {
 		}
 	}
 
-	public void reflectFromAsteroid(Asteroid collided_asteroid) {
-
+	public void reflectFromObject(GameObject collided_asteroid,Ball ball) {
+		
 		if (collided_asteroid == null) {
 			return;
 		}
-
+			
 		double posX = (double) collided_asteroid.getX() - ball.getX();
 		double posY = (double) collided_asteroid.getY() - ball.getY();
 		double angle = Math.atan2(posY - 0, posX - (double) 1) * (180 / Math.PI);
@@ -291,6 +405,20 @@ public class GameController extends AppController {
 		if ((0d <= angle && angle <= 45d) || (-135d >= angle && angle <= -180d)) {
 			ball.setVelocityX(-ball.getVelocityX());
 		}
+	}
+
+	public void freezeBallOnPaddle(Ball ball) {
+		if(ball==null) {
+			return;
+		}
+		ball.setX(
+				(GameObjectFactory.BALL_X-GameObjectFactory.PADDLE_X)+getPaddle().getX()
+				);
+		ball.setY(
+				GameObjectFactory.BALL_Y
+				);
+		ball.setVelocityX(0);
+		ball.setVelocityY(0);
 	}
 
 	public void reflectFromAlien(Alien collided_alien) {
@@ -310,7 +438,6 @@ public class GameController extends AppController {
 			ball.setVelocityX(-ball.getVelocityX());
 		}
 	}
-	
 	
 	public Object[] removeAsteroid(int x, int y) {
 		MessageType msg = null;
@@ -357,8 +484,8 @@ public class GameController extends AppController {
 		this.asteroidList = asteroidList;
 	}
 
-	public void setBall(Ball ball) {
-		this.ball = ball;
+	public void setBalls(List<Ball> balls) {
+		this.balls = balls;
 	}
 
 	public void setPaddle(Paddle paddle) {
@@ -375,6 +502,22 @@ public class GameController extends AppController {
 
 	public void setGame(Game game) {
 		this.game = game;
+	}
+
+	public List<PowerUp> getPowerups() {
+		return powerups;
+	}
+
+	public void setPowerups(List<PowerUp> powerups) {
+		this.powerups = powerups;
+	}
+
+	public List<LaserBall> getLaser_balls() {
+		return laser_balls;
+	}
+
+	public void setLaser_balls(List<LaserBall> laser_balls) {
+		this.laser_balls = laser_balls;
 	}
 
 }

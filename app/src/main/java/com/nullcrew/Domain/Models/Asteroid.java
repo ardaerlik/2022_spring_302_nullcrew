@@ -11,7 +11,7 @@ public abstract class Asteroid extends GameObject {
 	private Color color;
 	private AsteroidType type;
 	private String asteroidType;
-
+	protected int lives;
 	public Asteroid(GameController gameController,double x, double y, int width, int height, double speed, Color color, AsteroidType type) {
 		super(gameController,x, y, width, height);
 		this.speed = speed;
@@ -19,7 +19,9 @@ public abstract class Asteroid extends GameObject {
 		this.type = type;
 		this.asteroidType = type.toString();
 	}
-
+	public void setLives(int lives) {
+		this.lives=lives;
+	}
 	public double getSpeed() {
 		return speed;
 	}
@@ -33,7 +35,7 @@ public abstract class Asteroid extends GameObject {
 	public AsteroidType getType() {
 		return type;
 	}
-
+	
 	@Override
 	public abstract Asteroid clone();
 	

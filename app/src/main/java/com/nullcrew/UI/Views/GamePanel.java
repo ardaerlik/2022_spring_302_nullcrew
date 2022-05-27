@@ -22,6 +22,7 @@ import com.nullcrew.Domain.Models.Ball;
 import com.nullcrew.Domain.Models.GameMode;
 import com.nullcrew.Domain.Models.GameObject;
 import com.nullcrew.Domain.Models.GameObjectFactory;
+import com.nullcrew.Domain.Models.LaserBall;
 import com.nullcrew.Domain.Models.MessageType;
 import com.nullcrew.Domain.Models.MoveDirection;
 import com.nullcrew.Domain.Models.Paddle;
@@ -32,7 +33,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	private GameView gameView;
 	private Timer gameTimerUI;
 	public static GameMode gameMode;
-	public static Graphics paddleGraphics, asteroidGraphics, ballGraphics, alienGraphics;
+	public static Graphics paddleGraphics, asteroidGraphics, ballGraphics, alienGraphics,laserGraphics;
 	private final int MAX_ROWS = 11;
 	private final int MAX_COLUMNS = 15;
 	private final int MARGIN_LEFT = 50;
@@ -63,7 +64,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		initialX=-1;
 		initialY=-1;
 
-		
 		createGameObjects();
 		configureUI();
 
@@ -83,9 +83,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	public void createGameObjects() {
 		gameView.getGameController().setPaddle(GameObjectFactory.createPaddle());
-		gameView.getGameController().setBall(GameObjectFactory.createBall());
+		List<Ball> list= new ArrayList();
+		list.add(GameObjectFactory.createBall());
+		gameView.getGameController().setBalls(list);
 		list_objects.add(gameView.getGameController().getPaddle());
-		list_objects.add(gameView.getGameController().getBall());
+		for(Ball ball: list) {
+			list_objects.add(ball);
+		}
+
 	}
 	
 	public void createAlien() {
@@ -135,10 +140,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				ballGraphics = g;
 
 				Graphics2D g2 = (Graphics2D) GamePanel.ballGraphics;
-				g2.fillOval((int)gameView.getGameController().getBall().getX(),
-						(int)gameView.getGameController().getBall().getY(),
-						gameView.getGameController().getBall().getWidth(),
-						gameView.getGameController().getBall().getHeight());
+				for(Ball ball:gameView.getGameController().getBalls()) {
+					g2.fillOval((int)ball.getX(),
+							(int)ball.getY(),
+							ball.getWidth(),
+							ball.getHeight());
+				}
+
 			}
 
 			if (object instanceof Asteroid) {
@@ -170,9 +178,24 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				
 				
 			}
+			if(object instanceof LaserBall) {
+				g.setColor(Color.white);
+				laserGraphics=g;
+				Graphics2D g2 = (Graphics2D) GamePanel.laserGraphics;
+				
+				for(LaserBall laser:gameView.getGameController().getLaser_balls()) {
+					g2.fillOval(
+							(int)laser.getX(),
+							(int)laser.getY(),
+							laser.getWidth(),
+							laser.getHeight());
+				}
+
+			}
 		}
 	}
 	
+
 	private void paintPaddle(Graphics g) {
 		if (pressedKeysLoc < pressedKeys.size()) {
 			if (pressedKeysLocInt == 0) {
@@ -307,6 +330,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			gameView.getGameController().paddleRotated(MoveDirection.DOWN);
 			break;
 		}
+		case(KeyEvent.VK_T):{
+			if(gameMode==GameMode.PAUSED) {
+				return;
+			}
+			gameView.getGameController().activatePowerUp("TallerPowerUp");
+			gameMode=GameMode.RESUMED;
+		}
+		case(KeyEvent.VK_M):{
+			if(gameMode==GameMode.PAUSED) {
+				return;
+			}
+			gameView.getGameController().activatePowerUp("MagnetPowerUp");
+			
+		}
 		case (KeyEvent.VK_ESCAPE): {
 			switch (gameMode) {
 			case PAUSED: {
@@ -329,18 +366,21 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		repaint();
 		gameView.getGameController().ballMoved();
 		gameView.getGameController().paddleHitBall();
-		if (gameView.getGameController().getAlien() != null) {
-			gameView.getGameController().alienMoved();
-			gameView.getGameController().ballHitAlien();
+		gameView.getGameController().ballHitAsteroid();
+		gameView.getGameController().ballHitBall();
+		if(gameView.getGameController().getPaddle().onMagnet) {
+			gameView.getGameController().freezeBallOnPaddle(
+					gameView.getGameController().getBalls().get(0)
+					);
 		}
-		Asteroid asteroid = gameView.getGameController().ballHitAsteroid();
-		if (asteroid != null) {
-			gameView.getGameController().reflectFromAsteroid(asteroid);
+		if(gameView.getGameController().getLaser_balls()!=null&&
+				gameView.getGameController().getLaser_balls().size()!=0) {
+			gameView.getGameController().laserMoved();
+			gameView.getGameController().laserHitAsteroid();
 		}
-
-		repaint();
 	}
 
 	@Override
@@ -349,10 +389,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		float rate_y =((float)gameView.getFrame().getHeight()/(float) gameView.getInitialHeight());
 		double size_x=(double)rate_x;
 		double size_y= (double)rate_y;
-		if (mouseEvent.getButton() == MouseEvent.BUTTON3) { // this is right click.
+		if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
 			int x = (int)(mouseEvent.getX()/size_x);
 			int y = (int)(mouseEvent.getY()/size_y);
-			Object[] result = gameView.getGameController().removeAsteroid(x, y); // returns Asteroid, MessageType
+			Object[] result = gameView.getGameController().removeAsteroid(x, y);
 			if (result[1] == MessageType.NoAsteroidInThisLocation) {
 				JOptionPane.showMessageDialog(null, "No asteroid to remove in this location!", "Error",
 						JOptionPane.ERROR_MESSAGE);
@@ -375,6 +415,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void mousePressed(MouseEvent mouseEvent) {
+		if(gameMode == GameMode.PAUSED) {
+			return;
+		}
+		if(gameView.getGameController().getPaddle().onMagnet) {
+			gameView.getGameController().getBalls().get(0).setVelocityX(3);
+			gameView.getGameController().getBalls().get(0).setVelocityY(-3);
+			gameView.getGameController().getPaddle().onMagnet=false;
+		}
 	}
 
 
@@ -389,17 +437,21 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				gameView.getGameController().getPaddle().getWidth(),
 				gameView.getGameController().getPaddle().getHeight()
 				);
-		Rectangle2D temp_ball=new Rectangle2D.Double(gameView.getGameController().getBall().getX(),
-				gameView.getGameController().getBall().getY(),
-				gameView.getGameController().getBall().getWidth(),
-				gameView.getGameController().getBall().getHeight()
-				);
-		if (mouseEvent.getButton() == MouseEvent.BUTTON1 && draggedAsteroid != null) { // this is left click.
+		if (mouseEvent.getButton() == MouseEvent.BUTTON1 && draggedAsteroid != null) {
 			boolean success;
 			int x = (int)(mouseEvent.getX()/size_x);
 			int y = (int)(mouseEvent.getY()/size_y);
 			Rectangle2D temp_asteroid= new Rectangle2D.Double(x,y,draggedAsteroid.getWidth(),draggedAsteroid.getHeight());
-			if(temp_ball.intersects(temp_asteroid)||temp_paddle.intersects(temp_asteroid)) {
+			for(Ball ball:gameView.getGameController().getBalls()) {
+				Rectangle2D temp_ball=new Rectangle2D.Double(ball.getX(),
+						ball.getY(),
+						ball.getWidth(),
+						ball.getHeight());
+				if(temp_ball.intersects(temp_asteroid)) {
+					success=false;
+				}
+			}
+			if(temp_paddle.intersects(temp_asteroid)) {
 				success=false;
 			}
 			else if(temp_asteroid.getCenterY()>=temp_paddle.getCenterY() || 0>temp_asteroid.getCenterY()-temp_asteroid.getHeight()/2){
@@ -420,7 +472,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			if (!success) {
 				JOptionPane.showMessageDialog(null, "Can not drop the dragged asteroid on this position", "Error",
 						JOptionPane.ERROR_MESSAGE);
-//				System.out.println(initialX+", "+initialY);
 				gameView.getGameController().addAsteroid(draggedAsteroid, initialX, initialY);
 			}
 			draggedAsteroid=null;

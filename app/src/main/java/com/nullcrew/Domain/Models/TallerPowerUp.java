@@ -12,7 +12,10 @@ public class TallerPowerUp extends PowerUp{
 	@Override
 	public void use() {
 		// TODO Auto-generated method stub
-		
+		this.getGameController().getPaddle().setWidth(
+				(int)(this.getGameController().getPaddle().getWidth()*1.5f)
+				);
+		this.getGameController().getPaddle().onTallerPowerUp=true;
 	}
 
 
