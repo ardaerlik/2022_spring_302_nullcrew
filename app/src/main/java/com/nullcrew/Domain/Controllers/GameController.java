@@ -18,6 +18,7 @@ import com.nullcrew.Domain.Models.GameMode;
 import com.nullcrew.Domain.Models.GameObject;
 import com.nullcrew.Domain.Models.GameObjectFactory;
 import com.nullcrew.Domain.Models.GiftAsteroid;
+import com.nullcrew.Domain.Models.LaserBall;
 import com.nullcrew.Domain.Models.MagnetPowerUp;
 import com.nullcrew.Domain.Models.MessageType;
 import com.nullcrew.Domain.Models.MoveDirection;
@@ -36,6 +37,7 @@ public class GameController extends AppController {
 	private List<Asteroid> asteroidList;
 	private List<PowerUp> powerups;
 	private List<Ball> balls;
+	private List<LaserBall> laser_balls;
 	private Paddle paddle;
 	private Alien alien;
 	private Game game;
@@ -149,6 +151,41 @@ public class GameController extends AppController {
 			ball.setY(ball.getY() + ball.getVelocityY());
 		}
 
+	}
+	public void laserMoved() {
+		for(LaserBall laser:laser_balls) {
+			if(laser==null) {
+				return;
+			}
+			if (GamePanel.gameMode == GameMode.PAUSED) {
+				return;
+			}
+			laser.setX(laser.getX() + laser.getVelocityX());
+			laser.setY(laser.getY() + laser.getVelocityY());
+			if(laser.getY()<=0) {
+				laser.setHeight(0);
+				laser.setWidth(0);
+			}
+		}
+		
+	}
+	public void laserHitAsteroid() {
+		for(LaserBall laser:laser_balls) {
+			if(laser==null) {continue;}
+			try {
+				for(Asteroid asteroid: asteroidList) {
+					if(asteroid==null) {continue;}
+					if(laser.getObjShape().getShape().intersects(asteroid.getObjShape().getShape().getBounds2D())) {
+						asteroid.setLives(0);
+						asteroid.hit(this);
+					}
+				}
+			}
+			catch(Exception e) {
+				System.out.println("Exception occured!");
+			}
+
+		}
 	}
 	public void updateBoosts() {
 		if(paddle.onTallerPowerUp) {
@@ -409,6 +446,14 @@ public class GameController extends AppController {
 
 	public void setPowerups(List<PowerUp> powerups) {
 		this.powerups = powerups;
+	}
+
+	public List<LaserBall> getLaser_balls() {
+		return laser_balls;
+	}
+
+	public void setLaser_balls(List<LaserBall> laser_balls) {
+		this.laser_balls = laser_balls;
 	}
 
 }

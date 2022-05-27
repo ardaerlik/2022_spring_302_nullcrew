@@ -6,7 +6,6 @@ import java.util.List;
 import com.nullcrew.Domain.Controllers.GameController;
 
 public class GiftAsteroid extends Asteroid {
-	private int lives;
 	public PowerUp powerup;
 	public GiftAsteroid(GameController gameController,double x, double y, int width, int height, double speed,PowerUp powerup) {
 		super(gameController,x, y, width, height, speed, Color.BLUE, AsteroidType.Gift);

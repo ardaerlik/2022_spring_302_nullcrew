@@ -134,12 +134,15 @@ public class TopPanel extends JPanel {
 		for(int a=0;a<gameView.getGameController().getPowerups().size();a++) {
 			if(gameView.getGameController().getPowerups().get(a) instanceof MagnetPowerUp) {
 				magnet_button= new JButton();
-				magnet_button.setBounds(40,200, 100, 25);
+				magnet_button.setVisible(true);
+				magnet_button.setBounds(10,100, 100, 25);
 				magnet_button.setText("Magnet PowerUp");
 				magnet_button.addActionListener(new ActionListener(){
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						gameView.getGamePanel().setFocusable(true);
+						gameView.getGamePanel().requestFocusInWindow();
 						for(int a=0;a<gameView.getGameController().getPowerups().size();a++) {
 							if(gameView.getGameController().getPowerups().get(a) instanceof MagnetPowerUp) {
 								gameView.getGameController().activatePowerUp("MagnetPowerUp");
@@ -148,15 +151,19 @@ public class TopPanel extends JPanel {
 					
 					}
 				});
+				this.add(magnet_button);
 			}
 			if(gameView.getGameController().getPowerups().get(a) instanceof TallerPowerUp) {
 				taller_button= new JButton();
-				taller_button.setBounds(140,200, 100, 25);
+				taller_button.setVisible(true);
+				taller_button.setBounds(30,200, 100, 25);
 				taller_button.setText("Taller PowerUp");
 				taller_button.addActionListener(new ActionListener(){
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						gameView.getGamePanel().setFocusable(true);
+						gameView.getGamePanel().requestFocusInWindow();
 						for(int a=0;a<gameView.getGameController().getPowerups().size();a++) {
 							if(gameView.getGameController().getPowerups().get(a) instanceof TallerPowerUp) {
 								gameView.getGameController().activatePowerUp("TallerPowerUp");			
@@ -164,7 +171,9 @@ public class TopPanel extends JPanel {
 						}
 					}
 				});
+				this.add(taller_button);
 			}
+
 		}
 	}
 	private void createSwitchButton() {

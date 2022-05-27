@@ -44,7 +44,9 @@ public class GameObjectFactory {
 		return null;
 	}
 
-
+	public static LaserBall createLaserBall(GameController controller,double x,double y,int width,int height) {
+		return new LaserBall(controller,x,y,width,height);
+	}
 	public static List<Asteroid> createAsteroids(int[] numOfAsteroidTypes, int[] locSpaces, int[] margins, int[] maxRowsColumns) {
 		//REQUIRES: numOfAsteroidTypes != null && numOfAsteroidTypes.length == 4 && locSpaces != null && locSpaces.length == 2 && margins != null && margins.length == 4 && maxRowsColumns != null && maxRowsColumns.length == 2
 		//MODIFIES: nothing is modified

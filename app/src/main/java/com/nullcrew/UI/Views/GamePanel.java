@@ -22,6 +22,7 @@ import com.nullcrew.Domain.Models.Ball;
 import com.nullcrew.Domain.Models.GameMode;
 import com.nullcrew.Domain.Models.GameObject;
 import com.nullcrew.Domain.Models.GameObjectFactory;
+import com.nullcrew.Domain.Models.LaserBall;
 import com.nullcrew.Domain.Models.MessageType;
 import com.nullcrew.Domain.Models.MoveDirection;
 import com.nullcrew.Domain.Models.Paddle;
@@ -32,7 +33,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	private GameView gameView;
 	private Timer gameTimerUI;
 	public static GameMode gameMode;
-	public static Graphics paddleGraphics, asteroidGraphics, ballGraphics, alienGraphics;
+	public static Graphics paddleGraphics, asteroidGraphics, ballGraphics, alienGraphics,laserGraphics;
 	private final int MAX_ROWS = 11;
 	private final int MAX_COLUMNS = 15;
 	private final int MARGIN_LEFT = 50;
@@ -173,6 +174,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				g2.setColor(alien.getColor());
 				g2.fill3DRect((int)alien.getX(), (int)alien.getY(), alien.getWidth(), alien.getHeight(), true);
 				
+			}
+			if(object instanceof LaserBall) {
+				g.setColor(Color.white);
+				laserGraphics=g;
+				Graphics2D g2 = (Graphics2D) GamePanel.laserGraphics;
+				
+				for(LaserBall laser:gameView.getGameController().getLaser_balls()) {
+					g2.fillOval(
+							(int)laser.getX(),
+							(int)laser.getY(),
+							laser.getWidth(),
+							laser.getHeight());
+				}
+
 			}
 		}
 	}
@@ -324,7 +339,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				return;
 			}
 			gameView.getGameController().activatePowerUp("MagnetPowerUp");
-			gameMode=GameMode.RESUMED;
+			
 		}
 		case (KeyEvent.VK_ESCAPE): {
 			switch (gameMode) {
@@ -357,6 +372,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			gameView.getGameController().freezeBallOnPaddle(
 					gameView.getGameController().getBalls().get(0)
 					);
+		}
+		if(gameView.getGameController().getLaser_balls()!=null&&
+				gameView.getGameController().getLaser_balls().size()!=0) {
+			gameView.getGameController().laserMoved();
+			gameView.getGameController().laserHitAsteroid();
 		}
 	}
 

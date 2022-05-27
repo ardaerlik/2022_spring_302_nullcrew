@@ -6,7 +6,6 @@ import java.util.List;
 import com.nullcrew.Domain.Controllers.GameController;
 
 public class FirmAsteroid extends Asteroid {
-	private int lives;
 
 	public FirmAsteroid(GameController gameController,double x, double y, int width, int height, double speed) {
 		super(gameController,x, y, width, height, speed, Color.CYAN, AsteroidType.Firm);
