@@ -52,7 +52,13 @@ public class Game  {
 		for (int i = 0; i < list_of_powerups.size(); i++) {
 			list_of_powerup_documents.add(list_of_powerups.get(i).getDocument());
 		}
-	}	
+	}
+	
+	public void buildDocuments() {
+		buildAsteroidDocuments();
+		buildAlienDocuments();
+		buildPowerUpDocuments();
+	}
 	
 	public Document getDocument() {
 		Document document = new Document()
