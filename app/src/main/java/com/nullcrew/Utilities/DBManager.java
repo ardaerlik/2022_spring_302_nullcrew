@@ -97,6 +97,11 @@ public final class DBManager implements DataStrategy {
 	@Override
 	public void loadTheGames() {
 		user.getAccount().setSavedGames(getGamesWithObjectIds(user.getSavedGameIds()));
+		if (user.getAccount().getSavedGames() != null) {
+			notifySaveLoadObserver(DatabaseResponses.GAMES_LOADED);
+		} else {
+			notifySaveLoadObserver(DatabaseResponses.DATABASE_ERROR);
+		}
 	}
 
 	@Override
