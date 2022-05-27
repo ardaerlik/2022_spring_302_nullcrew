@@ -27,5 +27,12 @@ public interface Constants {
 		String GAME_UPDATED = "Game are updated";
 		String GAMES_LOADED = "Games are loaded";
 	}
+	
+	interface FileManagerConstants {
+		String DIR_PATH = "db";
+		String GAME_UPDATED = "Game are updated on local";
+		String NEW_GAME_SAVED = "New game saved on local";
+		String WRITE_ERROR = "File cannot be written";
+	}
 
 }
