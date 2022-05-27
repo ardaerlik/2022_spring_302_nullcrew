@@ -32,6 +32,7 @@ public final class DBManager implements DataStrategy {
 	private MongoDatabase database;
 	private User user;
 	private AuthObserver authObserver;
+	private SaveLoadObserver saveLoadObserver;
 
 	public static DBManager getInstance() {
 		if (instance == null) {
@@ -290,8 +291,7 @@ public final class DBManager implements DataStrategy {
 	
 	@Override
 	public void subscribeSaveLoadObserver(SaveLoadObserver observer) {
-		// TODO Auto-generated method stub
-		
+		this.saveLoadObserver = observer;
 	}
 
 	@Override
