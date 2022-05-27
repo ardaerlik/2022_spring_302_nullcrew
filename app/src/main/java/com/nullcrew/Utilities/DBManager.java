@@ -232,7 +232,19 @@ public final class DBManager implements DataStrategy {
 	}
 	
 	private synchronized ArrayList<Game> getGamesWithObjectIds(ArrayList<ObjectId> objectIds) {
-		return null;
+		ArrayList<Game> games = new ArrayList<Game>();
+		
+		for (ObjectId gameId: objectIds) {
+			BasicDBObject query = new BasicDBObject();
+			query.put("_id", gameId);
+			
+			Document document = database.getCollection(Constants.DatabaseResponses.GAMES_COLLECTION)
+					.find(query)
+					.first();
+			games.add(new Game(document));
+		}
+		
+		return games;
 	}
 	
 	private synchronized ObjectId checkForgotKey(String email, String forgotKey) {
