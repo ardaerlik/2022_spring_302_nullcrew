@@ -17,6 +17,7 @@ import com.nullcrew.Domain.Models.User;
 public final class FileManager implements DataStrategy {
 	private static FileManager instance = new FileManager();
 	private User user;
+	private SaveLoadObserver saveLoadObserver;
 	
 	public static FileManager getInstance() {
 		if (instance == null) {
@@ -75,20 +76,14 @@ public final class FileManager implements DataStrategy {
 
 	@Override
 	public void registerUser(String email, String password, String forgotKey) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void loginUser(String email, String password) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void resetPassword(String email, String newPassword, String forgotKey) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -103,26 +98,38 @@ public final class FileManager implements DataStrategy {
 
 	@Override
 	public void subscribeAuthObserver(AuthObserver observer) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void notifyAuthObservers(String response) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void subscribeSaveLoadObserver(SaveLoadObserver observer) {
-		// TODO Auto-generated method stub
-		
+		this.saveLoadObserver = observer;
 	}
 
 	@Override
 	public void notifySaveLoadObserver(String response) {
-		// TODO Auto-generated method stub
+		if (response.equals(FileManagerConstants.GAME_UPDATED)) {
+			// TODO
+			return;
+		}
 		
+		if (response.equals(FileManagerConstants.GAMES_LOADED)) {
+			// TODO
+			return;
+		}
+		
+		if (response.equals(FileManagerConstants.NEW_GAME_SAVED)) {
+			// TODO
+			return;
+		}
+		
+		if (response.equals(FileManagerConstants.WRITE_ERROR)) {
+			// TODO
+			return;
+		}
 	}
 	
 	private void writeToFile(Game game) throws IOException {
