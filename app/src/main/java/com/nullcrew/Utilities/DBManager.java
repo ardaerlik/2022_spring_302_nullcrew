@@ -32,6 +32,7 @@ public final class DBManager implements DataStrategy {
 	private MongoDatabase database;
 	private User user;
 	private AuthObserver authObserver;
+	private SaveLoadObserver saveLoadObserver;
 
 	public static DBManager getInstance() {
 		if (instance == null) {
@@ -96,6 +97,11 @@ public final class DBManager implements DataStrategy {
 	@Override
 	public void loadTheGames() {
 		user.getAccount().setSavedGames(getGamesWithObjectIds(user.getSavedGameIds()));
+		if (user.getAccount().getSavedGames() != null) {
+			notifySaveLoadObserver(DatabaseResponses.GAMES_LOADED);
+		} else {
+			notifySaveLoadObserver(DatabaseResponses.DATABASE_ERROR);
+		}
 	}
 
 	@Override
@@ -231,7 +237,19 @@ public final class DBManager implements DataStrategy {
 	}
 	
 	private synchronized ArrayList<Game> getGamesWithObjectIds(ArrayList<ObjectId> objectIds) {
-		return null;
+		ArrayList<Game> games = new ArrayList<Game>();
+		
+		for (ObjectId gameId: objectIds) {
+			BasicDBObject query = new BasicDBObject();
+			query.put("_id", gameId);
+			
+			Document document = database.getCollection(Constants.DatabaseResponses.GAMES_COLLECTION)
+					.find(query)
+					.first();
+			games.add(new Game(document));
+		}
+		
+		return games;
 	}
 	
 	private synchronized ObjectId checkForgotKey(String email, String forgotKey) {
@@ -290,14 +308,30 @@ public final class DBManager implements DataStrategy {
 	
 	@Override
 	public void subscribeSaveLoadObserver(SaveLoadObserver observer) {
-		// TODO Auto-generated method stub
-		
+		this.saveLoadObserver = observer;
 	}
 
 	@Override
 	public void notifySaveLoadObserver(String response) {
-		// TODO Auto-generated method stub
+		if (response.equals(DatabaseResponses.DATABASE_ERROR)) {
+			// TODO
+			return;
+		}
 		
+		if (response.equals(DatabaseResponses.GAME_UPDATED)) {
+			// TODO
+			return;
+		}
+		
+		if (response.equals(DatabaseResponses.GAMES_LOADED)) {
+			// TODO
+			return;
+		}
+		
+		if (response.equals(DatabaseResponses.NEW_GAME_SAVED)) {
+			// TODO
+			return;
+		}
 	}
 	
 	public MongoClient getClient() {
