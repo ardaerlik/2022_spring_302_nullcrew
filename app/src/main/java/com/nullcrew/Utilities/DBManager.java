@@ -313,8 +313,25 @@ public final class DBManager implements DataStrategy {
 
 	@Override
 	public void notifySaveLoadObserver(String response) {
-		// TODO Auto-generated method stub
+		if (response.equals(DatabaseResponses.DATABASE_ERROR)) {
+			// TODO
+			return;
+		}
 		
+		if (response.equals(DatabaseResponses.GAME_UPDATED)) {
+			// TODO
+			return;
+		}
+		
+		if (response.equals(DatabaseResponses.GAMES_LOADED)) {
+			// TODO
+			return;
+		}
+		
+		if (response.equals(DatabaseResponses.NEW_GAME_SAVED)) {
+			// TODO
+			return;
+		}
 	}
 	
 	public MongoClient getClient() {
