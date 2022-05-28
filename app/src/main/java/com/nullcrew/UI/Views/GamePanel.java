@@ -331,13 +331,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			break;
 		}
 		case(KeyEvent.VK_T):{
+			if(e.getKeyChar()==KeyEvent.VK_M) {
+				return;
+			}
 			if(gameMode==GameMode.PAUSED) {
 				return;
 			}
 			gameView.getGameController().activatePowerUp("TallerPowerUp");
-			gameMode=GameMode.RESUMED;
 		}
 		case(KeyEvent.VK_M):{
+			if(e.getKeyChar()==KeyEvent.VK_T) {
+				return;
+			}
 			if(gameMode==GameMode.PAUSED) {
 				return;
 			}
@@ -371,16 +376,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		gameView.getGameController().paddleHitBall();
 		gameView.getGameController().ballHitAsteroid();
 		gameView.getGameController().ballHitBall();
-		if(gameView.getGameController().getPaddle().onMagnet) {
-			gameView.getGameController().freezeBallOnPaddle(
-					gameView.getGameController().getBalls().get(0)
-					);
-		}
-		if(gameView.getGameController().getLaser_balls()!=null&&
-				gameView.getGameController().getLaser_balls().size()!=0) {
-			gameView.getGameController().laserMoved();
-			gameView.getGameController().laserHitAsteroid();
-		}
+		gameView.getGameController().updateBoosts();
 	}
 
 	@Override
@@ -419,8 +415,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			return;
 		}
 		if(gameView.getGameController().getPaddle().onMagnet) {
-			gameView.getGameController().getBalls().get(0).setVelocityX(3);
-			gameView.getGameController().getBalls().get(0).setVelocityY(-3);
+			gameView.getGameController().getBalls().get(0).setVelocityX(3*Math.sin(Math.toRadians(gameView.getGameController().getPaddle().getRotationDegree()))*1.2f);
+			gameView.getGameController().getBalls().get(0).setVelocityY(-3*Math.cos(Math.toRadians(gameView.getGameController().getPaddle().getRotationDegree()))*1.2f);
 			gameView.getGameController().getPaddle().onMagnet=false;
 		}
 	}
@@ -441,6 +437,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			boolean success;
 			int x = (int)(mouseEvent.getX()/size_x);
 			int y = (int)(mouseEvent.getY()/size_y);
+			boolean intersect_ball=false;
 			Rectangle2D temp_asteroid= new Rectangle2D.Double(x,y,draggedAsteroid.getWidth(),draggedAsteroid.getHeight());
 			for(Ball ball:gameView.getGameController().getBalls()) {
 				Rectangle2D temp_ball=new Rectangle2D.Double(ball.getX(),
@@ -448,25 +445,31 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 						ball.getWidth(),
 						ball.getHeight());
 				if(temp_ball.intersects(temp_asteroid)) {
-					success=false;
+					intersect_ball=true;
+					break;
 				}
 			}
-			if(temp_paddle.intersects(temp_asteroid)) {
+			if(!intersect_ball&&temp_paddle.intersects(temp_asteroid)) {
 				success=false;
 			}
-			else if(temp_asteroid.getCenterY()>=temp_paddle.getCenterY() || 0>temp_asteroid.getCenterY()-temp_asteroid.getHeight()/2){
+			else if(!intersect_ball&&temp_asteroid.getCenterY()>=temp_paddle.getCenterY() || 0>temp_asteroid.getCenterY()-temp_asteroid.getHeight()/2){
 				success=false;
 			}
-			else if((temp_asteroid.getCenterX()+temp_asteroid.getWidth()/2)>=gameView.getInitialWidth()) {
+			else if(!intersect_ball&&(temp_asteroid.getCenterX()+temp_asteroid.getWidth()/2)>=gameView.getInitialWidth()) {
 				success=false;
 			}
-			else if(temp_asteroid.getCenterY()+temp_asteroid.getHeight()*3>=gameView.getGameController().getPaddle().getY()) {
+			else if(!intersect_ball&&temp_asteroid.getCenterY()+temp_asteroid.getHeight()*3>=gameView.getGameController().getPaddle().getY()) {
 				success=false;
 			}
 			else {
-				draggedAsteroid.setX(initialX);
-				draggedAsteroid.setY(initialY);
-				success = gameView.getGameController().addAsteroid(draggedAsteroid, x, y);
+				if(!intersect_ball) {
+					draggedAsteroid.setX(initialX);
+					draggedAsteroid.setY(initialY);
+					success = gameView.getGameController().addAsteroid(draggedAsteroid, x, y);
+				}
+				else {
+					success=false;
+				}
 			}
 			
 			if (!success) {

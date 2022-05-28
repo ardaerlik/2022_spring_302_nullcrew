@@ -34,8 +34,8 @@ public final class AlienAsteroidGame {
 //		dataStrategy = dbManager;
 //
 //		dbManager.connectDB();
-//		changeView(null, new GameView());
-		changeView(null, new MenuView());
+		changeView(null, new GameView());
+		//changeView(null, new MenuView());
 	}
 	
 	public void exitApp() {
