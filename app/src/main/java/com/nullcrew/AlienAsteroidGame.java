@@ -1,5 +1,9 @@
 package com.nullcrew;
 
+import org.bson.types.ObjectId;
+
+import com.nullcrew.Domain.Models.Game;
+import com.nullcrew.Domain.Models.User;
 import com.nullcrew.UI.Views.AppView;
 import com.nullcrew.UI.Views.GameView;
 import com.nullcrew.UI.Views.MenuView;
@@ -8,6 +12,7 @@ import com.nullcrew.UI.Views.NewGameView;
 import com.nullcrew.UI.Views.HelpView;
 import com.nullcrew.Utilities.DBManager;
 import com.nullcrew.Utilities.DataStrategy;
+import com.nullcrew.Utilities.FileManager;
 
 public final class AlienAsteroidGame {
 	private static AlienAsteroidGame instance = new AlienAsteroidGame();
@@ -35,7 +40,14 @@ public final class AlienAsteroidGame {
 //
 //		dbManager.connectDB();
 //		changeView(null, new GameView());
-		changeView(null, new MenuView());
+		FileManager fileManager = FileManager.getInstance();
+		fileManager.setUser(new User());
+//		Game game = new Game(null, null, null, null);
+//		game.setLives(10);
+//		game.setScore(323);
+//		fileManager.saveTheGame(game);
+//		System.out.println(fileManager.getUser().getSavedGameIds().get(0));
+		Game game = fileManager.loadTheGame(new ObjectId("6292868ba613981bac5b3659"));
 	}
 	
 	public void exitApp() {
