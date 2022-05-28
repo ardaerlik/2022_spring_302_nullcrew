@@ -1,15 +1,20 @@
 package com.nullcrew.Utilities;
 
-import java.util.ArrayList;
-
 import com.nullcrew.Domain.Models.Game;
-import com.nullcrew.Domain.Models.User;
 
 public class DatabaseAdapter implements Database {
-	private DBManager dbManager;
+	private DBManager dbManager = DBManager.getInstance();
 
 	public DatabaseAdapter(DBManager dbManager) {
 		this.dbManager = dbManager;
+	}
+	
+	public void connect() {
+		dbManager.connectDB();
+	}
+	
+	public void close() {
+		dbManager.closeDB();
 	}
 
 	@Override
@@ -18,7 +23,7 @@ public class DatabaseAdapter implements Database {
 	}
 
 	@Override
-	public ArrayList<Game> loadTheGames() {
+	public void loadTheGames() {
 		dbManager.loadTheGames();
 	}
 

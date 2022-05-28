@@ -3,7 +3,6 @@ package com.nullcrew.Utilities;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -27,7 +26,6 @@ import com.nullcrew.Domain.Models.User;
 
 public final class FileManager implements Database {
 	private static FileManager instance = new FileManager();
-	private User user;
 	private SaveLoadObserver saveLoadObserver;
 	
 	public static FileManager getInstance() {
@@ -51,7 +49,7 @@ public final class FileManager implements Database {
 				gameIdExists = false;
 				newGameId = new ObjectId();
 				
-				for (ObjectId id: user.getSavedGameIds()) {
+				for (ObjectId id: User.getInstance().getSavedGameIds()) {
 					if (newGameId.equals(id)) {
 						gameIdExists = true;
 					}
@@ -61,8 +59,8 @@ public final class FileManager implements Database {
 			try {
 				game.setGameId(newGameId);
 				writeToFile(game);
-				user.addNewGameId(newGameId);
-				user.getAccount().addGame(game);
+				User.getInstance().addNewGameId(newGameId);
+				User.getInstance().getAccount().addGame(game);
 				notifySaveLoadObserver(FileManagerConstants.NEW_GAME_SAVED);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -81,8 +79,8 @@ public final class FileManager implements Database {
 
 	@Override
 	public void loadTheGames() {
-		user.getAccount().setSavedGames(getGamesWithObjectIds(user.getSavedGameIds()));
-		if (user.getAccount().getSavedGames() != null) {
+		User.getInstance().getAccount().setSavedGames(getGamesWithObjectIds(User.getInstance().getSavedGameIds()));
+		if (User.getInstance().getAccount().getSavedGames() != null) {
 			notifySaveLoadObserver(DatabaseResponses.GAMES_LOADED);
 		} else {
 			notifySaveLoadObserver(DatabaseResponses.DATABASE_ERROR);
@@ -95,16 +93,6 @@ public final class FileManager implements Database {
 		ids.add(id);
 		game = getGamesWithObjectIds(ids).get(0);
 		return game;
-	}
-
-	@Override
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	@Override
-	public User getUser() {
-		return user;
 	}
 
 	@Override
@@ -154,6 +142,7 @@ public final class FileManager implements Database {
 		BSONObject object = null;
 		while (inputStream.available() > 0) {
 	        object = decoder.readObject(inputStream);
+	        System.out.println(object);
 	        if(object == null){
 	          break;
 	        }
@@ -164,13 +153,25 @@ public final class FileManager implements Database {
 		return object;
 	}
 	
+	private Document convertBSONObjectToDocument(BSONObject object) {
+		Document document = new Document()
+				.append("asteroids", object.get("asteroids"))
+				.append("score", object.get("score"))
+				.append("lives", object.get("lives"))
+				.append("powerups", object.get("powerups"))
+				.append("aliens", object.get("aliens"));
+		
+		return document;
+	}
+	
 	private ArrayList<Game> getGamesWithObjectIds(ArrayList<ObjectId> objectIds) {
 		ArrayList<Game> games = new ArrayList<Game>();
 		
 		for (ObjectId gameId: objectIds) {
 			try {
 				BSONObject object = readFromFile(gameId);
-				games.add(null);
+				Document document = convertBSONObjectToDocument(object);
+				games.add(new Game(document));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

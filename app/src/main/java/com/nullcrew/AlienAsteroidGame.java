@@ -42,7 +42,6 @@ public final class AlienAsteroidGame {
 //		changeView(null, new GameView());
 
 		FileManager fileManager = FileManager.getInstance();
-		fileManager.setUser(new User());
 //		Game game = new Game(null, null, null, null);
 //		game.setLives(10);
 //		game.setScore(323);
