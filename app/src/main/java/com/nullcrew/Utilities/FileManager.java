@@ -1,15 +1,26 @@
 package com.nullcrew.Utilities;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
+import org.bson.BSONDecoder;
+import org.bson.BSONObject;
+import org.bson.BasicBSONDecoder;
 import org.bson.BasicBSONEncoder;
+import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import com.google.common.io.Files;
 import com.mongodb.BasicDBObject;
 import com.nullcrew.Domain.Models.Constants;
+import com.nullcrew.Domain.Models.Constants.DatabaseResponses;
 import com.nullcrew.Domain.Models.Constants.FileManagerConstants;
 import com.nullcrew.Domain.Models.Game;
 import com.nullcrew.Domain.Models.User;
@@ -50,8 +61,8 @@ public final class FileManager implements DataStrategy {
 			try {
 				game.setGameId(newGameId);
 				writeToFile(game);
-				user.getSavedGameIds().add(newGameId);
-				user.getAccount().getSavedGames().add(game);
+				user.addNewGameId(newGameId);
+				user.getAccount().addGame(game);
 				notifySaveLoadObserver(FileManagerConstants.NEW_GAME_SAVED);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -70,8 +81,20 @@ public final class FileManager implements DataStrategy {
 
 	@Override
 	public void loadTheGames() {
-		// TODO Auto-generated method stub
-		
+		user.getAccount().setSavedGames(getGamesWithObjectIds(user.getSavedGameIds()));
+		if (user.getAccount().getSavedGames() != null) {
+			notifySaveLoadObserver(DatabaseResponses.GAMES_LOADED);
+		} else {
+			notifySaveLoadObserver(DatabaseResponses.DATABASE_ERROR);
+		}
+	}
+	
+	public Game loadTheGame(ObjectId id) {
+		Game game;
+		ArrayList<ObjectId> ids = new ArrayList<ObjectId>();
+		ids.add(id);
+		game = getGamesWithObjectIds(ids).get(0);
+		return game;
 	}
 
 	@Override
@@ -133,10 +156,47 @@ public final class FileManager implements DataStrategy {
 	}
 	
 	private void writeToFile(Game game) throws IOException {
-		Path path = Paths.get(Constants.FileManagerConstants.DIR_PATH + "/" + game.getGameId().toString());
+		Path path = Paths.get(Constants.FileManagerConstants.DIR_PATH + "/" + game.getGameId().toString() + ".bson");
+		File file = path.toFile();
 		BasicBSONEncoder encoder = new BasicBSONEncoder();
 		BasicDBObject dbObject = new BasicDBObject(game.getDocument());
-		Files.write(encoder.encode(dbObject), path.toFile());
+		new File(Constants.FileManagerConstants.DIR_PATH).mkdirs();
+		file.createNewFile();
+		Files.write(encoder.encode(dbObject), file);
+	}
+	
+	private BSONObject readFromFile(ObjectId id) throws IOException {
+		Path path = Paths.get(Constants.FileManagerConstants.DIR_PATH + "/" + id.toString() + ".bson");
+		File file = path.toFile();
+		InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+		BSONDecoder decoder = new BasicBSONDecoder();
+		
+		BSONObject object = null;
+		while (inputStream.available() > 0) {
+	        object = decoder.readObject(inputStream);
+	        if(object == null){
+	          break;
+	        }
+	    }
+		
+		inputStream.close();
+		
+		return object;
+	}
+	
+	private ArrayList<Game> getGamesWithObjectIds(ArrayList<ObjectId> objectIds) {
+		ArrayList<Game> games = new ArrayList<Game>();
+		
+		for (ObjectId gameId: objectIds) {
+			try {
+				BSONObject object = readFromFile(gameId);
+				games.add(null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return games;
 	}
 
 }
