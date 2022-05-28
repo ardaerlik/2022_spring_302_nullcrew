@@ -18,6 +18,10 @@ public final class User {
 		return instance;
 	}
 	
+	public static void setInstance(User user) {
+		instance = user;
+	}
+	
 	public User() {
 		this.account = new Account();
 		this.savedGameIds = new ArrayList<ObjectId>();

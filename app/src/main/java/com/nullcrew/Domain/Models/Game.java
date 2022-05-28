@@ -142,5 +142,11 @@ public class Game  {
 	public void setList_of_alien_documents(ArrayList<Document> list_of_alien_documents) {
 		this.list_of_alien_documents = list_of_alien_documents;
 	}
+
+	@Override
+	public String toString() {
+		return "Game [gameId=" + gameId + ", list_of_asteroids=" + list_of_asteroids + ", score=" + score + ", lives="
+				+ lives + ", list_of_powerups=" + list_of_powerups + ", list_of_aliens=" + list_of_aliens + "]";
+	}
 	
 }

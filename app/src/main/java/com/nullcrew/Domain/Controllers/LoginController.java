@@ -11,21 +11,21 @@ public class LoginController extends AppController implements AuthObserver {
 
 	public LoginController(LoginView loginView, AlienAsteroidGame app) {
 		super(loginView, app);
-		AlienAsteroidGame.getInstance()
-		.getDataStrategy()
-		.subscribeAuthObserver(this);
+//		AlienAsteroidGame.getInstance()
+//		.getDataStrategy()
+//		.subscribeAuthObserver(this);
 	}
 	
 	public void loginInfoEntered(String email, String password) {
-		AlienAsteroidGame.getInstance()
-		.getDataStrategy()
-		.loginUser(email, password);
+//		AlienAsteroidGame.getInstance()
+//		.getDataStrategy()
+//		.loginUser(email, password);
 	}
 	
 	public void registerInfoEntered(String email, String password, String hint) {
-		AlienAsteroidGame.getInstance()
-		.getDataStrategy()
-		.registerUser(email, password, hint);
+//		AlienAsteroidGame.getInstance()
+//		.getDataStrategy()
+//		.registerUser(email, password, hint);
 	}
 
 	@Override
