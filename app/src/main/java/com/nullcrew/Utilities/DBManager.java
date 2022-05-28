@@ -30,7 +30,6 @@ public final class DBManager {
 	private static DBManager instance = new DBManager();
 	private MongoClient client;
 	private MongoDatabase database;
-	private User user;
 	private AuthObserver authObserver;
 	private SaveLoadObserver saveLoadObserver;
 
@@ -68,7 +67,9 @@ public final class DBManager {
 			
 			if (result.getInsertedId() != null) {
 				game.setGameId(result.getInsertedId().asObjectId().getValue());
-				user.getSavedGameIds().add(result.getInsertedId().asObjectId().getValue());
+				User.getInstance()
+				.getSavedGameIds()
+				.add(result.getInsertedId().asObjectId().getValue());
 				notifySaveLoadObserver(DatabaseResponses.NEW_GAME_SAVED);
 			} else {
 				notifySaveLoadObserver(DatabaseResponses.DATABASE_ERROR);
@@ -94,8 +95,10 @@ public final class DBManager {
 	}
 
 	public void loadTheGames() {
-		user.getAccount().setSavedGames(getGamesWithObjectIds(user.getSavedGameIds()));
-		if (user.getAccount().getSavedGames() != null) {
+		User.getInstance().getAccount()
+		.setSavedGames(getGamesWithObjectIds(User.getInstance().getSavedGameIds()));
+		
+		if (User.getInstance().getAccount().getSavedGames() != null) {
 			notifySaveLoadObserver(DatabaseResponses.GAMES_LOADED);
 		} else {
 			notifySaveLoadObserver(DatabaseResponses.DATABASE_ERROR);
@@ -128,7 +131,7 @@ public final class DBManager {
 			ObjectId checkedCredentials = checkCredentials(email, password);
 			
 			if (checkedCredentials != null) {
-				user = getUserWithObjectId(checkedCredentials);
+				User.setInstance(getUserWithObjectId(checkedCredentials));
 				notifyAuthObservers(DatabaseResponses.LOGIN_ACCEPTED);
 			} else {
 				notifyAuthObservers(DatabaseResponses.WRONG_PASSWORD);
@@ -283,7 +286,7 @@ public final class DBManager {
 	
 	public void notifyAuthObservers(String response) {
 		if (response.equals(DatabaseResponses.LOGIN_ACCEPTED)) {
-			authObserver.loginAccepted(user, response);
+			authObserver.loginAccepted(User.getInstance(), response);
 			return;
 		}
 		
@@ -339,14 +342,6 @@ public final class DBManager {
 
 	public void setDatabase(MongoDatabase database) {
 		this.database = database;
-	}
-	
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.nullcrew.Utilities;
 
+import java.util.ArrayList;
+
 import com.nullcrew.Domain.Models.Game;
 import com.nullcrew.Domain.Models.User;
 
@@ -12,63 +14,43 @@ public class DatabaseAdapter implements Database {
 
 	@Override
 	public void saveTheGame(Game game) {
-		// TODO Auto-generated method stub
-		
+		dbManager.saveTheGame(game);
 	}
 
 	@Override
-	public void loadTheGames() {
-		// TODO Auto-generated method stub
-		
+	public ArrayList<Game> loadTheGames() {
+		dbManager.loadTheGames();
 	}
 
 	public void registerUser(String email, String password, String forgotKey) {
-		// TODO Auto-generated method stub
-		
+		dbManager.registerUser(email, password, forgotKey);
 	}
 
 	public void loginUser(String email, String password) {
-		// TODO Auto-generated method stub
-		
+		dbManager.loginUser(email, password);
 	}
 
 	public void resetPassword(String email, String newPassword, String forgotKey) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setUser(User user) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public User getUser() {
-		// TODO Auto-generated method stub
-		return null;
+		dbManager.resetPassword(email, newPassword, forgotKey);
 	}
 
 	public void subscribeAuthObserver(AuthObserver observer) {
-		// TODO Auto-generated method stub
+		dbManager.subscribeAuthObserver(observer);
 		
 	}
 
 	public void notifyAuthObservers(String response) {
-		// TODO Auto-generated method stub
-		
+		dbManager.notifyAuthObservers(response);
 	}
 
 	@Override
 	public void subscribeSaveLoadObserver(SaveLoadObserver observer) {
-		// TODO Auto-generated method stub
-		
+		dbManager.subscribeSaveLoadObserver(observer);
 	}
 
 	@Override
 	public void notifySaveLoadObserver(String response) {
-		// TODO Auto-generated method stub
-		
+		dbManager.notifySaveLoadObserver(response);
 	}
 
 	public DBManager getDbManager() {
