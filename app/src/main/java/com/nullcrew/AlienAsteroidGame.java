@@ -1,23 +1,16 @@
 package com.nullcrew;
 
-import org.bson.types.ObjectId;
-
-import com.nullcrew.Domain.Models.Game;
-import com.nullcrew.Domain.Models.User;
 import com.nullcrew.UI.Views.AppView;
-import com.nullcrew.UI.Views.GameView;
-import com.nullcrew.UI.Views.MenuView;
 import com.nullcrew.UI.Views.LoginView;
-import com.nullcrew.UI.Views.NewGameView;
-import com.nullcrew.UI.Views.HelpView;
 import com.nullcrew.Utilities.DBManager;
 import com.nullcrew.Utilities.Database;
+import com.nullcrew.Utilities.DatabaseAdapter;
 import com.nullcrew.Utilities.FileManager;
 
 public final class AlienAsteroidGame {
 	private static AlienAsteroidGame instance = new AlienAsteroidGame();
-	private DBManager dbManager;
-	private Database database;
+	private DatabaseAdapter databaseAdapter;
+	private Database fileManager;
 
 	public static AlienAsteroidGame getInstance() {
 		if (instance == null) {
@@ -35,23 +28,14 @@ public final class AlienAsteroidGame {
 	}
 	
 	public void startApp() {
-//		dbManager = DBManager.getInstance();
-//		dataStrategy = dbManager;
-//
-//		dbManager.connectDB();
-//		changeView(null, new GameView());
-
-		FileManager fileManager = FileManager.getInstance();
-//		Game game = new Game(null, null, null, null);
-//		game.setLives(10);
-//		game.setScore(323);
-//		fileManager.saveTheGame(game);
-//		System.out.println(fileManager.getUser().getSavedGameIds().get(0));
-		Game game = fileManager.loadTheGame(new ObjectId("6292868ba613981bac5b3659"));
+		databaseAdapter = new DatabaseAdapter(DBManager.getInstance());
+		fileManager = FileManager.getInstance();
+		databaseAdapter.connect();
+		changeView(null, new LoginView());
 	}
 	
 	public void exitApp() {
-		dbManager.closeDB();
+		databaseAdapter.close();
 	}
 	
 	public void changeView(AppView from, AppView to) {
@@ -70,12 +54,20 @@ public final class AlienAsteroidGame {
 		from.endView();
 	}
 
-	public Database getDataStrategy() {
-		return database;
+	public DatabaseAdapter getDatabaseAdapter() {
+		return databaseAdapter;
 	}
 
-	public void setDataStrategy(Database database) {
-		this.database = database;
+	public void setDatabaseAdapter(DatabaseAdapter databaseAdapter) {
+		this.databaseAdapter = databaseAdapter;
+	}
+
+	public Database getFileManager() {
+		return fileManager;
+	}
+
+	public void setFileManager(Database fileManager) {
+		this.fileManager = fileManager;
 	}
 
 }

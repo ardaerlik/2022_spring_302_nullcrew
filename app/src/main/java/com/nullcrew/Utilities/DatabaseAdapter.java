@@ -3,7 +3,7 @@ package com.nullcrew.Utilities;
 import com.nullcrew.Domain.Models.Game;
 
 public class DatabaseAdapter implements Database {
-	private DBManager dbManager = DBManager.getInstance();
+	private DBManager dbManager;
 
 	public DatabaseAdapter(DBManager dbManager) {
 		this.dbManager = dbManager;
