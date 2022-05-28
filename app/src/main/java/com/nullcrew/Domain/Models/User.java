@@ -19,6 +19,8 @@ public final class User {
 	}
 	
 	public User() {
+		this.account = new Account();
+		this.savedGameIds = new ArrayList<ObjectId>();
 	}
 	
 	public User(Account account, ArrayList<ObjectId> savedGameIds) {
@@ -44,6 +46,10 @@ public final class User {
 	public void logout() {
 		this.account = null;
 		this.savedGameIds = null;
+	}
+	
+	public void addNewGameId(ObjectId id) {
+		this.savedGameIds.add(id);
 	}
 
 	public Account getAccount() {
