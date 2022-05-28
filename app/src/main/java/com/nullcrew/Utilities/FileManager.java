@@ -98,18 +98,6 @@ public final class FileManager implements Database {
 	}
 
 	@Override
-	public void registerUser(String email, String password, String forgotKey) {
-	}
-
-	@Override
-	public void loginUser(String email, String password) {
-	}
-
-	@Override
-	public void resetPassword(String email, String newPassword, String forgotKey) {
-	}
-
-	@Override
 	public void setUser(User user) {
 		this.user = user;
 	}
@@ -117,14 +105,6 @@ public final class FileManager implements Database {
 	@Override
 	public User getUser() {
 		return user;
-	}
-
-	@Override
-	public void subscribeAuthObserver(AuthObserver observer) {
-	}
-
-	@Override
-	public void notifyAuthObservers(String response) {
 	}
 
 	@Override

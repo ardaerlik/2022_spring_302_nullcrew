@@ -26,7 +26,7 @@ import com.nullcrew.Domain.Models.Constants.DatabaseResponses;
 import com.nullcrew.Domain.Models.Game;
 import com.nullcrew.Domain.Models.User;
 
-public final class DBManager implements Database {
+public final class DBManager {
 	private static DBManager instance = new DBManager();
 	private MongoClient client;
 	private MongoDatabase database;
@@ -61,7 +61,6 @@ public final class DBManager implements Database {
 		client.close();
 	}
 
-	@Override
 	public void saveTheGame(Game game) {	
 		if (game.getGameId() == null) {
 			InsertOneResult result = database.getCollection(Constants.DatabaseResponses.GAMES_COLLECTION)
@@ -94,7 +93,6 @@ public final class DBManager implements Database {
 		}
 	}
 
-	@Override
 	public void loadTheGames() {
 		user.getAccount().setSavedGames(getGamesWithObjectIds(user.getSavedGameIds()));
 		if (user.getAccount().getSavedGames() != null) {
@@ -104,7 +102,6 @@ public final class DBManager implements Database {
 		}
 	}
 
-	@Override
 	public synchronized void registerUser(String email, String password, String forgotKey) {
 		if (!userExists(email)) {
 			Document document = new Document()
@@ -126,7 +123,6 @@ public final class DBManager implements Database {
 		}
 	}
 
-	@Override
 	public synchronized void loginUser(String email, String password) {
 		if (userExists(email)) {
 			ObjectId checkedCredentials = checkCredentials(email, password);
@@ -142,7 +138,6 @@ public final class DBManager implements Database {
 		}
 	}
 
-	@Override
 	public void resetPassword(String email, String newPassword, String forgotKey) {
 		if (userExists(email)) {
 			ObjectId checkedForgotKey = checkForgotKey(email, forgotKey);
@@ -282,12 +277,10 @@ public final class DBManager implements Database {
 		}
 	}
 	
-	@Override
 	public void subscribeAuthObserver(AuthObserver observer) {
 		this.authObserver = observer;
 	}
 	
-	@Override
 	public void notifyAuthObservers(String response) {
 		if (response.equals(DatabaseResponses.LOGIN_ACCEPTED)) {
 			authObserver.loginAccepted(user, response);
@@ -306,12 +299,10 @@ public final class DBManager implements Database {
 		// TODO: Observers
 	}
 	
-	@Override
 	public void subscribeSaveLoadObserver(SaveLoadObserver observer) {
 		this.saveLoadObserver = observer;
 	}
 
-	@Override
 	public void notifySaveLoadObserver(String response) {
 		if (response.equals(DatabaseResponses.DATABASE_ERROR)) {
 			// TODO
@@ -350,12 +341,10 @@ public final class DBManager implements Database {
 		this.database = database;
 	}
 	
-	@Override
 	public User getUser() {
 		return user;
 	}
 
-	@Override
 	public void setUser(User user) {
 		this.user = user;
 	}

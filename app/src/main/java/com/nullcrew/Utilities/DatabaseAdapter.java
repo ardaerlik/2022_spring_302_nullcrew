@@ -22,19 +22,16 @@ public class DatabaseAdapter implements Database {
 		
 	}
 
-	@Override
 	public void registerUser(String email, String password, String forgotKey) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void loginUser(String email, String password) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void resetPassword(String email, String newPassword, String forgotKey) {
 		// TODO Auto-generated method stub
 		
@@ -52,13 +49,11 @@ public class DatabaseAdapter implements Database {
 		return null;
 	}
 
-	@Override
 	public void subscribeAuthObserver(AuthObserver observer) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void notifyAuthObservers(String response) {
 		// TODO Auto-generated method stub
 		
