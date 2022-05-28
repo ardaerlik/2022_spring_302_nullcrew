@@ -11,13 +11,13 @@ import com.nullcrew.UI.Views.LoginView;
 import com.nullcrew.UI.Views.NewGameView;
 import com.nullcrew.UI.Views.HelpView;
 import com.nullcrew.Utilities.DBManager;
-import com.nullcrew.Utilities.DataStrategy;
+import com.nullcrew.Utilities.Database;
 import com.nullcrew.Utilities.FileManager;
 
 public final class AlienAsteroidGame {
 	private static AlienAsteroidGame instance = new AlienAsteroidGame();
 	private DBManager dbManager;
-	private DataStrategy dataStrategy;
+	private Database database;
 
 	public static AlienAsteroidGame getInstance() {
 		if (instance == null) {
@@ -71,12 +71,12 @@ public final class AlienAsteroidGame {
 		from.endView();
 	}
 
-	public DataStrategy getDataStrategy() {
-		return dataStrategy;
+	public Database getDataStrategy() {
+		return database;
 	}
 
-	public void setDataStrategy(DataStrategy dataStrategy) {
-		this.dataStrategy = dataStrategy;
+	public void setDataStrategy(Database database) {
+		this.database = database;
 	}
 
 }

@@ -25,7 +25,7 @@ import com.nullcrew.Domain.Models.Constants.FileManagerConstants;
 import com.nullcrew.Domain.Models.Game;
 import com.nullcrew.Domain.Models.User;
 
-public final class FileManager implements DataStrategy {
+public final class FileManager implements Database {
 	private static FileManager instance = new FileManager();
 	private User user;
 	private SaveLoadObserver saveLoadObserver;
