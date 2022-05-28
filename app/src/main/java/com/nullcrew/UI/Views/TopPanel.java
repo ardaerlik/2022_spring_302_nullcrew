@@ -119,11 +119,7 @@ public class TopPanel extends JPanel {
 				} else {
 					okButton.setText("Restart");
 					gameView.setNumOfAsteroidTypes(numOfAsteroidTypes);
-					gameView.createAsteroids();
-					List<Ball> list= new ArrayList();
-					list.add(new Ball(gameView.getGameController(), GameObjectFactory.BALL_X, GameObjectFactory.BALL_Y, 17, 17));
-					gameView.getGameController().setBalls(list);
-					gameView.getGameController().setPaddle(new Paddle(gameView.getGameController(), GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
+					gameView.getGameController().restartGame();
 				}
 			}
 		});
@@ -194,7 +190,7 @@ public class TopPanel extends JPanel {
 			}
 		});
 	}
-
+	
 	private void createPopupMenu() {
 		popupMenu = new JPopupMenu();
 		JMenuItem build_item = new JMenuItem("Build Mode");

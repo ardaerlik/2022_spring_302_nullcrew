@@ -43,8 +43,12 @@ public class GameController extends AppController {
 	private Alien alien;
 	private Game game;
 	private PowerUp powerUp;
-	private float estimated_boostTime=0f;
-	private long boost_start_time=0l;
+	private float estimated_tallerTime=0f;
+	private float estimated_wrapTime=0f;
+	private long wrap_start_time=0l;
+	private long taller_start_time=0l;
+	private boolean wrap_started_timing=false;
+	private boolean taller_started_timing=false;
 	public GameController(GameView gameView, AlienAsteroidGame app) {
 		super(gameView, app);
 		asteroidList = new ArrayList<>();
@@ -134,9 +138,9 @@ public class GameController extends AppController {
 		return null;
 	}
 	
-	public Alien ballHitAlien() {
+	public Alien ballHitAlien(Ball ball) {
 		if (ball.getObjShape().getShape().intersects(alien.getObjShape().getRect())) {
-			reflectFromAlien(alien);
+			reflectFromAlien(alien,ball);
 			alien.hit(this);
 			return alien;
 		}
@@ -210,7 +214,7 @@ public class GameController extends AppController {
 			}
 		}
 	}
-
+	
 	public void laserHitAsteroid() {
 		for(LaserBall laser:laser_balls) {
 			if(laser==null) {continue;}
@@ -229,11 +233,50 @@ public class GameController extends AppController {
 
 		}
 	}
-
+	
 	public void updateBoosts() {
 		if(paddle.onTallerPowerUp) {
-			//int time_passed= System.currentTimeMillis()-
-			
+			if(!taller_started_timing) {
+				taller_start_time= System.currentTimeMillis();
+				taller_started_timing=true;
+			}
+			float time_passed=System.currentTimeMillis()-taller_start_time;
+			time_passed=(time_passed/1000l);
+			estimated_tallerTime=time_passed;
+			if(estimated_tallerTime>30f) {
+				paddle.onTallerPowerUp=false;
+				paddle.setWidth(paddle.getInitialWidth());
+				taller_started_timing=false;
+				estimated_tallerTime=0;
+				System.out.println("End taller");
+			}
+			System.out.println("Taller Total time passed: " +estimated_tallerTime);
+		}
+		if(paddle.onWrapPowerUp) {
+			if(!wrap_started_timing) {
+				wrap_start_time= System.currentTimeMillis();
+				wrap_started_timing=true;
+			}
+			float time_passed=System.currentTimeMillis()-wrap_start_time;
+			time_passed=(time_passed/1000l);
+			estimated_wrapTime=time_passed;
+			if(estimated_wrapTime>120f) {
+				paddle.onWrapPowerUp=false;
+				wrap_started_timing=false;
+				estimated_wrapTime=0;
+				System.out.println("End wrap");
+			}
+			System.out.println("Wrap Total time passed: " +estimated_wrapTime);
+		}
+		if(getPaddle().onMagnet) {
+			freezeBallOnPaddle(
+					getBalls().get(0)
+					);
+		}
+		if(getLaser_balls()!=null&&
+				getLaser_balls().size()!=0) {
+			laserMoved();
+			laserHitAsteroid();
 		}
 	}
 
@@ -304,8 +347,11 @@ public class GameController extends AppController {
 	public void paddleHitBall() {
 		for(Ball ball:balls) {	
 			if (getPaddle().getObjShape().getShape().intersects(ball.getObjShape().getShape().getBounds2D())){
-				
-				ball.setVelocityY((-ball.getVelocityY()));
+				float angled_value=(float) (ball.getVelocityX()*Math.cos(Math.toRadians(paddle.getRotationDegree()))*
+						ball.getVelocityX()*Math.cos(Math.toRadians(paddle.getRotationDegree())));
+				float value = (float) (Math.sqrt(18-angled_value));
+				ball.setVelocityY(-value);
+				ball.setVelocityX(ball.getVelocityX()*Math.cos(Math.toRadians(paddle.getRotationDegree())));
 			}
 		}
 	}
@@ -316,14 +362,14 @@ public class GameController extends AppController {
 				powerUp=powerups.get(a);
 				powerups.get(a).use();
 				powerups.remove(a);
-				estimated_boostTime=30f;
-				boost_start_time=System.currentTimeMillis();
+				return;
 			}
 			if(key=="MagnetPowerUp"&&powerups.get(a) instanceof MagnetPowerUp) {
 				powerUp=powerups.get(a);
 				powerups.get(a).use();
 				powerups.remove(a);
 				getPaddle().onMagnet=true;
+				return;
 			}
 		}
 	}
@@ -412,7 +458,7 @@ public class GameController extends AppController {
 			return;
 		}
 		ball.setX(
-				(GameObjectFactory.BALL_X-GameObjectFactory.PADDLE_X)+getPaddle().getX()
+				(getPaddle().getWidth()/2)+getPaddle().getX()
 				);
 		ball.setY(
 				GameObjectFactory.BALL_Y
@@ -420,8 +466,20 @@ public class GameController extends AppController {
 		ball.setVelocityX(0);
 		ball.setVelocityY(0);
 	}
-
-	public void reflectFromAlien(Alien collided_alien) {
+	public void restartGame() {
+		((GameView) view).createAsteroids();
+		List<Ball> list= new ArrayList();
+		list.add(new Ball(this, GameObjectFactory.BALL_X, GameObjectFactory.BALL_Y, 17, 17));
+		setBalls(list);
+		setEstimated_tallerTime(0f);
+		setEstimated_wrapTime(0f);
+		setWrap_start_time(0);
+		setTaller_start_time(0);
+		setWrap_started_timing(false);
+		setTaller_started_timing(false);
+		setPaddle(new Paddle(this, GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
+	}
+	public void reflectFromAlien(Alien collided_alien,Ball ball) {
 		double posX = (double) collided_alien.getX() - ball.getX();
 		double posY = (double) collided_alien.getY() - ball.getY();
 		double angle = Math.atan2(posY - 0, posX - (double) 1) * (180 / Math.PI);
@@ -518,6 +576,54 @@ public class GameController extends AppController {
 
 	public void setLaser_balls(List<LaserBall> laser_balls) {
 		this.laser_balls = laser_balls;
+	}
+
+	public float getEstimated_tallerTime() {
+		return estimated_tallerTime;
+	}
+
+	public void setEstimated_tallerTime(float estimated_tallerTime) {
+		this.estimated_tallerTime = estimated_tallerTime;
+	}
+
+	public float getEstimated_wrapTime() {
+		return estimated_wrapTime;
+	}
+
+	public void setEstimated_wrapTime(float estimated_wrapTime) {
+		this.estimated_wrapTime = estimated_wrapTime;
+	}
+
+	public long getWrap_start_time() {
+		return wrap_start_time;
+	}
+
+	public void setWrap_start_time(long wrap_start_time) {
+		this.wrap_start_time = wrap_start_time;
+	}
+
+	public long getTaller_start_time() {
+		return taller_start_time;
+	}
+
+	public void setTaller_start_time(long taller_start_time) {
+		this.taller_start_time = taller_start_time;
+	}
+
+	public boolean isWrap_started_timing() {
+		return wrap_started_timing;
+	}
+
+	public void setWrap_started_timing(boolean wrap_started_timing) {
+		this.wrap_started_timing = wrap_started_timing;
+	}
+
+	public boolean isTaller_started_timing() {
+		return taller_started_timing;
+	}
+
+	public void setTaller_started_timing(boolean taller_started_timing) {
+		this.taller_started_timing = taller_started_timing;
 	}
 
 }
