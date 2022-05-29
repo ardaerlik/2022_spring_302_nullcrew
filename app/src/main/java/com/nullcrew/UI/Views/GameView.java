@@ -60,8 +60,8 @@ public class GameView extends AppView {
 		gamePanel.repaint();
 	}
 
-	public JPanel getTopPanel() {
-		return topPanel;
+	public TopPanel getTopPanel() {
+		return (TopPanel) topPanel;
 	}
 
 	public void setTopPanel(JPanel topPanel) {

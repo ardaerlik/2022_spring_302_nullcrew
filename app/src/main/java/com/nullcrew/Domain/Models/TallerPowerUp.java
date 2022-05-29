@@ -1,6 +1,7 @@
 package com.nullcrew.Domain.Models;
 
 import com.nullcrew.Domain.Controllers.GameController;
+import com.nullcrew.UI.Views.GameView;
 
 public class TallerPowerUp extends PowerUp{
 	private final float POWERUP_TIME=30f;
@@ -15,7 +16,7 @@ public class TallerPowerUp extends PowerUp{
 		this.getGameController().getPaddle().setWidth(
 				(int)(this.getGameController().getPaddle().getWidth()*1.5f)
 				);
-		this.getGameController().getPaddle().onTallerPowerUp=true;
+		this.getGameController().getGameView().getTopPanel().getTaller_button().setVisible(false);
 	}
 	public float getBoostTime() {
 		return POWERUP_TIME;

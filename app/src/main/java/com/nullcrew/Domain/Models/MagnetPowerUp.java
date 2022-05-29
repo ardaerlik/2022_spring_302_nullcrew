@@ -20,7 +20,7 @@ public class MagnetPowerUp extends PowerUp{
 		this.getGameController().freezeBallOnPaddle(ball);
 		list.add(ball);
 		this.getGameController().setBalls(list);
-
+		this.getGameController().getGameView().getTopPanel().getMagnet_button().setVisible(false);
 	}
 
 }

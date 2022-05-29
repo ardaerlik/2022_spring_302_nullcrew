@@ -67,8 +67,8 @@ public class GameObjectFactory {
 		List<Asteroid> asteroids = new ArrayList<>();
 		for (int i = 0; i < numSimple; i++) {
 			SimpleAsteroid simpleAsteroid = new SimpleAsteroid(gameController,0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
-			if (GamePanel.list_objects != null) {
-				GamePanel.list_objects.add(simpleAsteroid);
+			if (gameController.getList_objects() != null) {
+				gameController.getList_objects().add(simpleAsteroid);
 			}
 			asteroids.add(simpleAsteroid);
 		}
@@ -81,8 +81,8 @@ public class GameObjectFactory {
 			Random rand = new Random();
 			int lives = rand.nextInt(3) * 5;
 			FirmAsteroid firmAsteroid = new FirmAsteroid(gameController,0, 0, ASTEROID_WIDTH + lives, ASTEROID_HEIGHT + lives, 0);
-			if (GamePanel.list_objects != null) {
-				GamePanel.list_objects.add(firmAsteroid);
+			if (gameController.getList_objects() != null) {
+				gameController.getList_objects().add(firmAsteroid);
 			}
 			asteroids.add(firmAsteroid);
 		}
@@ -93,8 +93,8 @@ public class GameObjectFactory {
 		List<Asteroid> asteroids = new ArrayList<>();
 		for (int i = 0; i < numExplosive; i++) {
 			ExplosiveAsteroid explosiveAsteroid = new ExplosiveAsteroid(gameController,0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0);
-			if (GamePanel.list_objects != null) {
-				GamePanel.list_objects.add(explosiveAsteroid);
+			if (gameController.getList_objects() != null) {
+				gameController.getList_objects().add(explosiveAsteroid);
 			}
 			asteroids.add(explosiveAsteroid);
 		}
@@ -127,8 +127,8 @@ public class GameObjectFactory {
 				powerup=null;
 			}
 			GiftAsteroid giftAsteroid = new GiftAsteroid(gameController,0, 0, ASTEROID_WIDTH, ASTEROID_HEIGHT, 0,powerup);
-			if (GamePanel.list_objects != null) {
-				GamePanel.list_objects.add(giftAsteroid);
+			if (gameController.getList_objects() != null) {
+				gameController.getList_objects().add(giftAsteroid);
 			}
 			asteroids.add(giftAsteroid);
 		}

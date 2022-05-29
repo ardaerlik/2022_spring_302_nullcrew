@@ -2,11 +2,18 @@ package com.nullcrew.UI.Views;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -40,7 +47,12 @@ public class TopPanel extends JPanel {
 	private JLabel simpleLabel, firmLabel, explosiveLabel, giftLabel;
 	private JTextField simpleField, firmField, explosiveField, giftField;
 	private int[] numOfAsteroidTypes;
-
+	private JButton magnet_button;
+	private JButton taller_button;
+	private JLabel gangballs_label;
+	private JLabel laser_label;
+	private JLabel wrap_label;
+	private JLabel chance_label;
 	public TopPanel(GameView gameView) {
 		this.gameView = gameView;
 		numOfAsteroidTypes = null;
@@ -69,6 +81,12 @@ public class TopPanel extends JPanel {
 		add(okButton);
 		add(switchButton);
 		add(exitButton);
+		magnet_button.setVisible(false);
+		taller_button.setVisible(false);
+		gangballs_label.setVisible(false);
+		laser_label.setVisible(false);
+		wrap_label.setVisible(false);
+		chance_label.setVisible(false);
 	}
 
 	private void createAsteroidNumbersForm() {
@@ -125,53 +143,65 @@ public class TopPanel extends JPanel {
 		});
 	}
 	private void createPowerUpView() {
-		JButton magnet_button;
-		JButton taller_button;
-		for(int a=0;a<gameView.getGameController().getPowerups().size();a++) {
-			if(gameView.getGameController().getPowerups().get(a) instanceof MagnetPowerUp) {
-				magnet_button= new JButton();
-				magnet_button.setVisible(true);
-				magnet_button.setBounds(10,100, 100, 25);
-				magnet_button.setText("Magnet PowerUp");
-				magnet_button.addActionListener(new ActionListener(){
+		Path currentRelativePath = Paths.get("");
+		String magnet_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"magnet.png";
+		String taller_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"taller.png";
+		String laser_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"laser.png";
+		String gang_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"gangballs.png";
+		String chance_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"ExtraLife.png";
+		String wrap_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"wrap.png";
+		System.out.println("Current absolute path is: " + magnet_path);
+		Icon magnet_icon= new ImageIcon(new ImageIcon(magnet_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+		Icon taller_icon= new ImageIcon(new ImageIcon(taller_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+		Icon laser_icon= new ImageIcon(new ImageIcon(laser_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+		Icon gang_icon= new ImageIcon(new ImageIcon(gang_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+		Icon chance_icon= new ImageIcon(new ImageIcon(chance_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+		Icon wrap_icon= new ImageIcon(new ImageIcon(wrap_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+		magnet_button= new JButton(magnet_icon);
+		magnet_button.setVisible(true);
+		magnet_button.setBounds(10,100, 10, 10);
+		magnet_button.addActionListener(new ActionListener(){
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						gameView.getGamePanel().setFocusable(true);
-						gameView.getGamePanel().requestFocusInWindow();
-						for(int a=0;a<gameView.getGameController().getPowerups().size();a++) {
-							if(gameView.getGameController().getPowerups().get(a) instanceof MagnetPowerUp) {
-								gameView.getGameController().activatePowerUp("MagnetPowerUp");
-							}
-						}
-					
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gameView.getGamePanel().setFocusable(true);
+				gameView.getGamePanel().requestFocusInWindow();
+				for(int a=0;a<gameView.getGameController().getPowerups().size();a++) {
+					if(gameView.getGameController().getPowerups().get(a) instanceof MagnetPowerUp) {
+						gameView.getGameController().activatePowerUp("MagnetPowerUp");
 					}
-				});
-				this.add(magnet_button);
+				}
+			
 			}
-			if(gameView.getGameController().getPowerups().get(a) instanceof TallerPowerUp) {
-				taller_button= new JButton();
-				taller_button.setVisible(true);
-				taller_button.setBounds(30,200, 100, 25);
-				taller_button.setText("Taller PowerUp");
-				taller_button.addActionListener(new ActionListener(){
+		});
+		this.add(magnet_button);
+		taller_button= new JButton(taller_icon);
+		taller_button.setVisible(true);
+		taller_button.setBounds(30,200, 100, 25);
+		taller_button.addActionListener(new ActionListener(){
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						gameView.getGamePanel().setFocusable(true);
-						gameView.getGamePanel().requestFocusInWindow();
-						for(int a=0;a<gameView.getGameController().getPowerups().size();a++) {
-							if(gameView.getGameController().getPowerups().get(a) instanceof TallerPowerUp) {
-								gameView.getGameController().activatePowerUp("TallerPowerUp");			
-							}
-						}
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gameView.getGamePanel().setFocusable(true);
+				gameView.getGamePanel().requestFocusInWindow();
+				for(int a=0;a<gameView.getGameController().getPowerups().size();a++) {
+					if(gameView.getGameController().getPowerups().get(a) instanceof TallerPowerUp) {
+						gameView.getGameController().activatePowerUp("TallerPowerUp");			
 					}
-				});
-				this.add(taller_button);
+				}
 			}
-
-		}
+		});
+		this.add(taller_button);
+		gangballs_label= new JLabel(gang_icon);
+		laser_label= new JLabel(laser_icon);
+		wrap_label= new JLabel(wrap_icon);
+		chance_label= new JLabel(chance_icon);
+		add(gangballs_label);
+		add(laser_label);
+		add(wrap_label);
+		add(chance_label);
 	}
+	
 	private void createSwitchButton() {
 		switchButton = new JToggleButton("Switch Mode");
 		switchButton.setBounds(10, 100, 200, 25);
@@ -278,6 +308,54 @@ public class TopPanel extends JPanel {
 				exitFrame.dispose();
 			}
 		});
+	}
+
+	public JButton getMagnet_button() {
+		return magnet_button;
+	}
+
+	public void setMagnet_button(JButton magnet_button) {
+		this.magnet_button = magnet_button;
+	}
+
+	public JButton getTaller_button() {
+		return taller_button;
+	}
+
+	public void setTaller_button(JButton taller_button) {
+		this.taller_button = taller_button;
+	}
+
+	public JLabel getGangballs_label() {
+		return gangballs_label;
+	}
+
+	public void setGangballs_label(JLabel gangballs_label) {
+		this.gangballs_label = gangballs_label;
+	}
+
+	public JLabel getLaser_label() {
+		return laser_label;
+	}
+
+	public void setLaser_label(JLabel laser_label) {
+		this.laser_label = laser_label;
+	}
+
+	public JLabel getWrap_label() {
+		return wrap_label;
+	}
+
+	public void setWrap_label(JLabel wrap_label) {
+		this.wrap_label = wrap_label;
+	}
+
+	public JLabel getChance_label() {
+		return chance_label;
+	}
+
+	public void setChance_label(JLabel chance_label) {
+		this.chance_label = chance_label;
 	}
 
 }
