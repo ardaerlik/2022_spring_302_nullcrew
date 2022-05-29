@@ -106,22 +106,22 @@ public class GameObjectFactory {
 		for (int i = 0; i < numGift; i++) {
 			PowerUp powerup;
 			if(i==0) {
-				powerup= new TallerPowerUp(gameController, 0,0,0,0);
+				powerup= new TallerPowerUp(gameController, 0,0,20,20);
 			}
 			else if(i==1) {
-				powerup= new WrapPowerUp(gameController, 0,0,0,0);
+				powerup= new WrapPowerUp(gameController, 0,0,20,20);
 			}
 			else if(i==2) {
-				powerup= new ChancePowerUp(gameController, 0,0,0,0);
+				powerup= new ChancePowerUp(gameController, 0,0,20,20);
 			}
 			else if(i==3) {
-				powerup= new LaserPowerUp(gameController, 0,0,0,0);
+				powerup= new LaserPowerUp(gameController, 0,0,20,20);
 			}
 			else if(i==4) {
-				powerup= new MagnetPowerUp(gameController, 0,0,0,0);
+				powerup= new MagnetPowerUp(gameController, 0,0,20,20);
 			}
 			else if(i==5) {
-				powerup= new GangofBallPowerUp(gameController, 0,0,0,0);
+				powerup= new GangofBallPowerUp(gameController, 0,0,20,20);
 			}
 			else {
 				powerup=null;

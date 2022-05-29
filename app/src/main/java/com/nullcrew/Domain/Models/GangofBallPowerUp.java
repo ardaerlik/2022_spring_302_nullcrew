@@ -36,4 +36,9 @@ public class GangofBallPowerUp extends PowerUp{
 		// TODO Auto-generated method stub
 
 	}
+	@Override
+	public void fall() {
+		// TODO Auto-generated method stub
+		this.setY(this.getY()+this.getVelocity());
+	}
 }

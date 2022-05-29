@@ -21,6 +21,10 @@ public class ChancePowerUp extends PowerUp{
 				this.getGameController().getGame().getLives()+1
 				);
 	}
-
+	@Override
+	public void fall() {
+		// TODO Auto-generated method stub
+		this.setY(this.getY()+this.getVelocity());
+	}
 
 }

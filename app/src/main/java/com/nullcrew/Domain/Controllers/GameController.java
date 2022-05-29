@@ -124,18 +124,10 @@ public class GameController extends AppController implements SaveLoadObserver {
 					}
 					else if (asteroid instanceof GiftAsteroid){ 
 						if(((GiftAsteroid) asteroid).powerup!=null){
-							if(((GiftAsteroid) asteroid).powerup instanceof MagnetPowerUp) {
-								powerups.add(((GiftAsteroid) asteroid).powerup);
-								((GameView) view).getTopPanel().getMagnet_button().setVisible(true);
-							}
-							else if(((GiftAsteroid) asteroid).powerup instanceof TallerPowerUp) {
-								powerups.add(((GiftAsteroid) asteroid).powerup);
-								((GameView) view).getTopPanel().getTaller_button().setVisible(true);
-							}
-							else {
-								((GiftAsteroid) asteroid).powerup.use();
-								powerUp=((GiftAsteroid) asteroid).powerup;
-							}
+							((GiftAsteroid) asteroid).powerup.canFall=true;
+							powerups.add(((GiftAsteroid) asteroid).powerup);
+							((GiftAsteroid) asteroid).powerup.setX(asteroid.getX());
+							((GiftAsteroid) asteroid).powerup.setY(asteroid.getY());	
 						}
 						asteroid.hit(this);
 					}
@@ -175,7 +167,35 @@ public class GameController extends AppController implements SaveLoadObserver {
 			}
 		}
 	}
-	
+	public void powerUpMovement() {
+		for(PowerUp powerup:powerups) {
+			if(powerup.canFall) {
+				powerup.fall();
+			}
+			System.out.println(powerup.getObjShape().getRect());
+			if(paddle.getObjShape().getShape().intersects(powerup.getObjShape().getRect())) {
+				System.out.println("Collided with paddle");
+				if(powerup.canbeUsed==true) {
+					return;
+				}
+				powerup.canFall=false;
+				powerup.canbeUsed=true;
+				powerup.setHeight(0);
+				powerup.setWidth(0);
+				if(powerup instanceof MagnetPowerUp) {
+					((GameView) view).getTopPanel().getMagnet_button().setVisible(true);
+					break;
+				}
+				else if(powerup instanceof TallerPowerUp) {
+					((GameView) view).getTopPanel().getTaller_button().setVisible(true);
+					break;
+				}
+				else {
+					powerup.use();
+				}
+			}
+		}
+	}
 	public void ballMoved() {
 
 		for(Ball ball:balls) {
@@ -369,21 +389,25 @@ public class GameController extends AppController implements SaveLoadObserver {
 			}
 		}
 	}
-
+	
 	public void activatePowerUp(String key) {
 		for(int a=0;a<powerups.size();a++) {
 			if(key=="TallerPowerUp"&&powerups.get(a) instanceof TallerPowerUp) {
-				powerUp=powerups.get(a);
-				powerups.get(a).use();
-				powerups.remove(a);
-				return;
+				if(powerups.get(a).canbeUsed) {
+					powerUp=powerups.get(a);
+					powerups.get(a).use();
+					powerups.remove(a);
+					return;
+				}
 			}
 			if(key=="MagnetPowerUp"&&powerups.get(a) instanceof MagnetPowerUp) {
-				powerUp=powerups.get(a);
-				powerups.get(a).use();
-				powerups.remove(a);
-				getPaddle().onMagnet=true;
-				return;
+				if(powerups.get(a).canbeUsed) {
+					powerUp=powerups.get(a);
+					powerups.get(a).use();
+					powerups.remove(a);
+					getPaddle().onMagnet=true;
+					return;
+				}
 			}
 		}
 	}

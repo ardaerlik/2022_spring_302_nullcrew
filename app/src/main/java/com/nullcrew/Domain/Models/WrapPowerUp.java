@@ -18,4 +18,9 @@ public class WrapPowerUp extends PowerUp{
 	public float getBoostTime() {
 		return POWERUP_TIME;
 	}
+	@Override
+	public void fall() {
+		// TODO Auto-generated method stub
+		this.setY(this.getY()+this.getVelocity());
+	}
 }
