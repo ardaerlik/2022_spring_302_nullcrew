@@ -42,7 +42,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	private final int MARGIN_BOTTOM = 200;
 	private final int WIDTH = 1536;
 	private final int HEIGHT = 1116;
-	public static List<GameObject> list_objects;
 	private ArrayList<MoveDirection> pressedKeys;
 	private int pressedKeysLoc;
 	private int pressedKeysLocInt;
@@ -55,7 +54,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	public GamePanel(GameView gameView) {
 		GameObjectFactory.gameController = gameView.getGameController();
 		this.gameView = gameView;
-		list_objects = new ArrayList<GameObject>();
+
 		
 		this.pressedKeys = new ArrayList<MoveDirection>();
 		this.pressedKeysLoc = 0;
@@ -86,16 +85,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		List<Ball> list= new ArrayList();
 		list.add(GameObjectFactory.createBall());
 		gameView.getGameController().setBalls(list);
-		list_objects.add(gameView.getGameController().getPaddle());
+		gameView.getGameController().getList_objects().add(gameView.getGameController().getPaddle());
 		for(Ball ball: list) {
-			list_objects.add(ball);
+			gameView.getGameController().getList_objects().add(ball);
 		}
 
 	}
 	
 	public void createAlien() {
 		gameView.getGameController().setAlien(GameObjectFactory.createAlien());
-		list_objects.add(gameView.getGameController().getAlien());
+		gameView.getGameController().getList_objects().add(gameView.getGameController().getAlien());
 	}
 
 	private void configureUI() {
@@ -130,7 +129,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	}
 
 	private void paintObjects(Graphics g) {
-		for (GameObject object : list_objects) {
+		for (GameObject object : gameView.getGameController().getList_objects()) {
 			if (object instanceof Paddle) {
 				paintPaddle(g);
 			}

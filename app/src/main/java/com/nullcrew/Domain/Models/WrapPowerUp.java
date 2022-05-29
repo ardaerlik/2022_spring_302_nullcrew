@@ -13,6 +13,7 @@ public class WrapPowerUp extends PowerUp{
 	public void use() {
 		// TODO Auto-generated method stub
 		this.getGameController().getPaddle().onWrapPowerUp=true;
+		this.getGameController().getGameView().getTopPanel().getWrap_label().setVisible(true);
 	}
 	public float getBoostTime() {
 		return POWERUP_TIME;

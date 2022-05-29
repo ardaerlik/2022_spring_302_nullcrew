@@ -15,6 +15,7 @@ public class GangofBallPowerUp extends PowerUp{
 
 	@Override
 	public void use() {
+		this.getGameController().getGameView().getTopPanel().getGangballs_label().setVisible(true);
 		for(int a=0;a<10;a++) {
 
 			Ball ball= GameObjectFactory.createBall();
@@ -26,7 +27,7 @@ public class GangofBallPowerUp extends PowerUp{
 			ball.setVelocityY(
 					this.getGameController().getBalls().get(0).getVelocityX()*Math.sin(Math.toRadians(new Random().nextDouble()*360f))*1.5f
 					);
-			GamePanel.list_objects.add(ball);
+			this.getGameController().getList_objects().add(ball);
 			List<Ball> temp_list= getGameController().getBalls();
 			temp_list.add(ball);
 			this.getGameController().setBalls(temp_list);

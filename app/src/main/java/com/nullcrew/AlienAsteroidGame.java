@@ -1,6 +1,7 @@
 package com.nullcrew;
 
 import com.nullcrew.UI.Views.AppView;
+import com.nullcrew.UI.Views.GameView;
 import com.nullcrew.UI.Views.LoginView;
 import com.nullcrew.Utilities.DBManager;
 import com.nullcrew.Utilities.Database;

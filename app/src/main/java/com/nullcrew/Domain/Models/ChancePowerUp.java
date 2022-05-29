@@ -11,6 +11,7 @@ public class ChancePowerUp extends PowerUp{
 
 	@Override
 	public void use() {
+		this.getGameController().getGameView().getTopPanel().getChance_label().setVisible(true);
 		System.out.println("Chance activated");
 		// TODO Auto-generated method stub
 		if(this.getGameController().getGame()==null) {

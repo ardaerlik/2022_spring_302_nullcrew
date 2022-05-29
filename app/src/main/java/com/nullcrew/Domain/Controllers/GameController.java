@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.JButton;
+
 import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Domain.Models.Alien;
 import com.nullcrew.Domain.Models.Asteroid;
@@ -34,6 +36,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 	public static final int MIN_NUM_EXPLOSIVE = 5;
 	public static final int MIN_NUM_FIRM = 10;
 	public static final int MIN_NUM_GIFT = 10;
+	private List<GameObject> list_objects;
 	private List<Asteroid> asteroidList;
 	private List<PowerUp> powerups;
 	private List<Ball> balls;
@@ -55,7 +58,8 @@ public class GameController extends AppController implements SaveLoadObserver {
 		.subscribeSaveLoadObserver(this);
 		app.getFileManager()
 		.subscribeSaveLoadObserver(this);
-		
+		List<GameObject> list = new ArrayList<GameObject>();
+		this.setList_objects(list);
 		game = Game.getCurrentGame();
 		asteroidList = new ArrayList<>();
 		powerups=  new ArrayList<>();
@@ -122,9 +126,11 @@ public class GameController extends AppController implements SaveLoadObserver {
 						if(((GiftAsteroid) asteroid).powerup!=null){
 							if(((GiftAsteroid) asteroid).powerup instanceof MagnetPowerUp) {
 								powerups.add(((GiftAsteroid) asteroid).powerup);
+								((GameView) view).getTopPanel().getMagnet_button().setVisible(true);
 							}
 							else if(((GiftAsteroid) asteroid).powerup instanceof TallerPowerUp) {
 								powerups.add(((GiftAsteroid) asteroid).powerup);
+								((GameView) view).getTopPanel().getTaller_button().setVisible(true);
 							}
 							else {
 								((GiftAsteroid) asteroid).powerup.use();
@@ -254,6 +260,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 				paddle.setWidth(paddle.getInitialWidth());
 				taller_started_timing=false;
 				estimated_tallerTime=0;
+				((GameView) view).getTopPanel().getTaller_button().setVisible(false);
 				System.out.println("End taller");
 			}
 			System.out.println("Taller Total time passed: " +estimated_tallerTime);
@@ -270,6 +277,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 				paddle.onWrapPowerUp=false;
 				wrap_started_timing=false;
 				estimated_wrapTime=0;
+				((GameView) view).getTopPanel().getWrap_label().setVisible(false);
 				System.out.println("End wrap");
 			}
 			System.out.println("Wrap Total time passed: " +estimated_wrapTime);
@@ -357,7 +365,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 						ball.getVelocityX()*Math.cos(Math.toRadians(paddle.getRotationDegree())));
 				float value = (float) (Math.sqrt(18-angled_value));
 				ball.setVelocityY(-value);
-				ball.setVelocityX(ball.getVelocityX()*Math.cos(Math.toRadians(paddle.getRotationDegree())));
+				ball.setVelocityX(ball.getVelocityX());
 			}
 		}
 	}
@@ -483,6 +491,12 @@ public class GameController extends AppController implements SaveLoadObserver {
 		setTaller_start_time(0);
 		setWrap_started_timing(false);
 		setTaller_started_timing(false);
+		((GameView)view).getTopPanel().getLaser_label().setVisible(false);
+		((GameView)view).getTopPanel().getChance_label().setVisible(false);
+		((GameView)view).getTopPanel().getGangballs_label().setVisible(false);
+		((GameView)view).getTopPanel().getMagnet_button().setVisible(false);
+		((GameView)view).getTopPanel().getTaller_button().setVisible(false);
+		((GameView)view).getTopPanel().getWrap_label().setVisible(false);
 		setPaddle(new Paddle(this, GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
 	}
 	public void reflectFromAlien(Alien collided_alien,Ball ball) {
@@ -660,9 +674,19 @@ public class GameController extends AppController implements SaveLoadObserver {
 	public Game getGame() {
 		return game;
 	}
-
+	public GameView getGameView() {
+		return ((GameView) view);
+	}
 	public void setGame(Game game) {
 		this.game = game;
+	}
+
+	public List<GameObject> getList_objects() {
+		return list_objects;
+	}
+
+	public void setList_objects(List<GameObject> list_objects) {
+		this.list_objects = list_objects;
 	}
 
 }
