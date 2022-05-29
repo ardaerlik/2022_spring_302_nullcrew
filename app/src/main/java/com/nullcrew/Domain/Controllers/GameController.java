@@ -47,6 +47,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 	private long taller_start_time=0l;
 	private boolean wrap_started_timing=false;
 	private boolean taller_started_timing=false;
+	private Game game;
 	
 	public GameController(GameView gameView, AlienAsteroidGame app) {
 		super(gameView, app);
@@ -55,6 +56,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 		app.getFileManager()
 		.subscribeSaveLoadObserver(this);
 		
+		game = Game.getCurrentGame();
 		asteroidList = new ArrayList<>();
 		powerups=  new ArrayList<>();
 	}
@@ -653,6 +655,14 @@ public class GameController extends AppController implements SaveLoadObserver {
 			.saveTheGame(Game.getCurrentGame());
 			break;
 		}
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
 	}
 
 }
