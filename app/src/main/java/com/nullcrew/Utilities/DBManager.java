@@ -24,6 +24,7 @@ import com.mongodb.client.result.InsertOneResult;
 import com.nullcrew.Domain.Models.Constants;
 import com.nullcrew.Domain.Models.Constants.DatabaseResponses;
 import com.nullcrew.Domain.Models.Game;
+import com.nullcrew.Domain.Models.Game.DataType;
 import com.nullcrew.Domain.Models.User;
 
 public final class DBManager {
@@ -96,7 +97,7 @@ public final class DBManager {
 
 	public void loadTheGames() {
 		User.getInstance().getAccount()
-		.setSavedGames(getGamesWithObjectIds(User.getInstance().getSavedGameIds()));
+		.addListOfGames(getGamesWithObjectIds(User.getInstance().getSavedGameIds()));
 		
 		if (User.getInstance().getAccount().getSavedGames() != null) {
 			notifySaveLoadObserver(DatabaseResponses.GAMES_LOADED);
@@ -117,6 +118,9 @@ public final class DBManager {
 					.insertOne(document);
 			
 			if (result.getInsertedId() != null) {
+				User.setInstance(getUserWithObjectId(result.getInsertedId()
+						.asObjectId()
+						.getValue()));
 				notifyAuthObservers(DatabaseResponses.REGISTER_ACCEPTED);
 			} else {
 				notifyAuthObservers(DatabaseResponses.DATABASE_ERROR);
@@ -244,7 +248,9 @@ public final class DBManager {
 			Document document = database.getCollection(Constants.DatabaseResponses.GAMES_COLLECTION)
 					.find(query)
 					.first();
-			games.add(new Game(document));
+			Game game = new Game(document);
+			game.setLocation(DataType.DB);
+			games.add(game);
 		}
 		
 		return games;
@@ -299,7 +305,16 @@ public final class DBManager {
 			authObserver.loginRejected(response);
 			return;
 		}
-		// TODO: Observers
+		
+		if (response.equals(DatabaseResponses.EMAIL_HAS_ACCOUNT)) {
+			authObserver.registerRejected(response);
+			return;
+		}
+		
+		if (response.equals(DatabaseResponses.REGISTER_ACCEPTED)) {
+			authObserver.registerAccepted(User.getInstance(), response);
+			return;
+		}
 	}
 	
 	public void subscribeSaveLoadObserver(SaveLoadObserver observer) {
@@ -308,22 +323,22 @@ public final class DBManager {
 
 	public void notifySaveLoadObserver(String response) {
 		if (response.equals(DatabaseResponses.DATABASE_ERROR)) {
-			// TODO
+			saveLoadObserver.gameNotSaved(response);
 			return;
 		}
 		
 		if (response.equals(DatabaseResponses.GAME_UPDATED)) {
-			// TODO
+			saveLoadObserver.gameSaved(response);
 			return;
 		}
 		
 		if (response.equals(DatabaseResponses.GAMES_LOADED)) {
-			// TODO
+			saveLoadObserver.allGamesLoaded(User.getInstance().getAccount().getSavedGames(), response);
 			return;
 		}
 		
 		if (response.equals(DatabaseResponses.NEW_GAME_SAVED)) {
-			// TODO
+			saveLoadObserver.gameSaved(response);
 			return;
 		}
 	}

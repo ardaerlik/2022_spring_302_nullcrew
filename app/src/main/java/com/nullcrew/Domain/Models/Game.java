@@ -16,6 +16,11 @@ public class Game  {
 	private ArrayList<Document> list_of_powerup_documents;
 	private ArrayList<Alien> list_of_aliens;
 	private ArrayList<Document> list_of_alien_documents;
+	private DataType location;
+	
+	public enum DataType {
+		DB, FILE
+	}
 	
 	public Game(ObjectId gameId,
 			ArrayList<Asteroid> list_of_asteroids, ArrayList<Alien> list_of_aliens, ArrayList<PowerUp> list_of_powerups) {
@@ -147,6 +152,14 @@ public class Game  {
 	public String toString() {
 		return "Game [gameId=" + gameId + ", list_of_asteroids=" + list_of_asteroids + ", score=" + score + ", lives="
 				+ lives + ", list_of_powerups=" + list_of_powerups + ", list_of_aliens=" + list_of_aliens + "]";
+	}
+
+	public DataType getLocation() {
+		return location;
+	}
+
+	public void setLocation(DataType location) {
+		this.location = location;
 	}
 	
 }

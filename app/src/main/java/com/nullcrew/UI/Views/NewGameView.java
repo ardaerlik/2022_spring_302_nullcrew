@@ -5,6 +5,7 @@ import javax.swing.*;
 import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Domain.Controllers.LoginController;
 import com.nullcrew.Domain.Controllers.NewGameController;
+import com.nullcrew.Domain.Models.User;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -103,11 +104,25 @@ public class NewGameView extends AppView {
         newGamePanel.add(Box.createVerticalStrut(400));
         frame.add(newGamePanel);
     }
+    
+    public void updateUIWithGames() {
+    	for (int i = 0; i < User.getInstance().getAccount().getSavedGames().size(); i++) {
+    		updateLabels[i] = "March 22";
+    		scoreLabels[i] = User.getInstance()
+    				.getAccount()
+    				.getSavedGames()
+    				.get(i)
+    				.getScore() + "";
+    		gameButtons[i].setText("<html><center>Last updated: "+updateLabels[i]+"<br>"
+                                        + "<center>Score: "+scoreLabels[i]+"<br>"
+                                        + "<br><br><center><b>Game "+(i+1)+"</b>");
+    	}
+    }
 
     private class StartActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            System.out.println("Start a new game");
+            newGameController.newGameStarted();
         }
     }
 
@@ -118,7 +133,6 @@ public class NewGameView extends AppView {
             for(int i=0; i<gameButtons.length; i++) {
                 JButton b = gameButtons[i];
                 if (button == b){
-                    System.out.println(i+1);
                     break;
                 }
             }

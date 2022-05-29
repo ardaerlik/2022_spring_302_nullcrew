@@ -22,6 +22,7 @@ import com.nullcrew.Domain.Models.Constants;
 import com.nullcrew.Domain.Models.Constants.DatabaseResponses;
 import com.nullcrew.Domain.Models.Constants.FileManagerConstants;
 import com.nullcrew.Domain.Models.Game;
+import com.nullcrew.Domain.Models.Game.DataType;
 import com.nullcrew.Domain.Models.User;
 
 public final class FileManager implements Database {
@@ -79,7 +80,9 @@ public final class FileManager implements Database {
 
 	@Override
 	public void loadTheGames() {
-		User.getInstance().getAccount().setSavedGames(getGamesWithObjectIds(User.getInstance().getSavedGameIds()));
+		User.getInstance().getAccount()
+		.addListOfGames(getGamesWithObjectIds(getObjectIdsFromDir()));
+		
 		if (User.getInstance().getAccount().getSavedGames() != null) {
 			notifySaveLoadObserver(DatabaseResponses.GAMES_LOADED);
 		} else {
@@ -124,7 +127,7 @@ public final class FileManager implements Database {
 	}
 	
 	private void writeToFile(Game game) throws IOException {
-		Path path = Paths.get(Constants.FileManagerConstants.DIR_PATH + "/" + game.getGameId().toString() + ".bson");
+		Path path = Paths.get(Constants.FileManagerConstants.DIR_PATH + "/" + game.getGameId().toString());
 		File file = path.toFile();
 		BasicBSONEncoder encoder = new BasicBSONEncoder();
 		BasicDBObject dbObject = new BasicDBObject(game.getDocument());
@@ -134,7 +137,7 @@ public final class FileManager implements Database {
 	}
 	
 	private BSONObject readFromFile(ObjectId id) throws IOException {
-		Path path = Paths.get(Constants.FileManagerConstants.DIR_PATH + "/" + id.toString() + ".bson");
+		Path path = Paths.get(Constants.FileManagerConstants.DIR_PATH + "/" + id.toString());
 		File file = path.toFile();
 		InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
 		BSONDecoder decoder = new BasicBSONDecoder();
@@ -142,7 +145,6 @@ public final class FileManager implements Database {
 		BSONObject object = null;
 		while (inputStream.available() > 0) {
 	        object = decoder.readObject(inputStream);
-	        System.out.println(object);
 	        if(object == null){
 	          break;
 	        }
@@ -171,13 +173,35 @@ public final class FileManager implements Database {
 			try {
 				BSONObject object = readFromFile(gameId);
 				Document document = convertBSONObjectToDocument(object);
-				games.add(new Game(document));
+				Game game = new Game(document);
+				game.setLocation(DataType.FILE);
+				games.add(game);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		
 		return games;
+	}
+	
+	private ArrayList<ObjectId> getObjectIdsFromDir() {
+		ArrayList<ObjectId> objectIds = new ArrayList<ObjectId>();
+		File folder = new File(Constants.FileManagerConstants.DIR_PATH);
+		File[] files = folder.listFiles();
+		
+		for (int i = 0; i < files.length; i++) {
+			if (files[i].isFile()) {
+				try {
+					objectIds.add(new ObjectId(files[i].getName()));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		System.out.println(objectIds);
+		
+		return objectIds;
 	}
 
 }

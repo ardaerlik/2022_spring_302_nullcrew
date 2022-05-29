@@ -71,9 +71,27 @@ public class Account {
 			throw new NullPointerException();
 		}
 		
-		if (savedGames.size() < 8) {
+		if (savedGames.size() < 10) {
 			savedGames.add(game);
 		}
+	}
+	
+	public void addListOfGames(ArrayList<Game> games) {
+		for (Game game: games) {
+			if (!isGameInList(game)) {
+				addGame(game);
+			}
+		}
+	}
+	
+	private boolean isGameInList(Game game) {
+		for (Game savedGame: savedGames) {
+			if (savedGame.getGameId().equals(game.getGameId())) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public boolean repOk() {
