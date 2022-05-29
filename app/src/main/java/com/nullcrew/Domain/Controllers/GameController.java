@@ -28,6 +28,7 @@ import com.nullcrew.Domain.Models.PowerUp;
 import com.nullcrew.Domain.Models.TallerPowerUp;
 import com.nullcrew.UI.Views.GamePanel;
 import com.nullcrew.UI.Views.GameView;
+import com.nullcrew.UI.Views.MenuView;
 import com.nullcrew.Utilities.SaveLoadObserver;
 
 public class GameController extends AppController implements SaveLoadObserver {
@@ -60,7 +61,8 @@ public class GameController extends AppController implements SaveLoadObserver {
 		.subscribeSaveLoadObserver(this);
 		List<GameObject> list = new ArrayList<GameObject>();
 		this.setList_objects(list);
-		game = Game.getCurrentGame();
+//		game = Game.getCurrentGame();
+		game = new Game(); // I added this specifically for the lives feature.
 		asteroidList = new ArrayList<>();
 		powerups=  new ArrayList<>();
 	}
@@ -389,6 +391,22 @@ public class GameController extends AppController implements SaveLoadObserver {
 			}
 		}
 	}
+
+	// added for the lives feature
+	public void ballFalls() {
+		for(Ball ball:balls) {
+			if (getPaddle().getObjShape().getShape().getBounds().getY() < ball.getObjShape().getShape().getBounds().getY()){
+				game.setLives( game.getLives()-1);
+				((GameView) view).getTopPanel().setLives(game.getLives());
+				if(game.getLives() == 0){
+					((GameView) view).gameOver();
+					AlienAsteroidGame.getInstance().changeView(((GameView) view), new MenuView());
+				}else{
+					respawnBall();
+				}
+			}
+		}
+	}
 	
 	public void activatePowerUp(String key) {
 		for(int a=0;a<powerups.size();a++) {
@@ -504,6 +522,24 @@ public class GameController extends AppController implements SaveLoadObserver {
 		ball.setVelocityX(0);
 		ball.setVelocityY(0);
 	}
+	public void respawnBall() {
+		List<Ball> list= new ArrayList();
+		list.add(new Ball(this, GameObjectFactory.BALL_X, GameObjectFactory.BALL_Y, 17, 17));
+		setBalls(list);
+		setEstimated_tallerTime(0f);
+		setEstimated_wrapTime(0f);
+		setWrap_start_time(0);
+		setTaller_start_time(0);
+		setWrap_started_timing(false);
+		setTaller_started_timing(false);
+		((GameView)view).getTopPanel().getLaser_label().setVisible(false);
+		((GameView)view).getTopPanel().getChance_label().setVisible(false);
+		((GameView)view).getTopPanel().getGangballs_label().setVisible(false);
+		((GameView)view).getTopPanel().getMagnet_button().setVisible(false);
+		((GameView)view).getTopPanel().getTaller_button().setVisible(false);
+		((GameView)view).getTopPanel().getWrap_label().setVisible(false);
+		setPaddle(new Paddle(this, GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
+	}
 	public void restartGame() {
 		((GameView) view).createAsteroids();
 		List<Ball> list= new ArrayList();
@@ -521,6 +557,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 		((GameView)view).getTopPanel().getMagnet_button().setVisible(false);
 		((GameView)view).getTopPanel().getTaller_button().setVisible(false);
 		((GameView)view).getTopPanel().getWrap_label().setVisible(false);
+		((GameView)view).getTopPanel().setLives(game.getLives());
 		setPaddle(new Paddle(this, GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
 	}
 	public void reflectFromAlien(Alien collided_alien,Ball ball) {
