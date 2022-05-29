@@ -22,7 +22,8 @@ public interface Constants {
 		String WRONG_EMAIL = "Wrong email address";
 		String REGISTER_ACCEPTED = "Register successfully";
 		String EMAIL_HAS_ACCOUNT = "Email has taken";
-		String DATABASE_ERROR = "Database error has occured";
+		String DATABASE_WRITE_ERROR = "Database write error has occured";
+		String DATABASE_READ_ERROR = "Database read error has occured";
 		String NEW_GAME_SAVED = "New game saved";
 		String GAME_UPDATED = "Game are updated";
 		String GAMES_LOADED = "Games are loaded";
@@ -33,6 +34,7 @@ public interface Constants {
 		String GAME_UPDATED = "Game are updated on local";
 		String NEW_GAME_SAVED = "New game saved on local";
 		String WRITE_ERROR = "File cannot be written";
+		String READ_ERROR = "File cannot be read";
 		String GAMES_LOADED = "Games are loaded from local";
 	}
 

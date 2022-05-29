@@ -84,9 +84,9 @@ public final class FileManager implements Database {
 		.addListOfGames(getGamesWithObjectIds(getObjectIdsFromDir()));
 		
 		if (User.getInstance().getAccount().getSavedGames() != null) {
-			notifySaveLoadObserver(DatabaseResponses.GAMES_LOADED);
+			notifySaveLoadObserver(FileManagerConstants.GAMES_LOADED);
 		} else {
-			notifySaveLoadObserver(DatabaseResponses.DATABASE_ERROR);
+			notifySaveLoadObserver(FileManagerConstants.READ_ERROR);
 		}
 	}
 	
@@ -106,22 +106,27 @@ public final class FileManager implements Database {
 	@Override
 	public void notifySaveLoadObserver(String response) {
 		if (response.equals(FileManagerConstants.GAME_UPDATED)) {
-			// TODO
+			saveLoadObserver.gameSaved(response);
 			return;
 		}
 		
 		if (response.equals(FileManagerConstants.GAMES_LOADED)) {
-			// TODO
+			saveLoadObserver.allGamesLoaded(User.getInstance().getAccount().getSavedGames(), response);
 			return;
 		}
 		
 		if (response.equals(FileManagerConstants.NEW_GAME_SAVED)) {
-			// TODO
+			saveLoadObserver.gameSaved(response);
 			return;
 		}
 		
 		if (response.equals(FileManagerConstants.WRITE_ERROR)) {
-			// TODO
+			saveLoadObserver.gameNotSaved(response);
+			return;
+		}
+		
+		if (response.equals(FileManagerConstants.READ_ERROR)) {
+			saveLoadObserver.gameNotLoaded(response);
 			return;
 		}
 	}
@@ -129,8 +134,10 @@ public final class FileManager implements Database {
 	private void writeToFile(Game game) throws IOException {
 		Path path = Paths.get(Constants.FileManagerConstants.DIR_PATH + "/" + game.getGameId().toString());
 		File file = path.toFile();
+		
 		BasicBSONEncoder encoder = new BasicBSONEncoder();
 		BasicDBObject dbObject = new BasicDBObject(game.getDocument());
+		
 		new File(Constants.FileManagerConstants.DIR_PATH).mkdirs();
 		file.createNewFile();
 		Files.write(encoder.encode(dbObject), file);
@@ -173,9 +180,13 @@ public final class FileManager implements Database {
 			try {
 				BSONObject object = readFromFile(gameId);
 				Document document = convertBSONObjectToDocument(object);
+				
 				Game game = new Game(document);
+				game.setGameId(gameId);
 				game.setLocation(DataType.FILE);
 				games.add(game);
+				
+				User.getInstance().addNewGameId(gameId);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -198,9 +209,7 @@ public final class FileManager implements Database {
 				}
 			}
 		}
-		
-		System.out.println(objectIds);
-		
+
 		return objectIds;
 	}
 

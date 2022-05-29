@@ -73,7 +73,7 @@ public final class DBManager {
 				.add(result.getInsertedId().asObjectId().getValue());
 				notifySaveLoadObserver(DatabaseResponses.NEW_GAME_SAVED);
 			} else {
-				notifySaveLoadObserver(DatabaseResponses.DATABASE_ERROR);
+				notifySaveLoadObserver(DatabaseResponses.DATABASE_WRITE_ERROR);
 			}
 		} else {
 			Document query = new Document().append("_id", game.getGameId());
@@ -90,7 +90,7 @@ public final class DBManager {
 						.updateOne(query, updates, options);
 				notifySaveLoadObserver(DatabaseResponses.GAME_UPDATED);
 			} catch (MongoException e) {
-				notifySaveLoadObserver(DatabaseResponses.DATABASE_ERROR);
+				notifySaveLoadObserver(DatabaseResponses.DATABASE_WRITE_ERROR);
 			}
 		}
 	}
@@ -102,7 +102,7 @@ public final class DBManager {
 		if (User.getInstance().getAccount().getSavedGames() != null) {
 			notifySaveLoadObserver(DatabaseResponses.GAMES_LOADED);
 		} else {
-			notifySaveLoadObserver(DatabaseResponses.DATABASE_ERROR);
+			notifySaveLoadObserver(DatabaseResponses.DATABASE_READ_ERROR);
 		}
 	}
 
@@ -123,7 +123,7 @@ public final class DBManager {
 						.getValue()));
 				notifyAuthObservers(DatabaseResponses.REGISTER_ACCEPTED);
 			} else {
-				notifyAuthObservers(DatabaseResponses.DATABASE_ERROR);
+				notifyAuthObservers(DatabaseResponses.DATABASE_WRITE_ERROR);
 			}
 		} else {
 			notifyAuthObservers(DatabaseResponses.EMAIL_HAS_ACCOUNT);
@@ -322,8 +322,13 @@ public final class DBManager {
 	}
 
 	public void notifySaveLoadObserver(String response) {
-		if (response.equals(DatabaseResponses.DATABASE_ERROR)) {
+		if (response.equals(DatabaseResponses.DATABASE_WRITE_ERROR)) {
 			saveLoadObserver.gameNotSaved(response);
+			return;
+		}
+		
+		if (response.equals(DatabaseResponses.DATABASE_READ_ERROR)) {
+			saveLoadObserver.gameNotLoaded(response);
 			return;
 		}
 		

@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 
 
 public class Game  {
+	private static Game currentGame = null;
 	private ObjectId gameId;
 	private ArrayList<Asteroid> list_of_asteroids;
 	private ArrayList<Document> list_of_asteroid_documents;
@@ -20,6 +21,17 @@ public class Game  {
 	
 	public enum DataType {
 		DB, FILE
+	}
+	
+	public static Game getCurrentGame() {
+		return currentGame;
+	}
+	
+	public static void setCurrentGame(Game game) {
+		currentGame = game;
+	}
+	
+	public Game() {
 	}
 	
 	public Game(ObjectId gameId,
@@ -147,19 +159,19 @@ public class Game  {
 	public void setList_of_alien_documents(ArrayList<Document> list_of_alien_documents) {
 		this.list_of_alien_documents = list_of_alien_documents;
 	}
-
-	@Override
-	public String toString() {
-		return "Game [gameId=" + gameId + ", list_of_asteroids=" + list_of_asteroids + ", score=" + score + ", lives="
-				+ lives + ", list_of_powerups=" + list_of_powerups + ", list_of_aliens=" + list_of_aliens + "]";
-	}
-
+	
 	public DataType getLocation() {
 		return location;
 	}
 
 	public void setLocation(DataType location) {
 		this.location = location;
+	}
+
+	@Override
+	public String toString() {
+		return "Game [gameId=" + gameId + ", list_of_asteroids=" + list_of_asteroids + ", score=" + score + ", lives="
+				+ lives + ", list_of_powerups=" + list_of_powerups + ", list_of_aliens=" + list_of_aliens + "]";
 	}
 	
 }

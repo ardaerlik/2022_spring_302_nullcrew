@@ -8,10 +8,6 @@ import com.nullcrew.Domain.Models.Game;
 public interface SaveLoadObserver {
 	public void allGamesLoaded(ArrayList<Game> games, String response);
 	
-	public void allGamesSaved(String response);
-	
-	public void gameLoaded(Game game, String response);
-	
 	public void gameSaved(String response);
 	
 	public void gameNotSaved(String response);

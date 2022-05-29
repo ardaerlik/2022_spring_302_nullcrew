@@ -133,6 +133,7 @@ public class NewGameView extends AppView {
             for(int i=0; i<gameButtons.length; i++) {
                 JButton b = gameButtons[i];
                 if (button == b){
+                	newGameController.existingGameStarted(User.getInstance().getSavedGameIds().get(i));
                     break;
                 }
             }
