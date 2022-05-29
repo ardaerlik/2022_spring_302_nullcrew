@@ -11,6 +11,7 @@ public abstract class Asteroid extends GameObject {
 	private Color color;
 	private AsteroidType type;
 	private String asteroidType;
+	private Boolean freezed = false;
 
 	public Asteroid(GameController gameController,double x, double y, int width, int height, double speed, Color color, AsteroidType type) {
 		super(gameController,x, y, width, height);
@@ -23,7 +24,11 @@ public abstract class Asteroid extends GameObject {
 	public double getSpeed() {
 		return speed;
 	}
-
+	
+	public Boolean getFreezed() {
+		return freezed;
+	}
+	
 	public abstract void hit(GameController gameController);
 
 	public Color getColor() {
@@ -33,7 +38,11 @@ public abstract class Asteroid extends GameObject {
 	public AsteroidType getType() {
 		return type;
 	}
-
+	
+	public void setFreezed(Boolean freezed) {
+		this.freezed = freezed;
+	}
+	
 	@Override
 	public abstract Asteroid clone();
 	

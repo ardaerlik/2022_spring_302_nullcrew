@@ -10,6 +10,7 @@ import java.util.Random;
 
 import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Domain.Models.Alien;
+import com.nullcrew.Domain.Models.AlienType;
 import com.nullcrew.Domain.Models.Asteroid;
 import com.nullcrew.Domain.Models.AsteroidType;
 import com.nullcrew.Domain.Models.Ball;
@@ -21,6 +22,7 @@ import com.nullcrew.Domain.Models.MessageType;
 import com.nullcrew.Domain.Models.MoveDirection;
 import com.nullcrew.Domain.Models.Paddle;
 import com.nullcrew.Domain.Models.PowerUp;
+import com.nullcrew.Domain.Models.SimpleAsteroid;
 import com.nullcrew.UI.Views.GamePanel;
 import com.nullcrew.UI.Views.GameView;
 
@@ -31,7 +33,8 @@ public class GameController extends AppController {
 	public static final int MIN_NUM_FIRM = 10;
 	public static final int MIN_NUM_GIFT = 10;
 	private List<Asteroid> asteroidList;
-	private List<PowerUp> powerups;
+	private int actAlienCount = 0;
+	private int destroyedAsteroid;
 	private Ball ball;
 	private Paddle paddle;
 	private Alien alien;
@@ -44,18 +47,22 @@ public class GameController extends AppController {
 
 	public boolean addAsteroid(Asteroid toBeAdded, double newX, double newY) {
 		if(toBeAdded==null||newX<0||newY<0||newX>1536|newY>1116) {
+
 			return false;
 		}
 		for (Asteroid a : asteroidList) {
 			if (newX >= a.getX() && newX <= a.getX() + GameObjectFactory.ASTEROID_WIDTH && newY >= a.getY()
 					&& newY <= a.getY() + GameObjectFactory.ASTEROID_HEIGHT) {
+
 				return false;
 			}
 			if(a==toBeAdded) {
+
 				continue;
 			}
 			if(new Rectangle2D.Double(newX,newY,toBeAdded.getWidth(),toBeAdded.getHeight()).intersects(
 					new Rectangle2D.Double(a.getX(),a.getY(),a.getWidth(),a.getHeight()))) {
+
 				return false;
 			}
 		} 
@@ -66,11 +73,31 @@ public class GameController extends AppController {
 		return true;
 	}
 
-	public void appearAsteroid() {
+	public void appearAlien() {
 		((GameView) view).getGamePanel().createAlien();
-		this.getAlien().act(this);
+		actAlienCount=0;
 	}
 	
+	public void actAlien() {
+		if (getAlien() == null) return;
+		actAlienCount++;
+		
+		if(getAlien().getType() == AlienType.Repairing) {
+			
+			if (actAlienCount%250 == 0) getAlien().act(this);
+		} else if(getAlien().getType() == AlienType.Cooperative) {
+			getAlien().act(this);
+			setAlien(null);
+		} else if (getAlien().getType() == AlienType.TimeWasting) {
+			if (actAlienCount == 1) {
+				getAlien().act(this);
+			}
+			if (actAlienCount%75 == 0) {
+				this.unfreezeAsteroids();
+			}
+		}
+	}
+
 	public void destroyAsteroidRow() {
 		if (getAsteroidList() == null || getAsteroidList().size() == 0) {
 			return;
@@ -83,6 +110,31 @@ public class GameController extends AppController {
 		}
 	}
 	
+	public void addNewSimpleAsteroid() {
+	
+		for (int x = new Random().nextInt(500)+100; x < ((GameView) view).getInitialWidth(); x += 40) {
+			for (int y = new Random().nextInt(500)+100; y < 900; y += 40) {
+				Asteroid asteroid2 = new SimpleAsteroid(this, x, y, 20, 20, 0); 
+				if (addAsteroid(asteroid2, asteroid2.getX(), asteroid2.getY()) == true) return;
+			}
+		}
+	}
+	
+	public void freezeAsteroids() {
+		for (int i = 0; i < 8; i++) {
+			Random r = new Random();
+			int x = r.nextInt(getAsteroidList().size());
+			if(!getAsteroidList().get(x).getFreezed()) getAsteroidList().get(x).setFreezed(true);
+			else { i--;}
+		}
+	}
+	
+	private void unfreezeAsteroids() {
+		for (Asteroid a : getAsteroidList()) {
+			if (a.getFreezed()) a.setFreezed(false);
+		}	
+	}
+	
 	public Asteroid ballHitAsteroid() {
 		if (getAsteroidList() == null || getAsteroidList().size() == 0) {
 			return null;
@@ -93,11 +145,15 @@ public class GameController extends AppController {
 				continue;
 			}
 			if(ball.getObjShape().getShape().intersects(asteroid.getObjShape().getRect())) {
-
+				if (asteroid.getFreezed()) {
+					return asteroid;
+				}
 				if ((asteroid instanceof ExplosiveAsteroid)) {
+					destroyedAsteroid++;
 					((ExplosiveAsteroid) asteroid).hit_nearby(this);
 					asteroid.hit(this);
 				} else {
+					destroyedAsteroid++;
 					asteroid.hit(this);
 				}
 				return asteroid;
@@ -213,7 +269,10 @@ public class GameController extends AppController {
 	public Alien getAlien() {
 		return alien;
 	}
-
+	
+	public int getDestroyedAsteroid() {
+		return destroyedAsteroid;
+	}
 	
 	public void paddleHitBall() {
 		Rectangle2D rectx= new Rectangle2D.Double(paddle.getX(),paddle.getY(),paddle.getInitialWidth()+2,paddle.getInitialHeight()+2);
@@ -376,5 +435,8 @@ public class GameController extends AppController {
 	public void setGame(Game game) {
 		this.game = game;
 	}
-
+	
+	public void setDestroyedAsteroid(int destroyedAsteroid) {
+		this.destroyedAsteroid = destroyedAsteroid;
+	}
 }
