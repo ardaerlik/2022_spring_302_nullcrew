@@ -1,9 +1,6 @@
 package com.nullcrew.Domain.Controllers;
 
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,6 +12,7 @@ import com.nullcrew.Domain.Models.AsteroidType;
 import com.nullcrew.Domain.Models.Ball;
 import com.nullcrew.Domain.Models.ExplosiveAsteroid;
 import com.nullcrew.Domain.Models.Game;
+import com.nullcrew.Domain.Models.Game.DataType;
 import com.nullcrew.Domain.Models.GameMode;
 import com.nullcrew.Domain.Models.GameObject;
 import com.nullcrew.Domain.Models.GameObjectFactory;
@@ -28,8 +26,9 @@ import com.nullcrew.Domain.Models.PowerUp;
 import com.nullcrew.Domain.Models.TallerPowerUp;
 import com.nullcrew.UI.Views.GamePanel;
 import com.nullcrew.UI.Views.GameView;
+import com.nullcrew.Utilities.SaveLoadObserver;
 
-public class GameController extends AppController {
+public class GameController extends AppController implements SaveLoadObserver {
 	public static final int MAX_NUM_ASTEROIDS = 165;
 	public static final int MIN_NUM_ASTEROIDS = 75;
 	public static final int MIN_NUM_EXPLOSIVE = 5;
@@ -41,7 +40,6 @@ public class GameController extends AppController {
 	private List<LaserBall> laser_balls;
 	private Paddle paddle;
 	private Alien alien;
-	private Game game;
 	private PowerUp powerUp;
 	private float estimated_tallerTime=0f;
 	private float estimated_wrapTime=0f;
@@ -49,8 +47,16 @@ public class GameController extends AppController {
 	private long taller_start_time=0l;
 	private boolean wrap_started_timing=false;
 	private boolean taller_started_timing=false;
+	private Game game;
+	
 	public GameController(GameView gameView, AlienAsteroidGame app) {
 		super(gameView, app);
+		app.getDatabaseAdapter()
+		.subscribeSaveLoadObserver(this);
+		app.getFileManager()
+		.subscribeSaveLoadObserver(this);
+		
+		game = Game.getCurrentGame();
 		asteroidList = new ArrayList<>();
 		powerups=  new ArrayList<>();
 	}
@@ -554,14 +560,6 @@ public class GameController extends AppController {
 		this.alien = alien;
 	}
 
-	public Game getGame() {
-		return game;
-	}
-
-	public void setGame(Game game) {
-		this.game = game;
-	}
-
 	public List<PowerUp> getPowerups() {
 		return powerups;
 	}
@@ -624,6 +622,47 @@ public class GameController extends AppController {
 
 	public void setTaller_started_timing(boolean taller_started_timing) {
 		this.taller_started_timing = taller_started_timing;
+	}
+
+	@Override
+	public void allGamesLoaded(ArrayList<Game> games, String response) {
+	}
+
+	@Override
+	public void gameSaved(String response) {
+		// TODO Update UI with game saved response
+		
+	}
+
+	@Override
+	public void gameNotSaved(String response) {
+		// TODO Update UI with game not saved response
+		System.err.println(response);
+	}
+
+	@Override
+	public void gameNotLoaded(String response) {
+	}
+	
+	public void gameSaveButtonClicked(DataType location) {
+		switch (location) {
+		case DB:
+			getApp().getDatabaseAdapter()
+			.saveTheGame(Game.getCurrentGame());
+			break;
+		case FILE:
+			getApp().getFileManager()
+			.saveTheGame(Game.getCurrentGame());
+			break;
+		}
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
 	}
 
 }

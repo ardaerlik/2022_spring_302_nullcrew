@@ -11,21 +11,18 @@ public class LoginController extends AppController implements AuthObserver {
 
 	public LoginController(LoginView loginView, AlienAsteroidGame app) {
 		super(loginView, app);
-//		AlienAsteroidGame.getInstance()
-//		.getDataStrategy()
-//		.subscribeAuthObserver(this);
+		app.getDatabaseAdapter()
+		.subscribeAuthObserver(this);
 	}
 	
 	public void loginInfoEntered(String email, String password) {
-//		AlienAsteroidGame.getInstance()
-//		.getDataStrategy()
-//		.loginUser(email, password);
+		getApp().getDatabaseAdapter()
+		.loginUser(email, password);
 	}
 	
 	public void registerInfoEntered(String email, String password, String hint) {
-//		AlienAsteroidGame.getInstance()
-//		.getDataStrategy()
-//		.registerUser(email, password, hint);
+		getApp().getDatabaseAdapter()
+		.registerUser(email, password, hint);
 	}
 
 	@Override
@@ -36,31 +33,29 @@ public class LoginController extends AppController implements AuthObserver {
 
 	@Override
 	public void loginRejected(String response) {
-		System.out.println(response);
+		((LoginView) view).updateUIWithDBResponse(response);
 	}
 
 	@Override
 	public void registerAccepted(User user, String response) {
+		((LoginView) view).updateUIWithDBResponse(response + user.getAccount().getAccountId());
 		super.changeView(AppViewFactory.getInstance()
 				.createAppView(AppViewType.MenuView));
 	}
 
 	@Override
 	public void registerRejected(String response) {
-		System.out.println(response);
-		
+		((LoginView) view).updateUIWithDBResponse(response);
 	}
 
 	@Override
 	public void forgotPasswordAccepted(User user, String response) {
-		// TODO Auto-generated method stub
-		
+		((LoginView) view).updateUIWithDBResponse(response + user.getAccount().getAccountId());
 	}
 
 	@Override
 	public void forgotPasswordRejected(String response) {
-		// TODO Auto-generated method stub
-		
+		((LoginView) view).updateUIWithDBResponse(response);
 	}
 
 }

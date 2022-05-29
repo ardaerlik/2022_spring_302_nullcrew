@@ -19,6 +19,8 @@ public class MenuController extends AppController {
 	public void newGameClicked() {
 		super.changeView(AppViewFactory.getInstance()
 				.createAppView(AppViewType.NewGameView));
+		getApp().getDatabaseAdapter().loadTheGames();
+		getApp().getFileManager().loadTheGames();
 	}
 
 	public void creditsClicked() {
