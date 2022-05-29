@@ -41,5 +41,9 @@ public class LaserPowerUp extends PowerUp{
 		this.getGameController().setLaser_balls(laser_list);
 	}
 
-
+	@Override
+	public void fall() {
+		// TODO Auto-generated method stub
+		this.setY(this.getY()+this.getVelocity());
+	}
 }

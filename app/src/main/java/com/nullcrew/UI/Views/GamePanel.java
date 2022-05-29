@@ -3,11 +3,12 @@ package com.nullcrew.UI.Views;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Shape;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,8 @@ import com.nullcrew.Domain.Models.LaserBall;
 import com.nullcrew.Domain.Models.MessageType;
 import com.nullcrew.Domain.Models.MoveDirection;
 import com.nullcrew.Domain.Models.Paddle;
+import com.nullcrew.Domain.Models.PowerUp;
+import com.nullcrew.Domain.Models.TallerPowerUp;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
 
@@ -33,7 +36,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	private GameView gameView;
 	private Timer gameTimerUI;
 	public static GameMode gameMode;
-	public static Graphics paddleGraphics, asteroidGraphics, ballGraphics, alienGraphics,laserGraphics;
+	public static Graphics paddleGraphics, asteroidGraphics, ballGraphics, alienGraphics,laserGraphics,powerUpGraphics;
 	private final int MAX_ROWS = 11;
 	private final int MAX_COLUMNS = 15;
 	private final int MARGIN_LEFT = 50;
@@ -192,6 +195,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 			}
 		}
+		paintPowerups(g);
+
 	}
 	
 
@@ -239,7 +244,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		g2d.fill(s);
 		g2d.draw(s);
 	}
-	
+	private void paintPowerups(Graphics g) {
+		for(PowerUp powerup: gameView.getGameController().getPowerups()) {
+			g.setColor(Color.white);
+			powerUpGraphics=g;
+			Graphics2D g2 = (Graphics2D) GamePanel.powerUpGraphics;
+			g2.fillRect((int)powerup.getX(), (int)powerup.getY(), powerup.getWidth(), powerup.getHeight());
+		}
+			
+	}
 	private boolean isValidPosition(MoveDirection e) {
 		switch (e) {
 		case LEFT:
@@ -376,6 +389,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		gameView.getGameController().ballHitAsteroid();
 		gameView.getGameController().ballHitBall();
 		gameView.getGameController().updateBoosts();
+		gameView.getGameController().powerUpMovement();
 	}
 
 	@Override

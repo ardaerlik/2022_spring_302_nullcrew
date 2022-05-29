@@ -53,9 +53,11 @@ public class TopPanel extends JPanel {
 	private JLabel laser_label;
 	private JLabel wrap_label;
 	private JLabel chance_label;
+	private Icon magnet_icon,taller_icon,laser_icon, gang_icon,chance_icon,wrap_icon;
 	public TopPanel(GameView gameView) {
 		this.gameView = gameView;
 		numOfAsteroidTypes = null;
+		configureIcons();
 		configureUI();
 		setFocusable(false);
 	}
@@ -143,20 +145,6 @@ public class TopPanel extends JPanel {
 		});
 	}
 	private void createPowerUpView() {
-		Path currentRelativePath = Paths.get("");
-		String magnet_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"magnet.png";
-		String taller_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"taller.png";
-		String laser_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"laser.png";
-		String gang_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"gangballs.png";
-		String chance_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"ExtraLife.png";
-		String wrap_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"wrap.png";
-		System.out.println("Current absolute path is: " + magnet_path);
-		Icon magnet_icon= new ImageIcon(new ImageIcon(magnet_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-		Icon taller_icon= new ImageIcon(new ImageIcon(taller_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-		Icon laser_icon= new ImageIcon(new ImageIcon(laser_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-		Icon gang_icon= new ImageIcon(new ImageIcon(gang_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-		Icon chance_icon= new ImageIcon(new ImageIcon(chance_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-		Icon wrap_icon= new ImageIcon(new ImageIcon(wrap_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
 		magnet_button= new JButton(magnet_icon);
 		magnet_button.setVisible(true);
 		magnet_button.setBounds(10,100, 10, 10);
@@ -201,7 +189,21 @@ public class TopPanel extends JPanel {
 		add(wrap_label);
 		add(chance_label);
 	}
-	
+	private void configureIcons() {
+		Path currentRelativePath = Paths.get("");
+		String magnet_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"magnet.png";
+		String taller_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"taller.png";
+		String laser_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"laser.png";
+		String gang_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"gangballs.png";
+		String chance_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"ExtraLife.png";
+		String wrap_path = currentRelativePath.toAbsolutePath().toString()+File.separator+"assets"+File.separator+"wrap.png";
+		magnet_icon= new ImageIcon(new ImageIcon(magnet_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+		taller_icon= new ImageIcon(new ImageIcon(taller_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+		laser_icon= new ImageIcon(new ImageIcon(laser_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+		gang_icon= new ImageIcon(new ImageIcon(gang_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+		chance_icon= new ImageIcon(new ImageIcon(chance_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+		wrap_icon= new ImageIcon(new ImageIcon(wrap_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+	}
 	private void createSwitchButton() {
 		switchButton = new JToggleButton("Switch Mode");
 		switchButton.setBounds(10, 100, 200, 25);
@@ -356,6 +358,30 @@ public class TopPanel extends JPanel {
 
 	public void setChance_label(JLabel chance_label) {
 		this.chance_label = chance_label;
+	}
+
+	public Icon getMagnet_icon() {
+		return magnet_icon;
+	}
+
+	public Icon getTaller_icon() {
+		return taller_icon;
+	}
+
+	public Icon getLaser_icon() {
+		return laser_icon;
+	}
+
+	public Icon getGang_icon() {
+		return gang_icon;
+	}
+
+	public Icon getChance_icon() {
+		return chance_icon;
+	}
+
+	public Icon getWrap_icon() {
+		return wrap_icon;
 	}
 
 }

@@ -23,4 +23,10 @@ public class MagnetPowerUp extends PowerUp{
 		this.getGameController().getGameView().getTopPanel().getMagnet_button().setVisible(false);
 	}
 
+	@Override
+	public void fall() {
+		// TODO Auto-generated method stub
+		this.setY(this.getY()+this.getVelocity());
+	}
+
 }
