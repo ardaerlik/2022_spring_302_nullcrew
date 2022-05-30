@@ -52,7 +52,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 	private boolean wrap_started_timing=false;
 	private boolean taller_started_timing=false;
 	private Game game;
-	
+	private boolean gameOver=false;
 	public GameController(GameView gameView, AlienAsteroidGame app) {
 		super(gameView, app);
 		app.getDatabaseAdapter()
@@ -199,7 +199,6 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 	public void ballMoved() {
-
 		for(Ball ball:balls) {
 			if (GamePanel.gameMode == GameMode.PAUSED) {
 				return;
@@ -394,17 +393,28 @@ public class GameController extends AppController implements SaveLoadObserver {
 
 	// added for the lives feature
 	public void ballFalls() {
+		Ball temp_ball=null;
 		for(Ball ball:balls) {
 			if (getPaddle().getObjShape().getShape().getBounds().getY() < ball.getObjShape().getShape().getBounds().getY()){
-				game.setLives( game.getLives()-1);
-				((GameView) view).getTopPanel().setLives(game.getLives());
-				if(game.getLives() == 0){
-					((GameView) view).gameOver();
-					AlienAsteroidGame.getInstance().changeView(((GameView) view), new MenuView());
-				}else{
-					respawnBall();
-				}
+				temp_ball=ball;
+				break;
 			}
+		}
+
+		if(temp_ball!=null) {
+			balls.remove(temp_ball);
+		}
+		
+		if(balls.size()==0) {
+			System.out.println(game);
+			((GameView) view).getTopPanel().setLives(game.getLives()-1);
+			game.setLives(game.getLives()-1);
+			respawnBall();
+		}
+		if(game.getLives() <= 0){
+			this.setGameOver(true);
+			((GameView) view).gameOver();
+			AlienAsteroidGame.getInstance().changeView(((GameView) view), new MenuView());
 		}
 	}
 	
@@ -748,6 +758,14 @@ public class GameController extends AppController implements SaveLoadObserver {
 
 	public void setList_objects(List<GameObject> list_objects) {
 		this.list_objects = list_objects;
+	}
+
+	public boolean isGameOver() {
+		return gameOver;
+	}
+
+	public void setGameOver(boolean gameOver) {
+		this.gameOver = gameOver;
 	}
 
 }
