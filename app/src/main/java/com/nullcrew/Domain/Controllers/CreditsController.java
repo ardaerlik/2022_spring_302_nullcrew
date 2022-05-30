@@ -12,6 +12,9 @@ public class CreditsController extends AppController {
 		super(menuView, app);
 	}
 
+	/**
+	* backClicked from the CreditsController class.
+	*/
 	public void backClicked() {
 		super.changeView(AppViewFactory.getInstance()
 				.createAppView(AppViewType.MenuView));
