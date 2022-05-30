@@ -9,6 +9,7 @@ import javax.swing.JButton;
 
 import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Domain.Models.Alien;
+import com.nullcrew.Domain.Models.AlienType;
 import com.nullcrew.Domain.Models.Asteroid;
 import com.nullcrew.Domain.Models.AsteroidType;
 import com.nullcrew.Domain.Models.Ball;
@@ -26,6 +27,7 @@ import com.nullcrew.Domain.Models.MoveDirection;
 import com.nullcrew.Domain.Models.Paddle;
 import com.nullcrew.Domain.Models.PowerUp;
 import com.nullcrew.Domain.Models.TallerPowerUp;
+import com.nullcrew.Domain.Models.SimpleAsteroid;
 import com.nullcrew.UI.Views.GamePanel;
 import com.nullcrew.UI.Views.GameView;
 import com.nullcrew.UI.Views.MenuView;
@@ -42,6 +44,8 @@ public class GameController extends AppController implements SaveLoadObserver {
 	private List<PowerUp> powerups;
 	private List<Ball> balls;
 	private List<LaserBall> laser_balls;
+	private int actAlienCount = 0;
+	private int destroyedAsteroid;
 	private Paddle paddle;
 	private Alien alien;
 	private PowerUp powerUp;
@@ -61,26 +65,29 @@ public class GameController extends AppController implements SaveLoadObserver {
 		.subscribeSaveLoadObserver(this);
 		List<GameObject> list = new ArrayList<GameObject>();
 		this.setList_objects(list);
-//		game = Game.getCurrentGame();
-		game = new Game(); // I added this specifically for the lives feature.
+		game = new Game();
 		asteroidList = new ArrayList<>();
 		powerups=  new ArrayList<>();
 	}
 
 	public boolean addAsteroid(Asteroid toBeAdded, double newX, double newY) {
 		if(toBeAdded==null||newX<0||newY<0||newX>1536|newY>1116) {
+
 			return false;
 		}
 		for (Asteroid a : asteroidList) {
 			if (newX >= a.getX() && newX <= a.getX() + GameObjectFactory.ASTEROID_WIDTH && newY >= a.getY()
 					&& newY <= a.getY() + GameObjectFactory.ASTEROID_HEIGHT) {
+
 				return false;
 			}
 			if(a==toBeAdded) {
+
 				continue;
 			}
 			if(new Rectangle2D.Double(newX,newY,toBeAdded.getWidth(),toBeAdded.getHeight()).intersects(
 					new Rectangle2D.Double(a.getX(),a.getY(),a.getWidth(),a.getHeight()))) {
+
 				return false;
 			}
 		} 
@@ -91,11 +98,31 @@ public class GameController extends AppController implements SaveLoadObserver {
 		return true;
 	}
 
-	public void appearAsteroid() {
+	public void appearAlien() {
 		((GameView) view).getGamePanel().createAlien();
-		this.getAlien().act(this);
+		actAlienCount=0;
 	}
 	
+	public void actAlien() {
+		if (getAlien() == null) return;
+		actAlienCount++;
+		
+		if(getAlien().getType() == AlienType.Repairing) {
+			
+			if (actAlienCount%250 == 0) getAlien().act(this);
+		} else if(getAlien().getType() == AlienType.Cooperative) {
+			getAlien().act(this);
+			setAlien(null);
+		} else if (getAlien().getType() == AlienType.TimeWasting) {
+			if (actAlienCount == 1) {
+				getAlien().act(this);
+			}
+			if (actAlienCount%75 == 0) {
+				this.unfreezeAsteroids();
+			}
+		}
+	}
+
 	public void destroyAsteroidRow() {
 		if (getAsteroidList() == null || getAsteroidList().size() == 0) {
 			return;
@@ -106,6 +133,31 @@ public class GameController extends AppController implements SaveLoadObserver {
 			if (asteroidList.size() < 15*r) break;
 			asteroidList.remove(15*r);
 		}
+	}
+	
+	public void addNewSimpleAsteroid() {
+	
+		for (int x = new Random().nextInt(500)+100; x < ((GameView) view).getInitialWidth(); x += 40) {
+			for (int y = new Random().nextInt(500)+100; y < 900; y += 40) {
+				Asteroid asteroid2 = new SimpleAsteroid(this, x, y, 20, 20, 0); 
+				if (addAsteroid(asteroid2, asteroid2.getX(), asteroid2.getY()) == true) return;
+			}
+		}
+	}
+	
+	public void freezeAsteroids() {
+		for (int i = 0; i < 8; i++) {
+			Random r = new Random();
+			int x = r.nextInt(getAsteroidList().size());
+			if(!getAsteroidList().get(x).getFreezed()) getAsteroidList().get(x).setFreezed(true);
+			else { i--;}
+		}
+	}
+	
+	private void unfreezeAsteroids() {
+		for (Asteroid a : getAsteroidList()) {
+			if (a.getFreezed()) a.setFreezed(false);
+		}	
 	}
 	
 	public Asteroid ballHitAsteroid() {
@@ -315,7 +367,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 
-	public MessageType checkNumAsteroids(int[] numOfAsteroidTypes) { // simple, firm, explosive, gift
+	public MessageType checkNumAsteroids(int[] numOfAsteroidTypes) {
 		int total = 0;
 		for (int n : numOfAsteroidTypes) {
 			total = total + n;
@@ -378,7 +430,11 @@ public class GameController extends AppController implements SaveLoadObserver {
 	public Alien getAlien() {
 		return alien;
 	}
-
+	
+	public int getDestroyedAsteroid() {
+		return destroyedAsteroid;
+	}
+	
 	public void paddleHitBall() {
 		for(Ball ball:balls) {	
 			if (getPaddle().getObjShape().getShape().intersects(ball.getObjShape().getShape().getBounds2D())){
@@ -391,7 +447,6 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 
-	// added for the lives feature
 	public void ballFalls() {
 		Ball temp_ball=null;
 		for(Ball ball:balls) {
@@ -745,9 +800,11 @@ public class GameController extends AppController implements SaveLoadObserver {
 	public Game getGame() {
 		return game;
 	}
+
 	public GameView getGameView() {
 		return ((GameView) view);
 	}
+	
 	public void setGame(Game game) {
 		this.game = game;
 	}
@@ -766,6 +823,10 @@ public class GameController extends AppController implements SaveLoadObserver {
 
 	public void setGameOver(boolean gameOver) {
 		this.gameOver = gameOver;
+	}
+
+	public void setDestroyedAsteroid(int destroyedAsteroid) {
+		this.destroyedAsteroid = destroyedAsteroid;
 	}
 
 }

@@ -51,6 +51,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	private boolean isValidLocation;
 	private Asteroid draggedAsteroid;
 	private double initialX, initialY;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -383,6 +384,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		gameView.getGameController().ballMoved();
+		gameView.getGameController().paddleHitBall();
+		if (gameView.getGameController().getAlien() != null) {
+			gameView.getGameController().alienMoved();
+			gameView.getGameController().ballHitAlien();
+			gameView.getGameController().actAlien();
+		}
+		Asteroid asteroid = gameView.getGameController().ballHitAsteroid();
+		if (asteroid != null) {
+			gameView.getGameController().reflectFromAsteroid(asteroid);
+		}
+
 		repaint();
 		if(!gameView.getGameController().isGameOver()) {
 			gameView.getGameController().ballMoved();
@@ -536,6 +549,5 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	@Override
 	public void mouseMoved(MouseEvent mouseEvent) {
 	}
-
 
 }
