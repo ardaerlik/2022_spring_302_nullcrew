@@ -392,9 +392,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			gameView.getGameController().actAlien();
 		}
 		Asteroid asteroid = gameView.getGameController().ballHitAsteroid();
-		if (asteroid != null) {
-			gameView.getGameController().reflectFromAsteroid(asteroid);
-		}
 
 		repaint();
 		if(!gameView.getGameController().isGameOver()) {
