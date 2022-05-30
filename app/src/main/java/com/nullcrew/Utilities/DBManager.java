@@ -72,8 +72,16 @@ public final class DBManager {
 				.getSavedGameIds()
 				.add(result.getInsertedId().asObjectId().getValue());
 				
+				
+				ArrayList<ObjectId> idsOnDB = new ArrayList<ObjectId>();
+				for (Game g: User.getInstance().getAccount().getSavedGames()) {
+					if (g.getLocation() == DataType.DB) {
+						idsOnDB.add(g.getGameId());
+					}
+				}
+				
 				Document query = new Document().append("_id", User.getInstance().getAccount().getAccountId());
-				Bson updates = Updates.combine(Updates.set("savedGameIds", User.getInstance().getSavedGameIds()));
+				Bson updates = Updates.combine(Updates.set("savedGameIds", idsOnDB));
 				UpdateOptions options = new UpdateOptions().upsert(true);
 				
 				try {
@@ -255,7 +263,7 @@ public final class DBManager {
 		for (ObjectId gameId: objectIds) {
 			BasicDBObject query = new BasicDBObject();
 			query.put("_id", gameId);
-			
+			System.out.println(gameId);
 			Document document = database.getCollection(Constants.DatabaseResponses.GAMES_COLLECTION)
 					.find(query)
 					.first();
