@@ -43,9 +43,10 @@ public class TopPanel extends JPanel {
 	private JButton yesButton;
 	private JButton noButton;
 	private JButton okButton;
-	private JButton saveButton;
+	private JToggleButton saveButton;
 	private JToggleButton switchButton;
 	private JPopupMenu popupMenu;
+	private JPopupMenu popupMenuForSave;
 	private JLabel simpleLabel, firmLabel, explosiveLabel, giftLabel;
 	private JTextField simpleField, firmField, explosiveField, giftField;
 	private int[] numOfAsteroidTypes;
@@ -76,6 +77,7 @@ public class TopPanel extends JPanel {
 		createSwitchButton();
 		createLivesLabel();
 		createPopupMenu();
+		createPopupMenuForSave();
 		createPowerUpView();
 		add(simpleLabel);
 		add(simpleField);
@@ -159,22 +161,6 @@ public class TopPanel extends JPanel {
 					gameView.getGameController().restartGame();
 				}
 			}
-		});
-	}
-	
-	private void createSaveButton() {
-		saveButton = new JButton("Save the game");
-		saveButton.setBounds(1000, 100, 100, 25);
-		saveButton.setBackground(Color.GREEN);
-		saveButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				gameView.getGamePanel().setFocusable(true);
-				gameView.getGamePanel().requestFocusInWindow();
-				gameView.getGameController().gameSaveButtonClicked(DataType.DB);
-			}
-			
 		});
 	}
 	
@@ -289,6 +275,69 @@ public class TopPanel extends JPanel {
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) {
 			}
+		});
+	}
+	
+	private void createSaveButton() {
+		saveButton = new JToggleButton("Save the game");
+		saveButton.setBounds(1000, 100, 100, 25);
+		saveButton.setBackground(Color.GREEN);
+		saveButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gameView.getGamePanel().setFocusable(true);
+				gameView.getGamePanel().requestFocusInWindow();
+				
+				if (saveButton.isSelected()) {
+					popupMenuForSave.show(saveButton, 0, saveButton.getBounds().height);
+				}
+			}
+			
+		});
+	}
+	
+	private void createPopupMenuForSave() {
+		popupMenuForSave = new JPopupMenu();
+		JMenuItem dbSave = new JMenuItem("Save to cloud");
+		JMenuItem fileSave = new JMenuItem("Save to file");
+		
+		dbSave.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gameView.getGameController().gameSaveButtonClicked(DataType.DB);
+			}
+			
+		});
+		
+		fileSave.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gameView.getGameController().gameSaveButtonClicked(DataType.FILE);
+			}
+			
+		});
+		
+		popupMenuForSave.add(dbSave);
+		popupMenuForSave.add(fileSave);
+		
+		popupMenuForSave.addPopupMenuListener(new PopupMenuListener() {
+
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				saveButton.setSelected(false);
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+			}
+			
 		});
 	}
 

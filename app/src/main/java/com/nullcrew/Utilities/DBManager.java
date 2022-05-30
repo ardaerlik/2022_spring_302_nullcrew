@@ -66,12 +66,31 @@ public final class DBManager {
 			InsertOneResult result = database.getCollection(Constants.DatabaseResponses.GAMES_COLLECTION)
 					.insertOne(game.getDocument());
 			
-			if (result.getInsertedId() != null) {
+			if (result.getInsertedId() != null) {				
 				game.setGameId(result.getInsertedId().asObjectId().getValue());
 				User.getInstance()
 				.getSavedGameIds()
 				.add(result.getInsertedId().asObjectId().getValue());
-				notifySaveLoadObserver(DatabaseResponses.NEW_GAME_SAVED);
+				
+				
+				ArrayList<ObjectId> idsOnDB = new ArrayList<ObjectId>();
+				for (Game g: User.getInstance().getAccount().getSavedGames()) {
+					if (g.getLocation() == DataType.DB) {
+						idsOnDB.add(g.getGameId());
+					}
+				}
+				
+				Document query = new Document().append("_id", User.getInstance().getAccount().getAccountId());
+				Bson updates = Updates.combine(Updates.set("savedGameIds", idsOnDB));
+				UpdateOptions options = new UpdateOptions().upsert(true);
+				
+				try {
+					database.getCollection(Constants.DatabaseResponses.USERS_COLLECTION)
+							.updateOne(query, updates, options);
+					notifySaveLoadObserver(DatabaseResponses.NEW_GAME_SAVED);
+				} catch (MongoException e) {
+					notifySaveLoadObserver(DatabaseResponses.DATABASE_WRITE_ERROR);
+				}
 			} else {
 				notifySaveLoadObserver(DatabaseResponses.DATABASE_WRITE_ERROR);
 			}
@@ -244,7 +263,7 @@ public final class DBManager {
 		for (ObjectId gameId: objectIds) {
 			BasicDBObject query = new BasicDBObject();
 			query.put("_id", gameId);
-			
+			System.out.println(gameId);
 			Document document = database.getCollection(Constants.DatabaseResponses.GAMES_COLLECTION)
 					.find(query)
 					.first();

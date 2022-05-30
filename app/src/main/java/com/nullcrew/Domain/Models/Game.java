@@ -54,27 +54,48 @@ public class Game  {
 	
 	@SuppressWarnings("unchecked")
 	public Game(Document document) {
+		list_of_asteroids = new ArrayList<Asteroid>();
+		list_of_powerups = new ArrayList<PowerUp>();
+		list_of_aliens = new ArrayList<Alien>();
+		
 		this.gameId = (ObjectId) document.get("_id");
-		this.list_of_asteroids = (ArrayList<Asteroid>) document.get("asteroids");
-		this.list_of_aliens = (ArrayList<Alien>) document.get("aliens");
-		this.list_of_powerups = (ArrayList<PowerUp>) document.get("powerups");
 		this.score = document.getInteger("score", 0);
 		this.lives = document.getInteger("lives", 0);
+		
+		ArrayList<Document> asteroidDocuments = (ArrayList<Document>) document.get("asteroids");
+		ArrayList<Document> alienDocuments = (ArrayList<Document>) document.get("aliens");
+		ArrayList<Document> powerupDocuments = (ArrayList<Document>) document.get("powerups");
+		
+		for (Document d: asteroidDocuments) {
+			switch ((String) d.get("type")) {
+			case "Explosive":
+				break;
+			case "Simple":
+				break;
+			case "Gift":
+				break;
+			case "Firm":
+				break;
+			}
+		}
 	}
 	
 	public void buildAsteroidDocuments() {
+		list_of_asteroid_documents = new ArrayList<Document>();
 		for (int i = 0; i < list_of_asteroids.size(); i++) {
 			list_of_asteroid_documents.add(list_of_asteroids.get(i).getDocument());
 		}
 	}
 	
 	public void buildAlienDocuments() {
+		list_of_alien_documents = new ArrayList<Document>();
 		for (int i = 0; i < list_of_aliens.size(); i++) {
 			list_of_alien_documents.add(list_of_aliens.get(i).getDocument());
 		}
 	}
 	
 	public void buildPowerUpDocuments() {
+		list_of_powerup_documents = new ArrayList<Document>();
 		for (int i = 0; i < list_of_powerups.size(); i++) {
 			list_of_powerup_documents.add(list_of_powerups.get(i).getDocument());
 		}
