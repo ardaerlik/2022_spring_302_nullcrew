@@ -1,6 +1,7 @@
 package com.nullcrew.Domain.Models;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.nullcrew.Domain.Controllers.GameController;
@@ -22,7 +23,7 @@ public class GiftAsteroid extends Asteroid {
 		 
 		
 
-		List<Asteroid> list = gameController.getAsteroidList();
+		ArrayList<Asteroid> list = gameController.getAsteroidList();
 		System.out.println(powerup);
 		list.remove(this);
 		gameController.setAsteroids(list);

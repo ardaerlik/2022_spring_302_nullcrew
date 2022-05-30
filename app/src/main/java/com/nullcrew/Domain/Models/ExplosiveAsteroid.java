@@ -2,6 +2,7 @@ package com.nullcrew.Domain.Models;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ public class ExplosiveAsteroid extends Asteroid {
 
 	@Override
 	public void hit(GameController gameController) {
-		List<Asteroid> list = gameController.getAsteroidList();
+		ArrayList<Asteroid> list = gameController.getAsteroidList();
 		list.remove(this);
 		gameController.setAsteroids(list);
 
@@ -34,8 +35,8 @@ public class ExplosiveAsteroid extends Asteroid {
 	}
 
 	public void hit_nearby(GameController gameController) {
-		List<Asteroid> list = gameController.getAsteroidList();
-		List<Asteroid> temp_list = list.stream().map(x -> (Asteroid) x).collect(Collectors.toList());
+		ArrayList<Asteroid> list = gameController.getAsteroidList();
+		ArrayList<Asteroid> temp_list = new ArrayList<Asteroid>(list.stream().map(x -> (Asteroid) x).collect(Collectors.toList()));
 
 		if (list != null && list.size() != 0) {
 			for (Asteroid astr : list) {

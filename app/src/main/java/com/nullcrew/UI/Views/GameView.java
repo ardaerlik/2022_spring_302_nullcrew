@@ -3,7 +3,7 @@ package com.nullcrew.UI.Views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -55,7 +55,7 @@ public class GameView extends AppView {
 				gamePanel.getBottomMargin() };
 
 		int[] maxRowsColumns = { gamePanel.getMaxRows(), gamePanel.getMaxColumns() };
-		List<Asteroid> asteroidList = GameObjectFactory.createAsteroids(numOfAsteroidTypes, locSpaces, margins,
+		ArrayList<Asteroid> asteroidList = GameObjectFactory.createAsteroids(numOfAsteroidTypes, locSpaces, margins,
 				maxRowsColumns);
 		gameController.setAsteroids(asteroidList);
 		gamePanel.repaint();

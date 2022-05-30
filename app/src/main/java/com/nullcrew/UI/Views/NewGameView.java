@@ -115,7 +115,7 @@ public class NewGameView extends AppView {
     				.getScore() + "";
     		gameButtons[i].setText("<html><center>Last updated: "+updateLabels[i]+"<br>"
                                         + "<center>Score: "+scoreLabels[i]+"<br>"
-                                        + "<br><br><center><b>Game "+(i+1)+"</b>");
+                                        + "<br><br><center><b>Game "+User.getInstance().getSavedGameIds().get(i)+"</b>");
     	}
     }
 
