@@ -53,9 +53,7 @@ public final class AlienAsteroidGame {
 		databaseAdapter = new DatabaseAdapter(DBManager.getInstance());
 		fileManager = FileManager.getInstance();
 		databaseAdapter.connect();
-//		changeView(null, new LoginView());
-//		changeView(null, new GameView());
-		changeView(null, new MenuView());
+		changeView(null, new LoginView());
 	}
 	
 	/**

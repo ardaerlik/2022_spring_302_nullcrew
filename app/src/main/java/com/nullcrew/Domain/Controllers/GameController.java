@@ -9,6 +9,7 @@ import javax.swing.JButton;
 
 import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Domain.Models.Alien;
+import com.nullcrew.Domain.Models.AlienType;
 import com.nullcrew.Domain.Models.Asteroid;
 import com.nullcrew.Domain.Models.AsteroidType;
 import com.nullcrew.Domain.Models.Ball;
@@ -25,6 +26,7 @@ import com.nullcrew.Domain.Models.MessageType;
 import com.nullcrew.Domain.Models.MoveDirection;
 import com.nullcrew.Domain.Models.Paddle;
 import com.nullcrew.Domain.Models.PowerUp;
+import com.nullcrew.Domain.Models.SimpleAsteroid;
 import com.nullcrew.Domain.Models.TallerPowerUp;
 import com.nullcrew.UI.Views.GamePanel;
 import com.nullcrew.UI.Views.GameView;
@@ -105,11 +107,6 @@ public class GameController extends AppController implements SaveLoadObserver {
 		asteroidList.add(toBeAdded);
 		((GameView) view).getGamePanel().repaint();
 		return true;
-	}
-
-	public void appearAsteroid() {
-		((GameView) view).getGamePanel().createAlien();
-		this.getAlien().act(this);
 	}
 
 	/**
@@ -486,7 +483,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 	* 
 	* @return asteroidList 
 	*/
-	public List<Asteroid> getAsteroidList() {
+	public ArrayList<Asteroid> getAsteroidList() {
 		return asteroidList;
 	}
 
@@ -495,7 +492,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 	* 
 	* @return balls
 	*/
-	public List<Ball> getBalls() {
+	public ArrayList<Ball> getBalls() {
 		return balls;
 	}
 
@@ -727,7 +724,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 	*/
 	public void restartGame() {
 		((GameView) view).createAsteroids();
-		List<Ball> list= new ArrayList();
+		ArrayList<Ball> list= new ArrayList<Ball>();
 		list.add(new Ball(this, GameObjectFactory.BALL_X, GameObjectFactory.BALL_Y, 17, 17));
 		setBalls(list);
 		setEstimated_tallerTime(0f);
@@ -884,7 +881,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 	* 
 	* @param laser_balls is a parameter.
 	*/
-	public void setLaser_balls(List<LaserBall> laser_balls) {
+	public void setLaser_balls(ArrayList<LaserBall> laser_balls) {
 		this.laser_balls = laser_balls;
 	}
 
@@ -1042,18 +1039,6 @@ public class GameController extends AppController implements SaveLoadObserver {
 
 	public GameView getGameView() {
 		return ((GameView) view);
-	}
-	
-	public Game getGame() {
-		return game;
-	}
-
-	public GameView getGameView() {
-		return ((GameView) view);
-	}
-
-	public void setGame(Game game) {
-		this.game = game;
 	}
 
 	public ArrayList<GameObject> getList_objects() {
