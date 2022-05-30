@@ -196,11 +196,13 @@ public class GameController extends AppController implements SaveLoadObserver {
 		return null;
 	}
 	
-	public Alien ballHitAlien(Ball ball) {
-		if (ball.getObjShape().getShape().intersects(alien.getObjShape().getRect())) {
-			reflectFromAlien(alien,ball);
-			alien.hit(this);
-			return alien;
+	public Alien ballHitAlien() {
+		for (Ball ball: balls) {
+			if (ball.getObjShape().getShape().intersects(alien.getObjShape().getRect())) {
+				reflectFromAlien(alien,ball);
+				alien.hit(this);
+				return alien;
+			}	
 		}
 		return null;
 	}
