@@ -9,7 +9,7 @@ public class ProtectingAlien extends Alien {
 	private static final double SPEED = 7.2;
 	
 	public ProtectingAlien(GameController gameController,double x, double y, int width, int height) {
-		super(gameController,x, y, width, height, SPEED, Color.PINK, AlienType.Protecting);
+		super(gameController,x, y, width, height, 0, Color.ORANGE, AlienType.Protecting);
 		// TODO Auto-generated constructor stub
 	}
 
