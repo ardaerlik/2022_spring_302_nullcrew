@@ -40,6 +40,8 @@ public class NewGameController extends AppController implements SaveLoadObserver
 		for (Game game: User.getInstance().getAccount().getSavedGames()) {
 			if (game.getGameId().equals(id)) {
 				Game.setCurrentGame(game);
+				System.out.println("Current game loaded");
+				System.out.println(Game.getCurrentGame());
 				break;
 			}
 		}

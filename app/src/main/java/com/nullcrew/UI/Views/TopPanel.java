@@ -27,6 +27,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import com.nullcrew.Domain.Models.Ball;
+import com.nullcrew.Domain.Models.Game.DataType;
 import com.nullcrew.Domain.Models.GameObjectFactory;
 import com.nullcrew.Domain.Models.MagnetPowerUp;
 import com.nullcrew.Domain.Models.MessageType;
@@ -42,6 +43,7 @@ public class TopPanel extends JPanel {
 	private JButton yesButton;
 	private JButton noButton;
 	private JButton okButton;
+	private JButton saveButton;
 	private JToggleButton switchButton;
 	private JPopupMenu popupMenu;
 	private JLabel simpleLabel, firmLabel, explosiveLabel, giftLabel;
@@ -70,6 +72,7 @@ public class TopPanel extends JPanel {
 		setLayout(new FlowLayout());
 		createAsteroidNumbersForm();
 		createOkButton();
+		createSaveButton();
 		createSwitchButton();
 		createLivesLabel();
 		createPopupMenu();
@@ -83,6 +86,7 @@ public class TopPanel extends JPanel {
 		add(giftLabel);
 		add(giftField);
 		add(okButton);
+		add(saveButton);
 		add(switchButton);
 		add(livesLabel);
 		add(exitButton);
@@ -118,7 +122,6 @@ public class TopPanel extends JPanel {
 		livesLabel.setText("Lives: "+lives);
 		livesLabel.setVisible(true);
 	}
-
 
 	private void createOkButton() {
 		okButton = new JButton("Start");
@@ -158,6 +161,23 @@ public class TopPanel extends JPanel {
 			}
 		});
 	}
+	
+	private void createSaveButton() {
+		saveButton = new JButton("Save the game");
+		saveButton.setBounds(1000, 100, 100, 25);
+		saveButton.setBackground(Color.GREEN);
+		saveButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gameView.getGamePanel().setFocusable(true);
+				gameView.getGamePanel().requestFocusInWindow();
+				gameView.getGameController().gameSaveButtonClicked(DataType.DB);
+			}
+			
+		});
+	}
+	
 	private void createPowerUpView() {
 		magnet_button= new JButton(magnet_icon);
 		magnet_button.setVisible(true);
@@ -218,6 +238,7 @@ public class TopPanel extends JPanel {
 		chance_icon= new ImageIcon(new ImageIcon(chance_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
 		wrap_icon= new ImageIcon(new ImageIcon(wrap_path).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
 	}
+	
 	private void createSwitchButton() {
 		switchButton = new JToggleButton("Switch Mode");
 		switchButton.setBounds(10, 100, 200, 25);

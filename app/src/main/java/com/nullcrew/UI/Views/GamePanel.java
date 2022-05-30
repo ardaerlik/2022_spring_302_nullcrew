@@ -86,7 +86,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	public void createGameObjects() {
 		gameView.getGameController().setPaddle(GameObjectFactory.createPaddle());
-		List<Ball> list= new ArrayList();
+		ArrayList<Ball> list= new ArrayList();
 		list.add(GameObjectFactory.createBall());
 		gameView.getGameController().setBalls(list);
 		gameView.getGameController().getList_objects().add(gameView.getGameController().getPaddle());

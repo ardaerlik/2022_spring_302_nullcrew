@@ -39,11 +39,11 @@ public class GameController extends AppController implements SaveLoadObserver {
 	public static final int MIN_NUM_EXPLOSIVE = 5;
 	public static final int MIN_NUM_FIRM = 10;
 	public static final int MIN_NUM_GIFT = 10;
-	private List<GameObject> list_objects;
-	private List<Asteroid> asteroidList;
-	private List<PowerUp> powerups;
-	private List<Ball> balls;
-	private List<LaserBall> laser_balls;
+	private ArrayList<GameObject> list_objects;
+	private ArrayList<Asteroid> asteroidList;
+	private ArrayList<PowerUp> powerups;
+	private ArrayList<Ball> balls;
+	private ArrayList<LaserBall> laser_balls;
 	private int actAlienCount = 0;
 	private int destroyedAsteroid;
 	private Paddle paddle;
@@ -55,17 +55,21 @@ public class GameController extends AppController implements SaveLoadObserver {
 	private long taller_start_time=0l;
 	private boolean wrap_started_timing=false;
 	private boolean taller_started_timing=false;
-	private Game game;
+	private int score;
+	private int lives;
 	private boolean gameOver=false;
+	
 	public GameController(GameView gameView, AlienAsteroidGame app) {
 		super(gameView, app);
 		app.getDatabaseAdapter()
 		.subscribeSaveLoadObserver(this);
 		app.getFileManager()
 		.subscribeSaveLoadObserver(this);
-		List<GameObject> list = new ArrayList<GameObject>();
-		this.setList_objects(list);
-		game = new Game();
+		
+		score = 0;
+		lives = 3;
+		
+		list_objects = new ArrayList<GameObject>();
 		asteroidList = new ArrayList<>();
 		powerups=  new ArrayList<>();
 	}
@@ -228,9 +232,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 			if(powerup.canFall) {
 				powerup.fall();
 			}
-			System.out.println(powerup.getObjShape().getRect());
 			if(paddle.getObjShape().getShape().intersects(powerup.getObjShape().getRect())) {
-				System.out.println("Collided with paddle");
 				if(powerup.canbeUsed==true) {
 					return;
 				}
@@ -417,11 +419,11 @@ public class GameController extends AppController implements SaveLoadObserver {
 		return backup;
 	}
 
-	public List<Asteroid> getAsteroidList() {
+	public ArrayList<Asteroid> getAsteroidList() {
 		return asteroidList;
 	}
 
-	public List<Ball> getBalls() {
+	public ArrayList<Ball> getBalls() {
 		return balls;
 	}
 
@@ -463,12 +465,11 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 		
 		if(balls.size()==0) {
-			System.out.println(game);
-			((GameView) view).getTopPanel().setLives(game.getLives()-1);
-			game.setLives(game.getLives()-1);
+			((GameView) view).getTopPanel().setLives(lives - 1);
+			lives -= 1;
 			respawnBall();
 		}
-		if(game.getLives() <= 0){
+		if(lives <= 0){
 			this.setGameOver(true);
 			((GameView) view).gameOver();
 			AlienAsteroidGame.getInstance().changeView(((GameView) view), new MenuView());
@@ -590,7 +591,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 		ball.setVelocityY(0);
 	}
 	public void respawnBall() {
-		List<Ball> list= new ArrayList();
+		ArrayList<Ball> list= new ArrayList();
 		list.add(new Ball(this, GameObjectFactory.BALL_X, GameObjectFactory.BALL_Y, 17, 17));
 		setBalls(list);
 		setEstimated_tallerTime(0f);
@@ -609,7 +610,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 	}
 	public void restartGame() {
 		((GameView) view).createAsteroids();
-		List<Ball> list= new ArrayList();
+		ArrayList<Ball> list= new ArrayList();
 		list.add(new Ball(this, GameObjectFactory.BALL_X, GameObjectFactory.BALL_Y, 17, 17));
 		setBalls(list);
 		setEstimated_tallerTime(0f);
@@ -624,7 +625,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 		((GameView)view).getTopPanel().getMagnet_button().setVisible(false);
 		((GameView)view).getTopPanel().getTaller_button().setVisible(false);
 		((GameView)view).getTopPanel().getWrap_label().setVisible(false);
-		((GameView)view).getTopPanel().setLives(game.getLives());
+		((GameView)view).getTopPanel().setLives(lives);
 		setPaddle(new Paddle(this, GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
 	}
 	public void reflectFromAlien(Alien collided_alien,Ball ball) {
@@ -686,11 +687,11 @@ public class GameController extends AppController implements SaveLoadObserver {
 		return new Object[] { backup, msg };
 	}
 
-	public void setAsteroids(List<Asteroid> asteroidList) {
+	public void setAsteroids(ArrayList<Asteroid> asteroidList) {
 		this.asteroidList = asteroidList;
 	}
 
-	public void setBalls(List<Ball> balls) {
+	public void setBalls(ArrayList<Ball> balls) {
 		this.balls = balls;
 	}
 
@@ -702,19 +703,19 @@ public class GameController extends AppController implements SaveLoadObserver {
 		this.alien = alien;
 	}
 
-	public List<PowerUp> getPowerups() {
+	public ArrayList<PowerUp> getPowerups() {
 		return powerups;
 	}
 
-	public void setPowerups(List<PowerUp> powerups) {
+	public void setPowerups(ArrayList<PowerUp> powerups) {
 		this.powerups = powerups;
 	}
 
-	public List<LaserBall> getLaser_balls() {
+	public ArrayList<LaserBall> getLaser_balls() {
 		return laser_balls;
 	}
 
-	public void setLaser_balls(List<LaserBall> laser_balls) {
+	public void setLaser_balls(ArrayList<LaserBall> laser_balls) {
 		this.laser_balls = laser_balls;
 	}
 
@@ -773,7 +774,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 	@Override
 	public void gameSaved(String response) {
 		// TODO Update UI with game saved response
-		
+		System.out.println("Game saved");
 	}
 
 	@Override
@@ -787,8 +788,18 @@ public class GameController extends AppController implements SaveLoadObserver {
 	}
 	
 	public void gameSaveButtonClicked(DataType location) {
+		Game.getCurrentGame().setLives(lives);
+		Game.getCurrentGame().setScore(score);
+		Game.getCurrentGame().setLocation(location);
+		Game.getCurrentGame().setList_of_asteroids(asteroidList);
+		Game.getCurrentGame().setList_of_powerups(powerups);
+		// ball, paddle, alien
+		Game.getCurrentGame().buildDocuments();
+		System.out.println("Game save button clicked");
+		System.out.println(Game.getCurrentGame());
+		
 		switch (location) {
-		case DB:
+		case DB:			
 			getApp().getDatabaseAdapter()
 			.saveTheGame(Game.getCurrentGame());
 			break;
@@ -799,23 +810,15 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 
-	public Game getGame() {
-		return game;
-	}
-
 	public GameView getGameView() {
 		return ((GameView) view);
 	}
-	
-	public void setGame(Game game) {
-		this.game = game;
-	}
 
-	public List<GameObject> getList_objects() {
+	public ArrayList<GameObject> getList_objects() {
 		return list_objects;
 	}
 
-	public void setList_objects(List<GameObject> list_objects) {
+	public void setList_objects(ArrayList<GameObject> list_objects) {
 		this.list_objects = list_objects;
 	}
 
@@ -829,6 +832,22 @@ public class GameController extends AppController implements SaveLoadObserver {
 
 	public void setDestroyedAsteroid(int destroyedAsteroid) {
 		this.destroyedAsteroid = destroyedAsteroid;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public int getLives() {
+		return lives;
+	}
+
+	public void setLives(int lives) {
+		this.lives = lives;
 	}
 
 }

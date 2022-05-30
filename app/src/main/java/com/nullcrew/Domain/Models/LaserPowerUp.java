@@ -19,7 +19,7 @@ public class LaserPowerUp extends PowerUp{
 			return;
 		}
 		this.getGameController().getGameView().getTopPanel().getLaser_label().setVisible(true);
-		List<LaserBall> laser_list= new ArrayList();
+		ArrayList<LaserBall> laser_list= new ArrayList();
 		for(int a=0;a<total_shots;a++) {
 			LaserBall left_laser= GameObjectFactory.createLaserBall(this.getGameController(),
 					this.getGameController().getPaddle().x,

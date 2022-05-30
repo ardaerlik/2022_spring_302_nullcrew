@@ -52,7 +52,11 @@ public abstract class Asteroid extends GameObject {
 	public Document getDocument() {
 		Document document = new Document()
 				.append("speed", speed)
-				.append("type", asteroidType);
+				.append("type", asteroidType)
+				.append("x", x)
+				.append("y", y)
+				.append("width", width)
+				.append("height", height);
 		
 		return document;
 	}

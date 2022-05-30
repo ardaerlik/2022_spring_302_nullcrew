@@ -34,6 +34,13 @@ public class Game  {
 	
 	public Game() {
 		this.lives = NUM_LIVES;
+		
+		list_of_asteroid_documents = new ArrayList<Document>();
+		list_of_powerup_documents = new ArrayList<Document>();
+		list_of_alien_documents = new ArrayList<Document>();
+		list_of_asteroids = new ArrayList<Asteroid>();
+		list_of_powerups = new ArrayList<PowerUp>();
+		list_of_aliens = new ArrayList<Alien>();
 	}
 	
 	public Game(ObjectId gameId,

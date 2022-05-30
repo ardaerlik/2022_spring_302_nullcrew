@@ -1,5 +1,6 @@
 package com.nullcrew.Domain.Models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -10,7 +11,6 @@ public class GangofBallPowerUp extends PowerUp{
 
 	public GangofBallPowerUp(GameController gameController,double x, double y, int width, int height) {
 		super(gameController,x, y, width, height);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class GangofBallPowerUp extends PowerUp{
 					this.getGameController().getBalls().get(0).getVelocityX()*Math.sin(Math.toRadians(new Random().nextDouble()*360f))*1.5f
 					);
 			this.getGameController().getList_objects().add(ball);
-			List<Ball> temp_list= getGameController().getBalls();
+			ArrayList<Ball> temp_list= getGameController().getBalls();
 			temp_list.add(ball);
 			this.getGameController().setBalls(temp_list);
 			System.out.println("Created balls");

@@ -1,6 +1,7 @@
 package com.nullcrew.Domain.Models;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.nullcrew.Domain.Controllers.GameController;
@@ -18,7 +19,7 @@ public class SimpleAsteroid extends Asteroid {
 
 	@Override
 	public void hit(GameController gameController) {
-		List<Asteroid> list = gameController.getAsteroidList();
+		ArrayList<Asteroid> list = gameController.getAsteroidList();
 
 		list.remove(this);
 		gameController.setAsteroids(list);
