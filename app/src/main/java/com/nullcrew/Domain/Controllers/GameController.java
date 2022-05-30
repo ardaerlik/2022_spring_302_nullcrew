@@ -28,6 +28,7 @@ import com.nullcrew.Domain.Models.PowerUp;
 import com.nullcrew.Domain.Models.TallerPowerUp;
 import com.nullcrew.UI.Views.GamePanel;
 import com.nullcrew.UI.Views.GameView;
+import com.nullcrew.UI.Views.MenuView;
 import com.nullcrew.Utilities.SaveLoadObserver;
 
 public class GameController extends AppController implements SaveLoadObserver {
@@ -51,7 +52,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 	private boolean wrap_started_timing=false;
 	private boolean taller_started_timing=false;
 	private Game game;
-	
+	private boolean gameOver=false;
 	public GameController(GameView gameView, AlienAsteroidGame app) {
 		super(gameView, app);
 		app.getDatabaseAdapter()
@@ -60,7 +61,8 @@ public class GameController extends AppController implements SaveLoadObserver {
 		.subscribeSaveLoadObserver(this);
 		List<GameObject> list = new ArrayList<GameObject>();
 		this.setList_objects(list);
-		game = Game.getCurrentGame();
+//		game = Game.getCurrentGame();
+		game = new Game(); // I added this specifically for the lives feature.
 		asteroidList = new ArrayList<>();
 		powerups=  new ArrayList<>();
 	}
@@ -197,7 +199,6 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 	public void ballMoved() {
-
 		for(Ball ball:balls) {
 			if (GamePanel.gameMode == GameMode.PAUSED) {
 				return;
@@ -389,6 +390,33 @@ public class GameController extends AppController implements SaveLoadObserver {
 			}
 		}
 	}
+
+	// added for the lives feature
+	public void ballFalls() {
+		Ball temp_ball=null;
+		for(Ball ball:balls) {
+			if (getPaddle().getObjShape().getShape().getBounds().getY() < ball.getObjShape().getShape().getBounds().getY()){
+				temp_ball=ball;
+				break;
+			}
+		}
+
+		if(temp_ball!=null) {
+			balls.remove(temp_ball);
+		}
+		
+		if(balls.size()==0) {
+			System.out.println(game);
+			((GameView) view).getTopPanel().setLives(game.getLives()-1);
+			game.setLives(game.getLives()-1);
+			respawnBall();
+		}
+		if(game.getLives() <= 0){
+			this.setGameOver(true);
+			((GameView) view).gameOver();
+			AlienAsteroidGame.getInstance().changeView(((GameView) view), new MenuView());
+		}
+	}
 	
 	public void activatePowerUp(String key) {
 		for(int a=0;a<powerups.size();a++) {
@@ -504,6 +532,24 @@ public class GameController extends AppController implements SaveLoadObserver {
 		ball.setVelocityX(0);
 		ball.setVelocityY(0);
 	}
+	public void respawnBall() {
+		List<Ball> list= new ArrayList();
+		list.add(new Ball(this, GameObjectFactory.BALL_X, GameObjectFactory.BALL_Y, 17, 17));
+		setBalls(list);
+		setEstimated_tallerTime(0f);
+		setEstimated_wrapTime(0f);
+		setWrap_start_time(0);
+		setTaller_start_time(0);
+		setWrap_started_timing(false);
+		setTaller_started_timing(false);
+		((GameView)view).getTopPanel().getLaser_label().setVisible(false);
+		((GameView)view).getTopPanel().getChance_label().setVisible(false);
+		((GameView)view).getTopPanel().getGangballs_label().setVisible(false);
+		((GameView)view).getTopPanel().getMagnet_button().setVisible(false);
+		((GameView)view).getTopPanel().getTaller_button().setVisible(false);
+		((GameView)view).getTopPanel().getWrap_label().setVisible(false);
+		setPaddle(new Paddle(this, GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
+	}
 	public void restartGame() {
 		((GameView) view).createAsteroids();
 		List<Ball> list= new ArrayList();
@@ -521,6 +567,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 		((GameView)view).getTopPanel().getMagnet_button().setVisible(false);
 		((GameView)view).getTopPanel().getTaller_button().setVisible(false);
 		((GameView)view).getTopPanel().getWrap_label().setVisible(false);
+		((GameView)view).getTopPanel().setLives(game.getLives());
 		setPaddle(new Paddle(this, GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
 	}
 	public void reflectFromAlien(Alien collided_alien,Ball ball) {
@@ -711,6 +758,14 @@ public class GameController extends AppController implements SaveLoadObserver {
 
 	public void setList_objects(List<GameObject> list_objects) {
 		this.list_objects = list_objects;
+	}
+
+	public boolean isGameOver() {
+		return gameOver;
+	}
+
+	public void setGameOver(boolean gameOver) {
+		this.gameOver = gameOver;
 	}
 
 }

@@ -53,6 +53,7 @@ public class TopPanel extends JPanel {
 	private JLabel laser_label;
 	private JLabel wrap_label;
 	private JLabel chance_label;
+	private JLabel livesLabel;
 	private Icon magnet_icon,taller_icon,laser_icon, gang_icon,chance_icon,wrap_icon;
 	public TopPanel(GameView gameView) {
 		this.gameView = gameView;
@@ -70,6 +71,7 @@ public class TopPanel extends JPanel {
 		createAsteroidNumbersForm();
 		createOkButton();
 		createSwitchButton();
+		createLivesLabel();
 		createPopupMenu();
 		createPowerUpView();
 		add(simpleLabel);
@@ -82,6 +84,7 @@ public class TopPanel extends JPanel {
 		add(giftField);
 		add(okButton);
 		add(switchButton);
+		add(livesLabel);
 		add(exitButton);
 		magnet_button.setVisible(false);
 		taller_button.setVisible(false);
@@ -102,9 +105,20 @@ public class TopPanel extends JPanel {
 		giftField = new JTextField(5);
 	}
 
+
 	public int[] getNumOfAsteroidTypes() {
 		return numOfAsteroidTypes;
 	}
+
+	private void createLivesLabel(){
+		livesLabel = new JLabel();
+	}
+
+	public void setLives(int lives){
+		livesLabel.setText("Lives: "+lives);
+		livesLabel.setVisible(true);
+	}
+
 
 	private void createOkButton() {
 		okButton = new JButton("Start");

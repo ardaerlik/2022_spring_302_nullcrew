@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 
 
 public class Game  {
+	private static final int NUM_LIVES = 3;
 	private static Game currentGame = null;
 	private ObjectId gameId;
 	private ArrayList<Asteroid> list_of_asteroids;
@@ -32,6 +33,7 @@ public class Game  {
 	}
 	
 	public Game() {
+		this.lives = NUM_LIVES;
 	}
 	
 	public Game(ObjectId gameId,

@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 
 import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Domain.Controllers.GameController;
@@ -58,6 +59,10 @@ public class GameView extends AppView {
 				maxRowsColumns);
 		gameController.setAsteroids(asteroidList);
 		gamePanel.repaint();
+	}
+
+	public void gameOver(){
+		JOptionPane.showMessageDialog(super.frame, "Game Over!", "Game Over!", JOptionPane.PLAIN_MESSAGE);
 	}
 
 	public TopPanel getTopPanel() {

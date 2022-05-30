@@ -3,6 +3,7 @@ package com.nullcrew;
 import com.nullcrew.UI.Views.AppView;
 import com.nullcrew.UI.Views.GameView;
 import com.nullcrew.UI.Views.LoginView;
+import com.nullcrew.UI.Views.MenuView;
 import com.nullcrew.Utilities.DBManager;
 import com.nullcrew.Utilities.Database;
 import com.nullcrew.Utilities.DatabaseAdapter;
@@ -32,7 +33,9 @@ public final class AlienAsteroidGame {
 		databaseAdapter = new DatabaseAdapter(DBManager.getInstance());
 		fileManager = FileManager.getInstance();
 		databaseAdapter.connect();
-		changeView(null, new LoginView());
+//		changeView(null, new LoginView());
+		changeView(null, new GameView());
+//		changeView(null, new MenuView());
 	}
 	
 	public void exitApp() {
