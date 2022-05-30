@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	private static final long serialVersionUID = 1L;
 	private GameView gameView;
-	private Timer gameTimerUI;
+	private Timer gameTimerUI; //Because of MVC pattern, we need to create Timer in GameController
 	public static GameMode gameMode;
 	public static Graphics paddleGraphics, asteroidGraphics, ballGraphics, alienGraphics,laserGraphics,powerUpGraphics;
 	private final int MAX_ROWS = 11;
@@ -109,7 +109,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		switch (gameMode) {
 		case RESUMED: {
 			gameMode = GameMode.PAUSED;
-			gameTimerUI.stop();
+			gameTimerUI.stop(); //Because of MVC pattern, we need to create Timer in GameController
 			break;
 		}
 		case PAUSED: {
@@ -122,7 +122,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		switch (gameMode) {
 		case PAUSED: {
 			gameMode = GameMode.RESUMED;
-			gameTimerUI.start();
+			gameTimerUI.start(); //Because of MVC pattern, we need to create Timer in GameController
 			break;
 
 		}

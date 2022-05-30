@@ -44,7 +44,7 @@ public class TopPanel extends JPanel {
 	private JButton okButton;
 	private JToggleButton switchButton;
 	private JPopupMenu popupMenu;
-	private JLabel simpleLabel, firmLabel, explosiveLabel, giftLabel;
+	private JLabel simpleLabel, firmLabel, explosiveLabel, giftLabel, timerLabel;
 	private JTextField simpleField, firmField, explosiveField, giftField;
 	private int[] numOfAsteroidTypes;
 	private JButton magnet_button;
@@ -55,6 +55,7 @@ public class TopPanel extends JPanel {
 	private JLabel chance_label;
 	private JLabel livesLabel;
 	private Icon magnet_icon,taller_icon,laser_icon, gang_icon,chance_icon,wrap_icon;
+
 	public TopPanel(GameView gameView) {
 		this.gameView = gameView;
 		numOfAsteroidTypes = null;
@@ -66,14 +67,16 @@ public class TopPanel extends JPanel {
 	private void configureUI() {
 		setFocusable(false);
 		setBackground(Color.GREEN);
-		createExitButton();
 		setLayout(new FlowLayout());
+		createTimerLabel();
+		createExitButton();
 		createAsteroidNumbersForm();
 		createOkButton();
 		createSwitchButton();
 		createLivesLabel();
 		createPopupMenu();
 		createPowerUpView();
+		add(timerLabel);
 		add(simpleLabel);
 		add(simpleField);
 		add(firmLabel);
@@ -108,6 +111,15 @@ public class TopPanel extends JPanel {
 
 	public int[] getNumOfAsteroidTypes() {
 		return numOfAsteroidTypes;
+	}
+
+	private void createTimerLabel(){
+		timerLabel = new JLabel();
+	}
+
+	public void setTimer(int timeLeft){
+		timerLabel.setText("Time Left: "+timeLeft);
+		timerLabel.setVisible(true);
 	}
 
 	private void createLivesLabel(){
@@ -245,12 +257,14 @@ public class TopPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gameView.getGamePanel().pauseTheGame();
+				gameView.getGameController().stopTimer();
 			}
 		});
 		run_item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gameView.getGamePanel().resumeTheGame();
+				gameView.getGameController().startTimer();
 			}
 		});
 		popupMenu.add(build_item);

@@ -1,11 +1,14 @@
 package com.nullcrew.Domain.Controllers;
 
 import java.awt.geom.Rectangle2D;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import javax.swing.JButton;
+import javax.swing.Timer;
 
 import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Domain.Models.Alien;
@@ -34,6 +37,7 @@ import com.nullcrew.UI.Views.MenuView;
 import com.nullcrew.Utilities.SaveLoadObserver;
 
 public class GameController extends AppController implements SaveLoadObserver {
+	public static final int TIME_LEFT = 200;
 	public static final int MAX_NUM_ASTEROIDS = 165;
 	public static final int MIN_NUM_ASTEROIDS = 75;
 	public static final int MIN_NUM_EXPLOSIVE = 5;
@@ -57,6 +61,8 @@ public class GameController extends AppController implements SaveLoadObserver {
 	private boolean taller_started_timing=false;
 	private Game game;
 	private boolean gameOver=false;
+	private Timer timer;
+
 	public GameController(GameView gameView, AlienAsteroidGame app) {
 		super(gameView, app);
 		app.getDatabaseAdapter()
@@ -68,6 +74,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 		game = new Game();
 		asteroidList = new ArrayList<>();
 		powerups=  new ArrayList<>();
+		timer = new Timer(TIME_LEFT, new TimerListener());
 	}
 
 	public boolean addAsteroid(Asteroid toBeAdded, double newX, double newY) {
@@ -470,6 +477,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 		if(game.getLives() <= 0){
 			this.setGameOver(true);
+			stopTimer();
 			((GameView) view).gameOver();
 			AlienAsteroidGame.getInstance().changeView(((GameView) view), new MenuView());
 		}
@@ -606,6 +614,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 		((GameView)view).getTopPanel().getTaller_button().setVisible(false);
 		((GameView)view).getTopPanel().getWrap_label().setVisible(false);
 		setPaddle(new Paddle(this, GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
+		restartTimer();
 	}
 	public void restartGame() {
 		((GameView) view).createAsteroids();
@@ -627,6 +636,38 @@ public class GameController extends AppController implements SaveLoadObserver {
 		((GameView)view).getTopPanel().setLives(game.getLives());
 		setPaddle(new Paddle(this, GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
 	}
+
+	public void startTimer(){
+		timer.start();
+	}
+
+	public void stopTimer(){
+		timer.stop();
+	}
+
+	public void restartTimer(){
+		timer.restart();
+	}
+
+	private class TimerListener implements ActionListener{
+		private int count=0;
+
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			if(count%10==0) {
+				int remaining = TIME_LEFT - (count/10);
+				((GameView) view).getTopPanel().setTimer(remaining);
+				if(remaining == 0){
+					setGameOver(true);
+					stopTimer();
+					((GameView) view).gameOver();
+					AlienAsteroidGame.getInstance().changeView(((GameView) view), new MenuView());
+				}
+			}
+			count++;
+		}
+	}
+
 	public void reflectFromAlien(Alien collided_alien,Ball ball) {
 		double posX = (double) collided_alien.getX() - ball.getX();
 		double posY = (double) collided_alien.getY() - ball.getY();
