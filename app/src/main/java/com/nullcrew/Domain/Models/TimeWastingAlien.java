@@ -23,7 +23,7 @@ public class TimeWastingAlien extends Alien {
 	@Override
 	public void act(GameController gameController) {
 		// TODO Auto-generated method stub
-		gameController.freezeAsteroids();
+		
 	}
 
 	
