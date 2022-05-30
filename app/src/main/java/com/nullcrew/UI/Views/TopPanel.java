@@ -68,7 +68,6 @@ public class TopPanel extends JPanel {
 		setFocusable(false);
 		setBackground(Color.GREEN);
 		setLayout(new FlowLayout());
-		createTimerLabel();
 		createExitButton();
 		createAsteroidNumbersForm();
 		createOkButton();
@@ -76,7 +75,7 @@ public class TopPanel extends JPanel {
 		createLivesLabel();
 		createPopupMenu();
 		createPowerUpView();
-		add(timerLabel);
+		createTimerLabel();
 		add(simpleLabel);
 		add(simpleField);
 		add(firmLabel);
@@ -89,6 +88,7 @@ public class TopPanel extends JPanel {
 		add(switchButton);
 		add(livesLabel);
 		add(exitButton);
+		add(timerLabel);
 		magnet_button.setVisible(false);
 		taller_button.setVisible(false);
 		gangballs_label.setVisible(false);
@@ -114,7 +114,8 @@ public class TopPanel extends JPanel {
 	}
 
 	private void createTimerLabel(){
-		timerLabel = new JLabel();
+		timerLabel = new JLabel();		
+		timerLabel.setBounds(1200,100,100,25);
 	}
 
 	public void setTimer(int timeLeft){

@@ -110,6 +110,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		case RESUMED: {
 			gameMode = GameMode.PAUSED;
 			gameTimerUI.stop(); //Because of MVC pattern, we need to create Timer in GameController
+			gameView.getGameController().stopTimer();
 			break;
 		}
 		case PAUSED: {
@@ -123,6 +124,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		case PAUSED: {
 			gameMode = GameMode.RESUMED;
 			gameTimerUI.start(); //Because of MVC pattern, we need to create Timer in GameController
+			gameView.getGameController().startTimer();
 			break;
 
 		}
@@ -404,6 +406,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			gameView.getGameController().powerUpMovement();
 		}
 	}
+
 
 	@Override
 	public void mouseClicked(MouseEvent mouseEvent) {
