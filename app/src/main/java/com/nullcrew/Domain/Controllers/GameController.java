@@ -74,6 +74,16 @@ public class GameController extends AppController implements SaveLoadObserver {
 		powerups=  new ArrayList<>();
 	}
 
+	/**
+	* boolean function for the adding asteroids.
+	* 
+	* @param toBeAdded is for a thing that will be added.
+	* @param newX is new X value.
+	* @param newY is new Y value.
+	* 
+	* @return boolean, there is some different calculations about the
+	* getting true or false returns.
+	*/
 	public boolean addAsteroid(Asteroid toBeAdded, double newX, double newY) {
 		if(toBeAdded==null||newX<0||newY<0||newX>1536|newY>1116) {
 
@@ -106,6 +116,14 @@ public class GameController extends AppController implements SaveLoadObserver {
 		((GameView) view).getGamePanel().createAlien();
 		actAlienCount=0;
 	}
+
+	/**
+	* appearAsteroid is indicate the asteroids that will be indicated.
+	*/
+	public void appearAsteroid() {
+		((GameView) view).getGamePanel().createAlien();
+		this.getAlien().act(this);
+	}
 	
 	public void actAlien() {
 		if (getAlien() == null) return;
@@ -127,6 +145,9 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 
+	/**
+	* destroyAsteroidRow will count the rows that are destroyed.
+	*/
 	public void destroyAsteroidRow() {
 		if (getAsteroidList() == null || getAsteroidList().size() == 0) {
 			return;
@@ -164,6 +185,9 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}	
 	}
 	
+	/**
+	* The hitting reaction between ball and asteroids.
+	*/
 	public Asteroid ballHitAsteroid() {
 		if (getAsteroidList() == null || getAsteroidList().size() == 0) {
 			return null;
@@ -200,17 +224,24 @@ public class GameController extends AppController implements SaveLoadObserver {
 		return null;
 	}
 	
-	public Alien ballHitAlien() {
-		for (Ball ball: balls) {
-			if (ball.getObjShape().getShape().intersects(alien.getObjShape().getRect())) {
-				reflectFromAlien(alien,ball);
-				alien.hit(this);
-				return alien;
-			}	
+	/**
+	* The function shows that hitting reaction between 
+	* ball and aliens.
+	* 
+	* @param ball is a object from the game.
+	*/
+	public Alien ballHitAlien(Ball ball) {
+		if (ball.getObjShape().getShape().intersects(alien.getObjShape().getRect())) {
+			reflectFromAlien(alien,ball);
+			alien.hit(this);
+			return alien;
 		}
 		return null;
 	}
 
+	/**
+	* ball collisions.
+	*/
 	public void ballHitBall() {
 		if(balls.size()<=1) {
 			return;
@@ -227,6 +258,11 @@ public class GameController extends AppController implements SaveLoadObserver {
 			}
 		}
 	}
+	
+	/**
+	* Function that shows the movements of power ups 
+	* and specifies openings in their formulas.
+	*/
 	public void powerUpMovement() {
 		for(PowerUp powerup:powerups) {
 			if(powerup.canFall) {
@@ -254,6 +290,10 @@ public class GameController extends AppController implements SaveLoadObserver {
 			}
 		}
 	}
+	
+	/**
+	* Movement of the ball.
+	*/
 	public void ballMoved() {
 		for(Ball ball:balls) {
 			if (GamePanel.gameMode == GameMode.PAUSED) {
@@ -274,6 +314,9 @@ public class GameController extends AppController implements SaveLoadObserver {
 
 	}
 	
+	/**
+	* Movement of the alien.
+	*/
 	public void alienMoved() {
 		if (GamePanel.gameMode == GameMode.PAUSED) {
 			return;
@@ -287,6 +330,9 @@ public class GameController extends AppController implements SaveLoadObserver {
 		alien.setX(alien.getX() + alien.getSpeed());
 	}
 
+	/**
+	* Movement of the laser.
+	*/
 	public void laserMoved() {
 		for(LaserBall laser:laser_balls) {
 			if(laser==null) {
@@ -304,6 +350,9 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 	
+	/**
+	* Asteroids are hit by laser by this function.
+	*/
 	public void laserHitAsteroid() {
 		for(LaserBall laser:laser_balls) {
 			if(laser==null) {continue;}
@@ -323,6 +372,9 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 	
+	/**
+	* updateBoosts updates the boosts for the game.
+	*/
 	public void updateBoosts() {
 		if(paddle.onTallerPowerUp) {
 			if(!taller_started_timing) {
@@ -391,6 +443,13 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 
+	/**
+	* countAsteroidTypes counts the asteroids and their types.
+	* 
+	* @param type indicates the asteroid types.
+	* 
+	* @return count is the countable steps.
+	*/
 	private int countAsteroidTypes(AsteroidType type) {
 		int count = 0;
 		for (Asteroid a : asteroidList) {
@@ -401,6 +460,14 @@ public class GameController extends AppController implements SaveLoadObserver {
 		return count;
 	}
 
+	/**
+	* dragAsteroid drags the asteroids except add or delete.
+	* 
+	* @param x is the value of integer x.
+	* @param y is the value of integer y.
+	* 
+	* @return backup is about the removing or getting some values back.
+	*/
 	public Asteroid dragAsteroid(int x, int y) {
 		Asteroid toBeRemoved = null;
 		for (Asteroid a : asteroidList) {
@@ -419,18 +486,38 @@ public class GameController extends AppController implements SaveLoadObserver {
 		return backup;
 	}
 
-	public ArrayList<Asteroid> getAsteroidList() {
+	/**
+	* get value of the AsteroidList.
+	* 
+	* @return asteroidList 
+	*/
+	public List<Asteroid> getAsteroidList() {
 		return asteroidList;
 	}
 
-	public ArrayList<Ball> getBalls() {
+	/**
+	* get value of the Balls.
+	* 
+	* @return balls
+	*/
+	public List<Ball> getBalls() {
 		return balls;
 	}
 
+	/**
+	* get value of the Paddle.
+	* 
+	* @return paddle
+	*/
 	public Paddle getPaddle() {
 		return paddle;
 	}
 	
+	/**
+	* get value of the Alien.
+	* 
+	* @return alien
+	*/
 	public Alien getAlien() {
 		return alien;
 	}
@@ -438,7 +525,10 @@ public class GameController extends AppController implements SaveLoadObserver {
 	public int getDestroyedAsteroid() {
 		return destroyedAsteroid;
 	}
-	
+
+	/**
+	* Paddle and ball hit function.
+	*/
 	public void paddleHitBall() {
 		for(Ball ball:balls) {	
 			if (getPaddle().getObjShape().getShape().intersects(ball.getObjShape().getShape().getBounds2D())){
@@ -476,6 +566,11 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 	
+	/**
+	* Active the power ups for the game.
+	* 
+	* @param key indicates string.
+	*/
 	public void activatePowerUp(String key) {
 		for(int a=0;a<powerups.size();a++) {
 			if(key=="TallerPowerUp"&&powerups.get(a) instanceof TallerPowerUp) {
@@ -498,6 +593,11 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 
+	/**
+	* Paddle movement act.
+	* 
+	* @param direction indicates MoveDirection.
+	*/
 	public void paddleMoved(MoveDirection direction) {
 		if (GamePanel.gameMode == GameMode.PAUSED) {
 			return;
@@ -530,6 +630,11 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 
+	/**
+	* Paddle rotatement act.
+	* 
+	* @param direction indicates MoveDirection.
+	*/
 	public void paddleRotated(MoveDirection direction) {
 		if (GamePanel.gameMode == GameMode.PAUSED) {
 			return;
@@ -554,6 +659,12 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 
+	/**
+	* Reflection act from the objects.
+	* 
+	* @param collided_asteroid is the name of collision of the asteroids.
+	* @param ball is the object that reflects from the objects.
+	*/
 	public void reflectFromObject(GameObject collided_asteroid,Ball ball) {
 		
 		if (collided_asteroid == null) {
@@ -577,6 +688,11 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 
+	/**
+	* Freezed on the paddle when the ball is so close.
+	* 
+	* @param ball is the object that freezed on the paddle.
+	*/
 	public void freezeBallOnPaddle(Ball ball) {
 		if(ball==null) {
 			return;
@@ -590,6 +706,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 		ball.setVelocityX(0);
 		ball.setVelocityY(0);
 	}
+
 	public void respawnBall() {
 		ArrayList<Ball> list= new ArrayList();
 		list.add(new Ball(this, GameObjectFactory.BALL_X, GameObjectFactory.BALL_Y, 17, 17));
@@ -608,9 +725,13 @@ public class GameController extends AppController implements SaveLoadObserver {
 		((GameView)view).getTopPanel().getWrap_label().setVisible(false);
 		setPaddle(new Paddle(this, GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
 	}
+	
+	/**
+	* restartGame means the restart of the game.
+	*/
 	public void restartGame() {
 		((GameView) view).createAsteroids();
-		ArrayList<Ball> list= new ArrayList();
+		List<Ball> list= new ArrayList();
 		list.add(new Ball(this, GameObjectFactory.BALL_X, GameObjectFactory.BALL_Y, 17, 17));
 		setBalls(list);
 		setEstimated_tallerTime(0f);
@@ -625,9 +746,15 @@ public class GameController extends AppController implements SaveLoadObserver {
 		((GameView)view).getTopPanel().getMagnet_button().setVisible(false);
 		((GameView)view).getTopPanel().getTaller_button().setVisible(false);
 		((GameView)view).getTopPanel().getWrap_label().setVisible(false);
-		((GameView)view).getTopPanel().setLives(lives);
 		setPaddle(new Paddle(this, GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
 	}
+	
+	/**
+	* reflectFromAlien means the reflection of the aliens
+	* 
+	* @param collided_alien is the result of collisions.
+	* @param ball is a object.
+	*/
 	public void reflectFromAlien(Alien collided_alien,Ball ball) {
 		double posX = (double) collided_alien.getX() - ball.getX();
 		double posY = (double) collided_alien.getY() - ball.getY();
@@ -646,6 +773,12 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 	
+	/**
+	* removeAsteroid removes the asteroids except add or drag.
+	* 
+	* @param x is the value of integer x.
+	* @param y is the value of integer y.
+	*/
 	public Object[] removeAsteroid(int x, int y) {
 		MessageType msg = null;
 		Asteroid toBeRemoved = null;
@@ -687,85 +820,186 @@ public class GameController extends AppController implements SaveLoadObserver {
 		return new Object[] { backup, msg };
 	}
 
+	/**
+	* setAsteroids sets asteroidList.
+	* 
+	* @param asteroidList is a list of Asteroids.
+	*/
 	public void setAsteroids(ArrayList<Asteroid> asteroidList) {
 		this.asteroidList = asteroidList;
 	}
 
+	/**
+	* setBalls sets balls.
+	* 
+	* @param balls is a list of balls.
+	*/
 	public void setBalls(ArrayList<Ball> balls) {
 		this.balls = balls;
 	}
 
+	/**
+	* setPaddle sets paddle.
+	* 
+	* @param paddle is a parameter.
+	*/
 	public void setPaddle(Paddle paddle) {
 		this.paddle = paddle;
 	}
 	
+	/**
+	* setAlien sets aliens.
+	* 
+	* @param alien is a parameter.
+	*/
 	public void setAlien(Alien alien) {
 		this.alien = alien;
 	}
 
+	/**
+	* getPowerups gets power ups.
+	* 
+	* @return powerups
+	*/
 	public ArrayList<PowerUp> getPowerups() {
 		return powerups;
 	}
 
+	/**
+	* setPowerups sets power ups.
+	* 
+	* @param powerups is a parameter.
+	*/
 	public void setPowerups(ArrayList<PowerUp> powerups) {
 		this.powerups = powerups;
 	}
 
+	/**
+	* getLaser_balls gets laser balls.
+	* 
+	* @return laser_balls
+	*/
 	public ArrayList<LaserBall> getLaser_balls() {
 		return laser_balls;
 	}
 
-	public void setLaser_balls(ArrayList<LaserBall> laser_balls) {
+	/**
+	* setLaser_balls sets laser balls.
+	* 
+	* @param laser_balls is a parameter.
+	*/
+	public void setLaser_balls(List<LaserBall> laser_balls) {
 		this.laser_balls = laser_balls;
 	}
 
+	/**
+	* getEstimated_tallerTime gets taller time.
+	* 
+	* @return estimated_tallerTime
+	*/
 	public float getEstimated_tallerTime() {
 		return estimated_tallerTime;
 	}
 
+	/**
+	* setEstimated_tallerTime sets taller time.
+	* 
+	* @param estimated tallerTime is a parameter.
+	*/
 	public void setEstimated_tallerTime(float estimated_tallerTime) {
 		this.estimated_tallerTime = estimated_tallerTime;
 	}
 
+	/**
+	* getEstimated_wrapTime gets wrap time.
+	* 
+	* @return estimated_wrapTime
+	*/
 	public float getEstimated_wrapTime() {
 		return estimated_wrapTime;
 	}
 
+	/**
+	* setEstimated_wrapTime sets wrap time.
+	* 
+	* @param estimated_wrapTime is a parameter.
+	*/
 	public void setEstimated_wrapTime(float estimated_wrapTime) {
 		this.estimated_wrapTime = estimated_wrapTime;
 	}
 
+	/**
+	* getWrap_start_time gets start time.
+	* 
+	* @return wrap_start_time
+	*/
 	public long getWrap_start_time() {
 		return wrap_start_time;
 	}
 
+	/**
+	* setWrap_start_time sets start time.
+	* 
+	* @param wrap_start_time is a parameter.
+	*/
 	public void setWrap_start_time(long wrap_start_time) {
 		this.wrap_start_time = wrap_start_time;
 	}
 
+	/**
+	* getTaller_start_time gets start time.
+	* 
+	* @return taller_start_time
+	*/
 	public long getTaller_start_time() {
 		return taller_start_time;
 	}
 
+	/**
+	* getTaller_start_time gets start time.
+	* 
+	* @param taller_start_time is a parameter.
+	*/
 	public void setTaller_start_time(long taller_start_time) {
 		this.taller_start_time = taller_start_time;
 	}
 
+	/**
+	* isWrap_started_timing indicates started time.
+	* 
+	* @return wrap_started_timing
+	*/
 	public boolean isWrap_started_timing() {
 		return wrap_started_timing;
 	}
 
+	/**
+	* isWrap_started_timing indicates started time.
+	* 
+	* @param wrap_started_timing is a parameter.
+	*/
 	public void setWrap_started_timing(boolean wrap_started_timing) {
 		this.wrap_started_timing = wrap_started_timing;
 	}
 
+	/**
+	* isTaller_started_timing indicates started time.
+	* 
+	* @return taller_started_timing
+	*/
 	public boolean isTaller_started_timing() {
 		return taller_started_timing;
 	}
 
+	/**
+	* setTaller_started_timing sets started time.
+	* 
+	* @param taller_started_timing is a parameter.
+	*/
 	public void setTaller_started_timing(boolean taller_started_timing) {
 		this.taller_started_timing = taller_started_timing;
 	}
+
 
 	@Override
 	public void allGamesLoaded(ArrayList<Game> games, String response) {

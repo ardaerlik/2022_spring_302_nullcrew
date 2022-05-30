@@ -17,6 +17,14 @@ import com.nullcrew.UI.Views.AppViewFactory;
 
 public class NewGameController extends AppController implements SaveLoadObserver {
 
+	
+	/**
+	* NewGameController controls the DataBaseAdapter, SaveLoadObserver
+	* and FileManager parts.
+	* 
+	* @param newGameView is a parameter that affects game view.
+	* @param app is a parameter.
+	*/
 	public NewGameController(NewGameView newGameView, AlienAsteroidGame app) {
 		super(newGameView, app);
 		app.getDatabaseAdapter()
@@ -25,17 +33,31 @@ public class NewGameController extends AppController implements SaveLoadObserver
 		.subscribeSaveLoadObserver(this);
 	}
 
+	/**
+	* backClicked controls the AppView part.
+	* Such as AppView Factory and Type.
+	*/
 	public void backClicked() {
 		super.changeView(AppViewFactory.getInstance()
 				.createAppView(AppViewType.MenuView));
 	}
 	
+	/**
+	* newGameStarted controls the changeView part.
+	* Such as AppView Factory and Type.
+	*/
 	public void newGameStarted() {
 		Game.setCurrentGame(new Game());
 		super.changeView(AppViewFactory.getInstance()
 				.createAppView(AppViewType.GameView));
 	}
 	
+	/**
+	* existingGameStarted gets and makes some special movements 
+	* with instance, account and saved games values.
+	* 
+	* @param id is a special appearance for the player.
+	*/
 	public void existingGameStarted(ObjectId id) {
 		for (Game game: User.getInstance().getAccount().getSavedGames()) {
 			if (game.getGameId().equals(id)) {

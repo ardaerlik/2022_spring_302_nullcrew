@@ -7,15 +7,27 @@ import com.nullcrew.UI.Views.AppViewFactory;
 
 public class MenuController extends AppController {
 
+	/**
+	* MenuController controls menu appearances.
+	* 
+	* @param menuView is a parameter.
+	* @param app is a parameter.
+	*/
 	public MenuController(MenuView menuView, AlienAsteroidGame app) {
 		super(menuView, app);
 	}
 
+	/**
+	* helpClicked controls the AppViewFactory part.
+	*/
 	public void helpClicked() {
 		super.changeView(AppViewFactory.getInstance()
 				.createAppView(AppViewType.HelpView));
 	}
 
+	/**
+	* newGameClicked gets values from DataBaseAdapter and FileManager.
+	*/
 	public void newGameClicked() {
 		super.changeView(AppViewFactory.getInstance()
 				.createAppView(AppViewType.NewGameView));
@@ -23,6 +35,9 @@ public class MenuController extends AppController {
 		getApp().getFileManager().loadTheGames();
 	}
 
+	/**
+	* creditsClicked controls the changeView and AppView.
+	*/
 	public void creditsClicked() {
 		super.changeView(AppViewFactory.getInstance()
 				.createAppView(AppViewType.CreditsView));

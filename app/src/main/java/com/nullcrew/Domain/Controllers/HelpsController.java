@@ -8,10 +8,20 @@ import com.nullcrew.UI.Views.AppViewFactory;
 
 public class HelpsController extends AppController {
 
+	/**
+	* HelpsController manages the controllers. It is a constructor.
+	* 
+	* @param helpView is a parameter.
+	* @param app is a parameter.
+	*/
 	public HelpsController(HelpView helpView, AlienAsteroidGame app) {
 		super(helpView, app);
 	}
 
+	/**
+	* backClicked has functions that help click functions. 
+	* It is a constructor.
+	*/
 	public void backClicked() {
 		super.changeView(AppViewFactory.getInstance()
 				.createAppView(AppViewType.MenuView));
