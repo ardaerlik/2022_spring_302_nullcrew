@@ -4,7 +4,7 @@ import org.bson.Document;
 
 import com.nullcrew.Domain.Controllers.GameController;
 
-public class LaserBall extends GameObject{
+public class LaserBall extends GameObject {
 	private final double initialVelocityX = 0;
 	private final double initialVelocityY = -7;
 

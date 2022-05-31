@@ -22,8 +22,7 @@ public class GiftAsteroid extends Asteroid {
 	}
 
 	@Override
-	public void hit(GameController gameController) {
-		 
+	public void hit(GameController gameController) { 
 		gameController.appearAsteroid();
 
 		ArrayList<Asteroid> list = gameController.getAsteroidList();
@@ -40,7 +39,11 @@ public class GiftAsteroid extends Asteroid {
 	@Override
 	public Document getDocument() {
 		Document document = super.getDocument();
-		document.append("powerup", powerup.getDocument());
+		if (powerup == null) {
+			document.append("powerup", null);
+		} else {
+			document.append("powerup", powerup.getDocument());
+		}
 		return document;
 	}
 	

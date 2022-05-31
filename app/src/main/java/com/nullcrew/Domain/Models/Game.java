@@ -82,19 +82,6 @@ public class Game  {
 		ArrayList<Document> ballDocuments = (ArrayList<Document>) document.get("balls");
 		ArrayList<Document> laserballDocuments = (ArrayList<Document>) document.get("laserballs");
 		Document paddleDocument = (Document) document.get("paddle");
-		
-		for (Document d: asteroidDocuments) {
-			switch ((String) d.get("type")) {
-			case "Explosive":
-				break;
-			case "Simple":
-				break;
-			case "Gift":
-				break;
-			case "Firm":
-				break;
-			}
-		}
 	}
 	
 	public void buildAsteroidDocuments() {
