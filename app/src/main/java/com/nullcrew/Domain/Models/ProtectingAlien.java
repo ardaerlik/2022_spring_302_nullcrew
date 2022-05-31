@@ -2,6 +2,8 @@ package com.nullcrew.Domain.Models;
 
 import java.awt.Color;
 
+import org.bson.Document;
+
 import com.nullcrew.Domain.Controllers.GameController;
 
 public class ProtectingAlien extends Alien {
@@ -10,12 +12,10 @@ public class ProtectingAlien extends Alien {
 	
 	public ProtectingAlien(GameController gameController,double x, double y, int width, int height) {
 		super(gameController,x, y, width, height, 0, Color.ORANGE, AlienType.Protecting);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void hit(GameController gameController) {
-		// TODO Auto-generated method stub
 		double posX = (double) this.getX() - gameController.getBalls().get(0).getX();
 		double posY = (double) this.getY() - gameController.getBalls().get(0).getY();
 		double angle = Math.atan2(posY - 0, posX - (double) 1) * (180 / Math.PI);
@@ -27,10 +27,12 @@ public class ProtectingAlien extends Alien {
 
 	@Override
 	public void act(GameController gameController) {
-		// TODO Auto-generated method stub
-		
+	}
+	
+	@Override
+	public Document getDocument() {
+		Document document = super.getDocument();
+		return document;
 	}
 
-	
-	
 }

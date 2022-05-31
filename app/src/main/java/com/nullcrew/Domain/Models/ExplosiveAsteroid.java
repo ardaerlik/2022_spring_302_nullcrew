@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.bson.Document;
+
 import com.nullcrew.Domain.Controllers.GameController;
 
 public class ExplosiveAsteroid extends Asteroid {
@@ -54,6 +56,13 @@ public class ExplosiveAsteroid extends Asteroid {
 		}
 
 		gameController.setAsteroids(temp_list);
+	}
+	
+	@Override
+	public Document getDocument() {
+		Document document = super.getDocument();
+		document.append("hit_range", hit_range);
+		return document;
 	}
 
 }

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.Document;
+
 import com.nullcrew.Domain.Controllers.GameController;
 
 public class FirmAsteroid extends Asteroid {
@@ -38,4 +40,11 @@ public class FirmAsteroid extends Asteroid {
 	public Asteroid clone() {
 		return new FirmAsteroid(this.getGameController(),this.x, this.y, this.width, this.height, super.getSpeed());
 	}
+	
+	@Override
+	public Document getDocument() {
+		Document document = super.getDocument();
+		return document;
+	}
+	
 }

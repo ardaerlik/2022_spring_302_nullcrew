@@ -21,9 +21,11 @@ public abstract class Asteroid extends GameObject {
 		this.type = type;
 		this.asteroidType = type.toString();
 	}
+	
 	public void setLives(int lives) {
 		this.lives=lives;
 	}
+	
 	public double getSpeed() {
 		return speed;
 	}
@@ -49,15 +51,13 @@ public abstract class Asteroid extends GameObject {
 	@Override
 	public abstract Asteroid clone();
 	
+	@Override
 	public Document getDocument() {
-		Document document = new Document()
-				.append("speed", speed)
-				.append("type", asteroidType)
-				.append("x", x)
-				.append("y", y)
-				.append("width", width)
-				.append("height", height);
+		Document document = super.getDocument();
+		document.append("speed", speed)
+				.append("type", asteroidType);
 		
 		return document;
 	}
+	
 }

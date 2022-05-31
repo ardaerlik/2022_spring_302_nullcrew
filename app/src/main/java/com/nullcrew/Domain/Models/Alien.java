@@ -40,9 +40,10 @@ public abstract class Alien extends GameObject {
 		return type;
 	}
 
+	@Override
 	public Document getDocument() {
-		Document document = new Document()
-				.append("speed", speed)
+		Document document = super.getDocument();
+		document.append("speed", speed)
 				.append("type", alienType);
 		
 		return document;

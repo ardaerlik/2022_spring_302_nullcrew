@@ -10,14 +10,20 @@ public class Game  {
 	private static final int NUM_LIVES = 3;
 	private static Game currentGame = null;
 	private ObjectId gameId;
-	private ArrayList<Asteroid> list_of_asteroids;
-	private ArrayList<Document> list_of_asteroid_documents;
 	private int score;
 	private int lives;
+	private Paddle paddle;
+	private ArrayList<Asteroid> list_of_asteroids;
 	private ArrayList<PowerUp> list_of_powerups;
-	private ArrayList<Document> list_of_powerup_documents;
 	private ArrayList<Alien> list_of_aliens;
+	private ArrayList<Ball> list_of_balls;
+	private ArrayList<LaserBall> list_of_laser_balls;
+	private ArrayList<Document> list_of_powerup_documents;
 	private ArrayList<Document> list_of_alien_documents;
+	private ArrayList<Document> list_of_asteroid_documents;
+	private ArrayList<Document> list_of_ball_documents;
+	private ArrayList<Document> list_of_laserball_documents;
+	private Document paddle_document;
 	private DataType location;
 
 	public enum DataType {
@@ -38,9 +44,15 @@ public class Game  {
 		list_of_asteroid_documents = new ArrayList<Document>();
 		list_of_powerup_documents = new ArrayList<Document>();
 		list_of_alien_documents = new ArrayList<Document>();
+		list_of_ball_documents = new ArrayList<Document>();
+		list_of_laserball_documents = new ArrayList<Document>();
+		paddle_document = new Document();
+		
 		list_of_asteroids = new ArrayList<Asteroid>();
 		list_of_powerups = new ArrayList<PowerUp>();
 		list_of_aliens = new ArrayList<Alien>();
+		list_of_balls = new ArrayList<Ball>();
+		list_of_laser_balls = new ArrayList<LaserBall>();
 	}
 
 	public Game(ObjectId gameId,
@@ -57,6 +69,8 @@ public class Game  {
 		list_of_asteroids = new ArrayList<Asteroid>();
 		list_of_powerups = new ArrayList<PowerUp>();
 		list_of_aliens = new ArrayList<Alien>();
+		list_of_balls = new ArrayList<Ball>();
+		list_of_laser_balls = new ArrayList<LaserBall>();
 		
 		this.gameId = (ObjectId) document.get("_id");
 		this.score = document.getInteger("score", 0);
@@ -65,6 +79,9 @@ public class Game  {
 		ArrayList<Document> asteroidDocuments = (ArrayList<Document>) document.get("asteroids");
 		ArrayList<Document> alienDocuments = (ArrayList<Document>) document.get("aliens");
 		ArrayList<Document> powerupDocuments = (ArrayList<Document>) document.get("powerups");
+		ArrayList<Document> ballDocuments = (ArrayList<Document>) document.get("balls");
+		ArrayList<Document> laserballDocuments = (ArrayList<Document>) document.get("laserballs");
+		Document paddleDocument = (Document) document.get("paddle");
 		
 		for (Document d: asteroidDocuments) {
 			switch ((String) d.get("type")) {
