@@ -11,7 +11,7 @@ public class ProtectingAlien extends Alien implements AlienStrategy {
 	private static final double SPEED = 7.2;
 	
 	public ProtectingAlien(GameController gameController,double x, double y, int width, int height) {
-		super(gameController,x, y, width, height, 0, Color.ORANGE, AlienType.Protecting);
+		super(gameController,x, y, width, height, SPEED, Color.PINK, AlienType.Protecting);
 	}
 	
 	public ProtectingAlien(Document document) {

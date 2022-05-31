@@ -118,9 +118,9 @@ public class GameController extends AppController implements SaveLoadObserver {
 	}
 
 	/**
-	* appearAsteroid is indicate the asteroids that will be indicated.
+	* appearAlien is indicate the asteroids that will be indicated.
 	*/
-	public void appearAsteroid() {
+	public void appearAlien() {
 		((GameView) view).getGamePanel().createAlien();
 		this.getAlien().act(this);
 	}
