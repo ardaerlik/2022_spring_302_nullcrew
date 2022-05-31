@@ -14,6 +14,10 @@ public class GangofBallPowerUp extends PowerUp{
 	public GangofBallPowerUp(GameController gameController,double x, double y, int width, int height) {
 		super(gameController,x, y, width, height);
 	}
+	
+	public GangofBallPowerUp(Document document) {
+		super(document);
+	}
 
 	@Override
 	public void use() {

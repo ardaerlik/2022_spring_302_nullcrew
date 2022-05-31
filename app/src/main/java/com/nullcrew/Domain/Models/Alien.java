@@ -20,6 +20,28 @@ public abstract class Alien extends GameObject {
 		this.alienType = type.toString();	
 	}
 	
+	public Alien(Document document) {
+		super(document);
+		this.speed = document.getDouble("speed");
+		this.alienType = document.getString("alienType");
+		this.color = Color.BLACK;
+		
+		switch (alienType) {
+		case "Cooperative":
+			this.type = AlienType.Cooperative;
+			break;
+		case "Protecting":
+			this.type = AlienType.Protecting;
+			break;
+		case "Repairing":
+			this.type = AlienType.Repairing;
+			break;
+		case "TimeWasting":
+			this.type = AlienType.TimeWasting;
+			break;
+		}
+	}
+	
 	public abstract void hit(GameController gameController);
 
 	public abstract void act(GameController gameController);

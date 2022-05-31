@@ -17,6 +17,12 @@ public class Ball extends GameObject {
 		velocityX = initialVelocityX;
 		velocityY = initialVelocityY;
 	}
+	
+	public Ball(Document document) {
+		super(document);
+		velocityX = initialVelocityX;
+		velocityY = initialVelocityY;
+	}
 
 	public double getVelocityX() {
 		return velocityX;

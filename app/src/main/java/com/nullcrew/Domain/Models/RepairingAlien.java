@@ -12,6 +12,10 @@ public class RepairingAlien extends Alien{
 		super(gameController,x, y, width, height, 0, Color.DARK_GRAY, AlienType.Repairing);
 	}
 	
+	public RepairingAlien(Document document) {
+		super(document);
+	}
+	
 	@Override
 	public void hit(GameController gameController) {
 		gameController.setAlien(null);

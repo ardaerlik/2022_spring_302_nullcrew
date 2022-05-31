@@ -65,8 +65,7 @@ public final class DBManager {
 		if (game.getGameId() == null) {
 			InsertOneResult result = database.getCollection(Constants.DatabaseResponses.GAMES_COLLECTION)
 					.insertOne(game.getDocument());
-			
-			if (result.getInsertedId() != null) {				
+			if (result.getInsertedId() != null) {
 				game.setGameId(result.getInsertedId().asObjectId().getValue());
 				User.getInstance()
 				.getSavedGameIds()

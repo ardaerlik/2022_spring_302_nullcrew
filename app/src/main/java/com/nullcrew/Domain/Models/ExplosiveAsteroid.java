@@ -18,6 +18,11 @@ public class ExplosiveAsteroid extends Asteroid {
 		lives = 1;
 		hit_range = 150;
 	}
+	
+	public ExplosiveAsteroid(Document document) {
+		super(document);
+		this.hit_range = document.getInteger("hit_range", 150);
+	}
 
 	public int getLives() {
 		return lives;

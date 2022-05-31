@@ -14,6 +14,10 @@ public class FirmAsteroid extends Asteroid {
 		super(gameController,x, y, width, height, speed, Color.CYAN, AsteroidType.Firm);
 		lives = 3;
 	}
+	
+	public FirmAsteroid(Document document) {
+		super(document);
+	}
 
 	public int getLives() {
 		return lives;

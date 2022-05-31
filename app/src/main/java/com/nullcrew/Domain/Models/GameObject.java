@@ -30,6 +30,21 @@ public abstract class GameObject{
 		object_shape.setTransform(new AffineTransform());
 		object_shape.setShape(object_shape.getTransform().createTransformedShape(object_shape.getRect()));
 	}
+	
+	public GameObject(Document document) {
+		this.x = document.getDouble("x");
+		this.y = document.getDouble("y");
+		this.width = document.getInteger("width");
+		this.height = document.getInteger("height");
+		
+		this.initial_width = width;
+		this.initial_height = height;
+		
+		object_shape = new ObjectShape();
+		object_shape.setRect(new Rectangle2D.Double(x,y,width,height));
+		object_shape.setTransform(new AffineTransform());
+		object_shape.setShape(object_shape.getTransform().createTransformedShape(object_shape.getRect()));
+	}
 
 	public void changeShape() {
 		object_shape.setRect(new Rectangle2D.Double(x,y,width,height));

@@ -12,6 +12,10 @@ public class MagnetPowerUp extends PowerUp{
 	public MagnetPowerUp(GameController gameController,double x, double y, int width, int height) {
 		super(gameController,x, y, width, height);
 	}
+	
+	public MagnetPowerUp(Document document) {
+		super(document);
+	}
 
 	@Override
 	public void use() {

@@ -22,6 +22,30 @@ public abstract class Asteroid extends GameObject {
 		this.asteroidType = type.toString();
 	}
 	
+	public Asteroid(Document document) {
+		super(document);
+		this.speed = document.getDouble("speed");
+		this.asteroidType = document.getString("asteroidType");
+		this.lives = document.getInteger("lives", 0);
+		this.freezed = document.getBoolean("freezed", false);
+		this.color = Color.BLACK;
+		
+		switch (asteroidType) {
+		case "Explosive":
+			this.type = AsteroidType.Explosive;
+			break;
+		case "Firm":
+			this.type = AsteroidType.Firm;
+			break;
+		case "Gift":
+			this.type = AsteroidType.Gift;
+			break;
+		case "Simple":
+			this.type = AsteroidType.Simple;
+			break;
+		}
+	}
+	
 	public void setLives(int lives) {
 		this.lives=lives;
 	}
@@ -55,7 +79,9 @@ public abstract class Asteroid extends GameObject {
 	public Document getDocument() {
 		Document document = super.getDocument();
 		document.append("speed", speed)
-				.append("type", asteroidType);
+				.append("asteroidType", asteroidType)
+				.append("lives", lives)
+				.append("freezed", freezed);
 		
 		return document;
 	}

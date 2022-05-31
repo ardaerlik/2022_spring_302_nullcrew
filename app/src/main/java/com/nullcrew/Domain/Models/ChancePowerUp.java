@@ -9,6 +9,10 @@ public class ChancePowerUp extends PowerUp {
 	public ChancePowerUp(GameController gameController,double x, double y, int width, int height) {
 		super(gameController,x, y, width, height);
 	}
+	
+	public ChancePowerUp(Document document) {
+		super(document);
+	}
 
 	@Override
 	public void use() {

@@ -13,6 +13,10 @@ public class ProtectingAlien extends Alien {
 	public ProtectingAlien(GameController gameController,double x, double y, int width, int height) {
 		super(gameController,x, y, width, height, 0, Color.ORANGE, AlienType.Protecting);
 	}
+	
+	public ProtectingAlien(Document document) {
+		super(document);
+	}
 
 	@Override
 	public void hit(GameController gameController) {
