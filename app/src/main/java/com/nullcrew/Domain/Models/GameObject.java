@@ -3,6 +3,8 @@ package com.nullcrew.Domain.Models;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
+import org.bson.Document;
+
 import com.nullcrew.Domain.Controllers.GameController;
 public abstract class GameObject{
 	protected ObjectShape object_shape;
@@ -88,6 +90,16 @@ public abstract class GameObject{
 
 	public void setGameController(GameController gameController) {
 		this.gameController = gameController;
+	}
+	
+	public Document getDocument() {
+		Document document = new Document()
+				.append("x", x)
+				.append("y", y)
+				.append("width", width)
+				.append("height", height);
+		
+		return document;
 	}
 	
 }

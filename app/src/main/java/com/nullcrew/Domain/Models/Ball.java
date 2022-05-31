@@ -1,5 +1,7 @@
 package com.nullcrew.Domain.Models;
 
+import org.bson.Document;
+
 import com.nullcrew.Domain.Controllers.GameController;
 
 public class Ball extends GameObject {
@@ -30,6 +32,12 @@ public class Ball extends GameObject {
 
 	public void setVelocityY(double velocityY) {
 		this.velocityY = velocityY;
+	}
+	
+	@Override
+	public Document getDocument() {
+		Document document = super.getDocument();
+		return document;
 	}
 
 }

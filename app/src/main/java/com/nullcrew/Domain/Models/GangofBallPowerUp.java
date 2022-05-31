@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.bson.Document;
+
 import com.nullcrew.Domain.Controllers.GameController;
 import com.nullcrew.UI.Views.GamePanel;
 
@@ -33,12 +35,17 @@ public class GangofBallPowerUp extends PowerUp{
 			this.getGameController().setBalls(temp_list);
 			System.out.println("Created balls");
 		}
-		// TODO Auto-generated method stub
-
 	}
+	
 	@Override
 	public void fall() {
-		// TODO Auto-generated method stub
 		this.setY(this.getY()+this.getVelocity());
 	}
+	
+	@Override
+	public Document getDocument() {
+		Document document = super.getDocument();
+		return document;
+	}
+	
 }

@@ -3,14 +3,16 @@ package com.nullcrew.Domain.Models;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.Document;
+
 import com.nullcrew.Domain.Controllers.GameController;
 import com.nullcrew.UI.Views.GamePanel;
 
 public class LaserPowerUp extends PowerUp{
-	public int total_shots=5;
+	public int total_shots = 5;
+	
 	public LaserPowerUp(GameController gameController,double x, double y, int width, int height) {
 		super(gameController,x, y, width, height);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -46,4 +48,12 @@ public class LaserPowerUp extends PowerUp{
 		// TODO Auto-generated method stub
 		this.setY(this.getY()+this.getVelocity());
 	}
+	
+	@Override
+	public Document getDocument() {
+		Document document = super.getDocument();
+		document.append("total_shots", total_shots);
+		return document;
+	}
+	
 }
