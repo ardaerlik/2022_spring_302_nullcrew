@@ -389,11 +389,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		if(!gameView.getGameController().isGameOver()) {
 			gameView.getGameController().ballMoved();
 			gameView.getGameController().paddleHitBall();
-			gameView.getGameController().ballFalls(); // added for the lives feature
+			gameView.getGameController().ballFalls();
 			gameView.getGameController().ballHitAsteroid();
 			gameView.getGameController().ballHitBall();
 			gameView.getGameController().updateBoosts();
 			gameView.getGameController().powerUpMovement();
+			gameView.getTopPanel().setScore(gameView.getGameController().getScore());
 		}
 	}
 

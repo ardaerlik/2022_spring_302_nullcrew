@@ -57,6 +57,7 @@ public class TopPanel extends JPanel {
 	private JLabel wrap_label;
 	private JLabel chance_label;
 	private JLabel livesLabel;
+	private JLabel scoreLabel;
 	private Icon magnet_icon,taller_icon,laser_icon, gang_icon,chance_icon,wrap_icon;
 
 	public TopPanel(GameView gameView) {
@@ -71,16 +72,19 @@ public class TopPanel extends JPanel {
 		setFocusable(false);
 		setBackground(Color.GREEN);
 		setLayout(new FlowLayout());
+		
 		createExitButton();
 		createAsteroidNumbersForm();
 		createOkButton();
 		createSaveButton();
 		createSwitchButton();
 		createLivesLabel();
+		createScoreLabel();
 		createPopupMenu();
 		createPopupMenuForSave();
 		createPowerUpView();
 		createTimerLabel();
+		
 		add(simpleLabel);
 		add(simpleField);
 		add(firmLabel);
@@ -92,9 +96,11 @@ public class TopPanel extends JPanel {
 		add(okButton);
 		add(saveButton);
 		add(switchButton);
-		add(livesLabel);
 		add(exitButton);
 		add(timerLabel);
+		add(livesLabel);
+		add(scoreLabel);
+		
 		magnet_button.setVisible(false);
 		taller_button.setVisible(false);
 		gangballs_label.setVisible(false);
@@ -131,12 +137,22 @@ public class TopPanel extends JPanel {
 
 	private void createLivesLabel(){
 		livesLabel = new JLabel();
-		livesLabel.setBounds(1300, 100, 100, 25);
+		livesLabel.setBounds(1200,100,100,25);
 	}
 
 	public void setLives(int lives){
 		livesLabel.setText("Lives: "+lives);
 		livesLabel.setVisible(true);
+	}
+	
+	private void createScoreLabel() {
+		scoreLabel = new JLabel();
+		scoreLabel.setBounds(1200, 100, 100, 25);
+	}
+	
+	public void setScore(int score) {
+		scoreLabel.setText("Score: " + score);
+		scoreLabel.setVisible(true);
 	}
 
 	private void createOkButton() {
