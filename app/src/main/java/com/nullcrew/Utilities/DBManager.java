@@ -70,7 +70,9 @@ public final class DBManager {
 				User.getInstance()
 				.getSavedGameIds()
 				.add(result.getInsertedId().asObjectId().getValue());
-				
+				User.getInstance()
+				.getAccount()
+				.addGame(game);
 				
 				ArrayList<ObjectId> idsOnDB = new ArrayList<ObjectId>();
 				for (Game g: User.getInstance().getAccount().getSavedGames()) {
