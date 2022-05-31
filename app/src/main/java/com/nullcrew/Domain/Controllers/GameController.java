@@ -12,6 +12,7 @@ import javax.swing.Timer;
 
 import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Domain.Models.Alien;
+import com.nullcrew.Domain.Models.AlienStrategy;
 import com.nullcrew.Domain.Models.AlienType;
 import com.nullcrew.Domain.Models.Asteroid;
 import com.nullcrew.Domain.Models.AsteroidType;
@@ -50,6 +51,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 	private ArrayList<LaserBall> laser_balls;
 	private int actAlienCount = 0;
 	private int destroyedAsteroid;;
+	private int initialAsteroidCount;
 	private Paddle paddle;
 	private Alien alien;
 	private PowerUp powerUp;
@@ -123,24 +125,16 @@ public class GameController extends AppController implements SaveLoadObserver {
 		this.getAlien().act(this);
 	}
 	
-	public void actAlien() {
+	public void functionAlien() {
+		alienMoved();
+		ballHitAlien(getAlien());
+		actAlien(getAlien());
+	}
+	
+	public void actAlien(AlienStrategy alienStrategy) {
 		if (getAlien() == null) return;
-		actAlienCount++;
 		
-		if(getAlien().getType() == AlienType.Repairing) {
-			
-			if (actAlienCount%250 == 0) getAlien().act(this);
-		} else if(getAlien().getType() == AlienType.Cooperative) {
-			getAlien().act(this);
-			setAlien(null);
-		} else if (getAlien().getType() == AlienType.TimeWasting) {
-			if (actAlienCount == 1) {
-				getAlien().act(this);
-			}
-			if (actAlienCount%75 == 0) {
-				this.unfreezeAsteroids();
-			}
-		}
+		alienStrategy.act(this);
 	}
 
 	/**
@@ -150,11 +144,12 @@ public class GameController extends AppController implements SaveLoadObserver {
 		if (getAsteroidList() == null || getAsteroidList().size() == 0) {
 			return;
 		}
-		int r = new Random().nextInt(asteroidList.size()/15);
+		int r = asteroidList.size() >= 15 ? new Random().nextInt(asteroidList.size()/15) : 0;
 		
 		for (int i = 0; i < 15; i++) {
-			if (asteroidList.size() < 15*r) break;
+			if (asteroidList.size() < 15*r || asteroidList.size() == 0) break;
 			asteroidList.remove(15*r);
+			destroyedAsteroid++;
 		}
 	}
 	
@@ -177,7 +172,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 	
-	private void unfreezeAsteroids() {
+	public void unfreezeAsteroids() {
 		for (Asteroid a : getAsteroidList()) {
 			if (a.getFreezed()) a.setFreezed(false);
 		}	
@@ -198,6 +193,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 			for(Ball ball:balls) {
 				if(ball.getObjShape().getShape().intersects(asteroid.getObjShape().getRect())) {
 					reflectFromObject(asteroid,ball);
+					if (asteroid.getFreezed()) return null;
 					if ((asteroid instanceof ExplosiveAsteroid)) {
 						((ExplosiveAsteroid) asteroid).hit_nearby(this);
 						asteroid.hit(this);
@@ -222,17 +218,13 @@ public class GameController extends AppController implements SaveLoadObserver {
 		return null;
 	}
 	
-	/**
-	* The function shows that hitting reaction between 
-	* ball and aliens.
-	* 
-	* @param ball is a object from the game.
-	*/
-	public Alien ballHitAlien(Ball ball) {
-		if (ball.getObjShape().getShape().intersects(alien.getObjShape().getRect())) {
-			reflectFromAlien(alien,ball);
-			alien.hit(this);
-			return alien;
+	public Alien ballHitAlien(AlienStrategy alienStrategy) {
+		for (Ball ball: balls) {
+			if (ball.getObjShape().getShape().intersects(alien.getObjShape().getRect())) {
+				reflectFromAlien(alien,ball);
+				alienStrategy.hit(this);
+				return alien;
+			}	
 		}
 		return null;
 	}
@@ -524,6 +516,10 @@ public class GameController extends AppController implements SaveLoadObserver {
 		return destroyedAsteroid;
 	}
 
+	public int getInitialAsteroidCount() {
+		return initialAsteroidCount;
+	}
+
 	/**
 	* Paddle and ball hit function.
 	*/
@@ -542,7 +538,6 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 	}
 
-	// added for the lives feature
 	public void ballFalls() {
 		if(isGameOver()) {
 			return;
@@ -1137,6 +1132,10 @@ public class GameController extends AppController implements SaveLoadObserver {
 
 	public void setTime_remaining(int time_remaining) {
 		this.time_remaining = time_remaining;
+	}
+
+	public void setInitialAsteroidCount(int initialAsteroidCount) {
+		this.initialAsteroidCount = initialAsteroidCount;
 	}
 
 }

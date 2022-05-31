@@ -6,8 +6,8 @@ import org.bson.Document;
 
 import com.nullcrew.Domain.Controllers.GameController;
 
-public class CooperativeAlien extends Alien {
-
+public class CooperativeAlien extends Alien implements AlienStrategy {
+	
 	public CooperativeAlien(GameController gameController,double x, double y, int width, int height) {
 		super(gameController,x, y, width, height, 0, Color.MAGENTA, AlienType.Cooperative);
 	}
@@ -24,6 +24,7 @@ public class CooperativeAlien extends Alien {
 	@Override
 	public void act(GameController gameController) {
 		gameController.destroyAsteroidRow();
+		gameController.setAlien(null);
 	}
 	
 	@Override

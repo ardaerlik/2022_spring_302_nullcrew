@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	private static final long serialVersionUID = 1L;
 	private GameView gameView;
-	private Timer gameTimerUI; //Because of MVC pattern, we need to create Timer in GameController
+	private Timer gameTimerUI;
 	public static GameMode gameMode;
 	public static Graphics paddleGraphics, asteroidGraphics, ballGraphics, alienGraphics,laserGraphics,powerUpGraphics;
 	private final int MAX_ROWS = 11;
@@ -51,6 +51,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	private boolean isValidLocation;
 	private Asteroid draggedAsteroid;
 	private double initialX, initialY;
+
 	/**
 	 * Create the panel.
 	 */
@@ -108,7 +109,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		switch (gameMode) {
 		case RESUMED: {
 			gameMode = GameMode.PAUSED;
-			gameTimerUI.stop(); //Because of MVC pattern, we need to create Timer in GameController
+			gameTimerUI.stop();
 			gameView.getGameController().stopTimer();
 			break;
 		}
@@ -122,7 +123,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		switch (gameMode) {
 		case PAUSED: {
 			gameMode = GameMode.RESUMED;
-			gameTimerUI.start(); //Because of MVC pattern, we need to create Timer in GameController
+			gameTimerUI.start();
 			gameView.getGameController().startTimer();
 			break;
 
@@ -385,6 +386,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (gameView.getGameController().getAlien() != null) gameView.getGameController().functionAlien();
+
 		repaint();
 		if(!gameView.getGameController().isGameOver()) {
 			gameView.getGameController().ballMoved();

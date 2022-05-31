@@ -6,7 +6,7 @@ import org.bson.Document;
 
 import com.nullcrew.Domain.Controllers.GameController;
 
-public abstract class Alien extends GameObject {
+public abstract class Alien extends GameObject implements AlienStrategy {
 	private double speed;
 	private Color color;
 	private AlienType type;
@@ -42,10 +42,6 @@ public abstract class Alien extends GameObject {
 		}
 	}
 	
-	public abstract void hit(GameController gameController);
-
-	public abstract void act(GameController gameController);
-	
 	public double getSpeed() {
 		return speed;
 	}
@@ -70,7 +66,5 @@ public abstract class Alien extends GameObject {
 		
 		return document;
 	}
-	
-	
 
 }

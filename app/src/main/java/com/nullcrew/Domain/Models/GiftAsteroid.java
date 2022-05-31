@@ -34,6 +34,8 @@ public class GiftAsteroid extends Asteroid {
 		System.out.println(powerup);
 		list.remove(this);
 		gameController.setAsteroids(list);
+		gameController.setDestroyedAsteroid(gameController.getDestroyedAsteroid() + 1);
+		gameController.appearAlien();
 	}
 
 	@Override

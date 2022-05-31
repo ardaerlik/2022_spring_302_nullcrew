@@ -28,7 +28,7 @@ public class GameObjectFactory {
 	
 	public static Alien createAlien() {
 		
-		int random = new Random().nextInt(4);
+		int random = new Random().nextInt(5);
 		
 		switch (random) {
 			case 0:
@@ -39,6 +39,8 @@ public class GameObjectFactory {
 				return new ProtectingAlien(gameController,0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
 			case 3:
 				return new TimeWastingAlien(gameController,0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
+			case 4:
+				return new SurprisingAlien(gameController, 0, 0, ALIEN_WIDTH, ALIEN_HEIGHT);
 		}
 		
 		return null;
