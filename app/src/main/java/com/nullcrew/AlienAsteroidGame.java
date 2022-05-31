@@ -1,13 +1,13 @@
 package com.nullcrew;
 
-import com.nullcrew.UI.Views.AppView;
-import com.nullcrew.UI.Views.GameView;
-import com.nullcrew.UI.Views.LoginView;
-import com.nullcrew.UI.Views.MenuView;
-import com.nullcrew.Utilities.DBManager;
-import com.nullcrew.Utilities.Database;
-import com.nullcrew.Utilities.DatabaseAdapter;
-import com.nullcrew.Utilities.FileManager;
+import com.nullcrew.UI.Views.AppView.AppView;
+import com.nullcrew.UI.Views.GameView.GameView;
+import com.nullcrew.UI.Views.LoginView.LoginView;
+import com.nullcrew.UI.Views.MenuView.MenuView;
+import com.nullcrew.Utilities.DataManager.DBManager.DBManager;
+import com.nullcrew.Utilities.DataManager.DBManager.Database;
+import com.nullcrew.Utilities.DataManager.DBManager.DatabaseAdapter;
+import com.nullcrew.Utilities.DataManager.FileManager.FileManager;
 
 public final class AlienAsteroidGame {
 	private static AlienAsteroidGame instance = new AlienAsteroidGame();

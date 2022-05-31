@@ -6,8 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.nullcrew.Domain.Models.Account;
-import com.nullcrew.Domain.Models.Game;
+import com.nullcrew.Domain.Models.Game.Game;
+import com.nullcrew.Domain.Models.Player.Account;
 
 public class AccountTest {
 	Account account;

@@ -1,7 +1,7 @@
 package com.nullcrew.Domain.Controllers;
 
 import com.nullcrew.AlienAsteroidGame;
-import com.nullcrew.UI.Views.AppView;
+import com.nullcrew.UI.Views.AppView.AppView;
 
 public class AppController {
 	private AlienAsteroidGame app;

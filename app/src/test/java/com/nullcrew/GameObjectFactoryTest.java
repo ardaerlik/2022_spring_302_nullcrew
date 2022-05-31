@@ -4,10 +4,12 @@
 package com.nullcrew;
 
 import org.junit.jupiter.api.Test;
+
+import com.nullcrew.Domain.Models.GameObject.Ball;
+import com.nullcrew.Domain.Models.GameObject.GameObjectFactory;
+import com.nullcrew.Domain.Models.GameObject.Paddle;
+
 import static org.junit.jupiter.api.Assertions.*;
-import com.nullcrew.Domain.Models.GameObjectFactory;
-import com.nullcrew.Domain.Models.Ball;
-import com.nullcrew.Domain.Models.Paddle;
 
 class GameObjectFactoryTest {
     @Test void createAsteroidsTest() {
