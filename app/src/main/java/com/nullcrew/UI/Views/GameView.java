@@ -58,6 +58,7 @@ public class GameView extends AppView {
 		List<Asteroid> asteroidList = GameObjectFactory.createAsteroids(numOfAsteroidTypes, locSpaces, margins,
 				maxRowsColumns);
 		gameController.setAsteroids(asteroidList);
+		gameController.setInitialAsteroidCount(asteroidList.size());
 		gamePanel.repaint();
 	}
 

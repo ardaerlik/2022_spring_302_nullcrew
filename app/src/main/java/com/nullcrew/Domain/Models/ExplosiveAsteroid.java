@@ -25,6 +25,7 @@ public class ExplosiveAsteroid extends Asteroid {
 		List<Asteroid> list = gameController.getAsteroidList();
 		list.remove(this);
 		gameController.setAsteroids(list);
+		gameController.setDestroyedAsteroid(gameController.getDestroyedAsteroid() + 1);
 
 	}
 

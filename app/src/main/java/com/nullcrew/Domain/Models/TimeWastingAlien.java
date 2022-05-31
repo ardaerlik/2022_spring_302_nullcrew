@@ -4,8 +4,8 @@ import java.awt.Color;
 
 import com.nullcrew.Domain.Controllers.GameController;
 
-public class TimeWastingAlien extends Alien {
-	
+public class TimeWastingAlien extends Alien implements AlienStrategy {
+	private int actCount = 0;
 	
 	
 
@@ -23,7 +23,13 @@ public class TimeWastingAlien extends Alien {
 	@Override
 	public void act(GameController gameController) {
 		// TODO Auto-generated method stub
-		gameController.freezeAsteroids();
+		actCount++;
+		if (actCount == 1) {
+			gameController.freezeAsteroids();
+		}
+		if (actCount%750 == 0) {
+			gameController.unfreezeAsteroids();
+		}
 	}
 
 	

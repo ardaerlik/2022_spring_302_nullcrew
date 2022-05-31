@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import com.nullcrew.Domain.Controllers.GameController;
 
-public class CooperativeAlien extends Alien {
+public class CooperativeAlien extends Alien implements AlienStrategy {
 	
 	
 
@@ -23,6 +23,7 @@ public class CooperativeAlien extends Alien {
 	public void act(GameController gameController) {
 		// TODO Auto-generated method stub
 		gameController.destroyAsteroidRow();
+		gameController.setAlien(null);
 	}
 
 	

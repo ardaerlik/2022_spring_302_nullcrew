@@ -22,6 +22,7 @@ public class SimpleAsteroid extends Asteroid {
 
 		list.remove(this);
 		gameController.setAsteroids(list);
+		gameController.setDestroyedAsteroid(gameController.getDestroyedAsteroid() + 1);
 	}
 
 	@Override

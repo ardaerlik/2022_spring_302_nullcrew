@@ -4,10 +4,9 @@ import java.awt.Color;
 
 import com.nullcrew.Domain.Controllers.GameController;
 
-public class RepairingAlien extends Alien{
-	float alienStartTime = 0;
-	Boolean startedTime = false;
-	int index = 5;
+public class RepairingAlien extends Alien implements AlienStrategy {
+	private int actCount = 0;
+
 	
 
 	public RepairingAlien(GameController gameController,double x, double y, int width, int height) {
@@ -28,9 +27,11 @@ public class RepairingAlien extends Alien{
 	@Override
 	public void act(GameController gameController) {
 		// TODO Auto-generated method stub
+		actCount++;
 		if (gameController.getDestroyedAsteroid() == 0) return;	
 		
-		gameController.addNewSimpleAsteroid();
+		if (actCount%250 == 0) gameController.addNewSimpleAsteroid();;
+		
 	}
 
 	

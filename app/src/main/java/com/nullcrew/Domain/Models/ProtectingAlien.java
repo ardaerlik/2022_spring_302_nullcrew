@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import com.nullcrew.Domain.Controllers.GameController;
 
-public class ProtectingAlien extends Alien {
+public class ProtectingAlien extends Alien implements AlienStrategy {
 	
 	private static final double SPEED = 7.2;
 	

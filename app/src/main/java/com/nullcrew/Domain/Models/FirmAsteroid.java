@@ -30,6 +30,8 @@ public class FirmAsteroid extends Asteroid {
 		} else {
 			list.remove(this);
 			gameController.setAsteroids(list);
+			gameController.setDestroyedAsteroid(gameController.getDestroyedAsteroid() + 1);
+
 		}
 	}
 
