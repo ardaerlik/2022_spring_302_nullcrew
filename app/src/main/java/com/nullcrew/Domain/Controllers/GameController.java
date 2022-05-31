@@ -1047,13 +1047,11 @@ public class GameController extends AppController implements SaveLoadObserver {
 
 	@Override
 	public void gameSaved(String response) {
-		// TODO Update UI with game saved response
 		System.out.println("Game saved");
 	}
 
 	@Override
 	public void gameNotSaved(String response) {
-		// TODO Update UI with game not saved response
 		System.err.println(response);
 	}
 
@@ -1062,15 +1060,23 @@ public class GameController extends AppController implements SaveLoadObserver {
 	}
 	
 	public void gameSaveButtonClicked(DataType location) {
+		ArrayList<Alien> aliens = new ArrayList<Alien>();
+		if (alien != null) {
+			aliens.add(alien);
+		}
+		
 		Game.getCurrentGame().setLives(lives);
 		Game.getCurrentGame().setScore(score);
+		Game.getCurrentGame().setTimeRemaining(time_remaining);
 		Game.getCurrentGame().setLocation(location);
 		Game.getCurrentGame().setList_of_asteroids(asteroidList);
 		Game.getCurrentGame().setList_of_powerups(powerups);
-		// ball, paddle, alien
+		Game.getCurrentGame().setList_of_aliens(aliens);
+		Game.getCurrentGame().setList_of_balls(balls);
+		Game.getCurrentGame().setList_of_laser_balls(laser_balls);
+		Game.getCurrentGame().setPaddle(paddle);
+
 		Game.getCurrentGame().buildDocuments();
-		System.out.println("Game save button clicked");
-		System.out.println(Game.getCurrentGame());
 		
 		switch (location) {
 		case DB:			

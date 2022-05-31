@@ -12,6 +12,7 @@ public class Game  {
 	private ObjectId gameId;
 	private int score;
 	private int lives;
+	private int timeRemaining;
 	private Paddle paddle;
 	private ArrayList<Asteroid> list_of_asteroids;
 	private ArrayList<PowerUp> list_of_powerups;
@@ -75,6 +76,7 @@ public class Game  {
 		this.gameId = (ObjectId) document.get("_id");
 		this.score = document.getInteger("score", 0);
 		this.lives = document.getInteger("lives", 0);
+		this.timeRemaining = document.getInteger("timeRemaining", 200);
 		
 		ArrayList<Document> asteroidDocuments = (ArrayList<Document>) document.get("asteroids");
 		ArrayList<Document> alienDocuments = (ArrayList<Document>) document.get("aliens");
@@ -88,6 +90,11 @@ public class Game  {
 	
 	public void buildAsteroidDocuments() {
 		list_of_asteroid_documents = new ArrayList<Document>();
+		
+		if (list_of_asteroids == null) {
+			return;
+		}
+		
 		for (int i = 0; i < list_of_asteroids.size(); i++) {
 			list_of_asteroid_documents.add(list_of_asteroids.get(i).getDocument());
 		}
@@ -95,6 +102,11 @@ public class Game  {
 	
 	public void buildAlienDocuments() {
 		list_of_alien_documents = new ArrayList<Document>();
+		
+		if (list_of_aliens == null) {
+			return;
+		}
+		
 		for (int i = 0; i < list_of_aliens.size(); i++) {
 			list_of_alien_documents.add(list_of_aliens.get(i).getDocument());
 		}
@@ -102,6 +114,11 @@ public class Game  {
 	
 	public void buildPowerUpDocuments() {
 		list_of_powerup_documents = new ArrayList<Document>();
+		
+		if (list_of_powerups == null) {
+			return;
+		}
+		
 		for (int i = 0; i < list_of_powerups.size(); i++) {
 			list_of_powerup_documents.add(list_of_powerups.get(i).getDocument());
 		}
@@ -109,6 +126,11 @@ public class Game  {
 	
 	public void buildBallDocuments() {
 		list_of_ball_documents = new ArrayList<Document>();
+		
+		if (list_of_balls == null) {
+			return;
+		}
+		
 		for (int i = 0; i < list_of_balls.size(); i++) {
 			list_of_ball_documents.add(list_of_balls.get(i).getDocument());
 		}
@@ -116,12 +138,23 @@ public class Game  {
 	
 	public void buildLaserBallDocuments() {
 		list_of_laserball_documents = new ArrayList<Document>();
+		
+		if (list_of_laser_balls == null) {
+			return;
+		}
+		
 		for (int i = 0; i < list_of_laser_balls.size(); i++) {
 			list_of_laserball_documents.add(list_of_laser_balls.get(i).getDocument());
 		}
 	}
 	
 	public void buildPaddleDocument() {
+		paddle_document = new Document();
+		
+		if (paddle == null) {
+			return;
+		}
+		
 		paddle_document = paddle.getDocument();
 	}
 	
@@ -142,8 +175,9 @@ public class Game  {
 				.append("powerups", list_of_powerup_documents)
 				.append("aliens", list_of_alien_documents)
 				.append("balls", list_of_ball_documents)
-				.append("laserBalls", currentGame)
-				.append("paddle", paddle_document);
+				.append("laserBalls", list_of_laser_balls)
+				.append("paddle", paddle_document)
+				.append("timeRemaining", timeRemaining);
 		
 		return document;
 	}
@@ -228,10 +262,72 @@ public class Game  {
 		this.location = location;
 	}
 
+	public int getTimeRemaining() {
+		return timeRemaining;
+	}
+
+	public void setTimeRemaining(int timeRemaining) {
+		this.timeRemaining = timeRemaining;
+	}
+
+	public Paddle getPaddle() {
+		return paddle;
+	}
+
+	public void setPaddle(Paddle paddle) {
+		this.paddle = paddle;
+	}
+
+	public ArrayList<Ball> getList_of_balls() {
+		return list_of_balls;
+	}
+
+	public void setList_of_balls(ArrayList<Ball> list_of_balls) {
+		this.list_of_balls = list_of_balls;
+	}
+
+	public ArrayList<LaserBall> getList_of_laser_balls() {
+		return list_of_laser_balls;
+	}
+
+	public void setList_of_laser_balls(ArrayList<LaserBall> list_of_laser_balls) {
+		this.list_of_laser_balls = list_of_laser_balls;
+	}
+
+	public ArrayList<Document> getList_of_ball_documents() {
+		return list_of_ball_documents;
+	}
+
+	public void setList_of_ball_documents(ArrayList<Document> list_of_ball_documents) {
+		this.list_of_ball_documents = list_of_ball_documents;
+	}
+
+	public ArrayList<Document> getList_of_laserball_documents() {
+		return list_of_laserball_documents;
+	}
+
+	public void setList_of_laserball_documents(ArrayList<Document> list_of_laserball_documents) {
+		this.list_of_laserball_documents = list_of_laserball_documents;
+	}
+
+	public Document getPaddle_document() {
+		return paddle_document;
+	}
+
+	public void setPaddle_document(Document paddle_document) {
+		this.paddle_document = paddle_document;
+	}
+
+	public static int getNumLives() {
+		return NUM_LIVES;
+	}
+
 	@Override
 	public String toString() {
-		return "Game [gameId=" + gameId + ", list_of_asteroids=" + list_of_asteroids + ", score=" + score + ", lives="
-				+ lives + ", list_of_powerups=" + list_of_powerups + ", list_of_aliens=" + list_of_aliens + "]";
+		return "Game [gameId=" + gameId + ", score=" + score + ", lives=" + lives + ", timeRemaining=" + timeRemaining
+				+ ", paddle=" + paddle + ", list_of_asteroids=" + list_of_asteroids + ", list_of_powerups="
+				+ list_of_powerups + ", list_of_aliens=" + list_of_aliens + ", list_of_balls=" + list_of_balls
+				+ ", list_of_laser_balls=" + list_of_laser_balls + "]";
 	}
 	
 }
