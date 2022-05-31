@@ -12,7 +12,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.nullcrew.Utilities.DBManager;
+import com.nullcrew.Utilities.DataManager.DBManager.DBManager;
 
 /**
  * This test class test the DBManager's checkCredentials method

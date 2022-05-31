@@ -1,9 +1,9 @@
 package com.nullcrew.Domain.Controllers;
 
 import com.nullcrew.AlienAsteroidGame;
-import com.nullcrew.UI.Views.MenuView;
-import com.nullcrew.UI.Views.AppViewType;
-import com.nullcrew.UI.Views.AppViewFactory;
+import com.nullcrew.UI.Views.AppView.AppViewFactory;
+import com.nullcrew.UI.Views.AppView.AppViewType;
+import com.nullcrew.UI.Views.MenuView.MenuView;
 
 public class MenuController extends AppController {
 

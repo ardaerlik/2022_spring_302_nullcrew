@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.nullcrew.Domain.Controllers.GameController;
-import com.nullcrew.Domain.Models.Asteroid;
-import com.nullcrew.Domain.Models.Ball;
-import com.nullcrew.Domain.Models.FirmAsteroid;
-import com.nullcrew.UI.Views.GameView;
+import com.nullcrew.Domain.Models.GameObject.Asteroid;
+import com.nullcrew.Domain.Models.GameObject.Ball;
+import com.nullcrew.Domain.Models.GameObject.FirmAsteroid;
+import com.nullcrew.UI.Views.GameView.GameView;
 
 class BallHitAsteroidTest {
 	GameView view = new GameView();

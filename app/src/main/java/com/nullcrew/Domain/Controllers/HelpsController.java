@@ -2,9 +2,9 @@ package com.nullcrew.Domain.Controllers;
 
 import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Domain.Controllers.HelpsController;
-import com.nullcrew.UI.Views.HelpView;
-import com.nullcrew.UI.Views.AppViewType;
-import com.nullcrew.UI.Views.AppViewFactory;
+import com.nullcrew.UI.Views.AppView.AppViewFactory;
+import com.nullcrew.UI.Views.AppView.AppViewType;
+import com.nullcrew.UI.Views.HelpView.HelpView;
 
 public class HelpsController extends AppController {
 

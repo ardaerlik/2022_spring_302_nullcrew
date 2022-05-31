@@ -7,13 +7,13 @@ import org.bson.types.ObjectId;
 import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Domain.Controllers.NewGameController;
 import com.nullcrew.Domain.Models.Constants.DatabaseResponses;
-import com.nullcrew.Domain.Models.Game;
-import com.nullcrew.Domain.Models.User;
-import com.nullcrew.UI.Views.NewGameView;
-import com.nullcrew.Utilities.SaveLoadObserver;
-import com.nullcrew.UI.Views.AppViewType;
-import com.nullcrew.UI.Views.GameView;
-import com.nullcrew.UI.Views.AppViewFactory;
+import com.nullcrew.Domain.Models.Game.Game;
+import com.nullcrew.Domain.Models.Player.User;
+import com.nullcrew.Utilities.DataManager.DBManager.SaveLoadObserver;
+import com.nullcrew.UI.Views.AppView.AppViewFactory;
+import com.nullcrew.UI.Views.AppView.AppViewType;
+import com.nullcrew.UI.Views.GameView.GameView;
+import com.nullcrew.UI.Views.GameView.NewGameView;
 
 public class NewGameController extends AppController implements SaveLoadObserver {
 

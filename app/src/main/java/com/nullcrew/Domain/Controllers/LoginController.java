@@ -1,11 +1,11 @@
 package com.nullcrew.Domain.Controllers;
 
 import com.nullcrew.AlienAsteroidGame;
-import com.nullcrew.Domain.Models.User;
-import com.nullcrew.UI.Views.AppViewFactory;
-import com.nullcrew.UI.Views.AppViewType;
-import com.nullcrew.UI.Views.LoginView;
-import com.nullcrew.Utilities.AuthObserver;
+import com.nullcrew.Domain.Models.Player.User;
+import com.nullcrew.UI.Views.AppView.AppViewFactory;
+import com.nullcrew.UI.Views.AppView.AppViewType;
+import com.nullcrew.UI.Views.LoginView.LoginView;
+import com.nullcrew.Utilities.DataManager.DBManager.AuthObserver;
 
 public class LoginController extends AppController implements AuthObserver {
 
