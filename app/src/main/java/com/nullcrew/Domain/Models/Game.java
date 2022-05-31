@@ -85,7 +85,48 @@ public class Game  {
 		ArrayList<Document> laserballDocuments = (ArrayList<Document>) document.get("laserballs");
 		Document paddleDocument = (Document) document.get("paddle");
 		
-		// TODO
+		list_of_asteroids = createAsteroidsFromDocument(asteroidDocuments);
+		list_of_powerups = createPowerupsFromDocument(powerupDocuments);
+		list_of_aliens = createAliensFromDocument(alienDocuments);
+		list_of_balls = createBallsFromDocument(ballDocuments);
+		list_of_laser_balls = createLaserBallsFromDocument(laserballDocuments);
+		paddle = createPaddleFromDocument(paddleDocument);
+	}
+	
+	public ArrayList<Asteroid> createAsteroidsFromDocument(ArrayList<Document> documents) {
+		ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
+		// TODO: create model instances here
+		return asteroids;
+	}
+	
+	public ArrayList<Alien> createAliensFromDocument(ArrayList<Document> documents) {
+		ArrayList<Alien> aliens = new ArrayList<Alien>();
+		// TODO: create model instances here
+		return aliens;
+	}
+	
+	public ArrayList<PowerUp> createPowerupsFromDocument(ArrayList<Document> documents) {
+		ArrayList<PowerUp> powerups = new ArrayList<PowerUp>();
+		// TODO: create model instances here
+		return powerups;
+	}
+	
+	public ArrayList<Ball> createBallsFromDocument(ArrayList<Document> documents) {
+		ArrayList<Ball> balls = new ArrayList<Ball>();
+		// TODO: create model instances here
+		return balls;
+	}
+	
+	public ArrayList<LaserBall> createLaserBallsFromDocument(ArrayList<Document> documents) {
+		ArrayList<LaserBall> laserBalls = new ArrayList<LaserBall>();
+		// TODO: create model instances here
+		return laserBalls;
+	}
+	
+	public Paddle createPaddleFromDocument(Document document) {
+		Paddle paddle = null;
+		// TODO: create model instances here
+		return paddle;
 	}
 	
 	public void buildAsteroidDocuments() {
