@@ -1,7 +1,7 @@
 package com.nullcrew.Domain.Models;
 
 import java.util.ArrayList;
-
+import javax.swing.Timer;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -19,7 +19,7 @@ public class Game  {
 	private ArrayList<Alien> list_of_aliens;
 	private ArrayList<Document> list_of_alien_documents;
 	private DataType location;
-	
+
 	public enum DataType {
 		DB, FILE
 	}
@@ -42,7 +42,7 @@ public class Game  {
 		list_of_powerups = new ArrayList<PowerUp>();
 		list_of_aliens = new ArrayList<Alien>();
 	}
-	
+
 	public Game(ObjectId gameId,
 			ArrayList<Asteroid> list_of_asteroids, ArrayList<Alien> list_of_aliens, ArrayList<PowerUp> list_of_powerups) {
 		this.gameId = gameId;

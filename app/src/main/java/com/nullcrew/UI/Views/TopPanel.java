@@ -47,7 +47,7 @@ public class TopPanel extends JPanel {
 	private JToggleButton switchButton;
 	private JPopupMenu popupMenu;
 	private JPopupMenu popupMenuForSave;
-	private JLabel simpleLabel, firmLabel, explosiveLabel, giftLabel;
+	private JLabel simpleLabel, firmLabel, explosiveLabel, giftLabel, timerLabel;
 	private JTextField simpleField, firmField, explosiveField, giftField;
 	private int[] numOfAsteroidTypes;
 	private JButton magnet_button;
@@ -58,6 +58,7 @@ public class TopPanel extends JPanel {
 	private JLabel chance_label;
 	private JLabel livesLabel;
 	private Icon magnet_icon,taller_icon,laser_icon, gang_icon,chance_icon,wrap_icon;
+
 	public TopPanel(GameView gameView) {
 		this.gameView = gameView;
 		numOfAsteroidTypes = null;
@@ -69,8 +70,8 @@ public class TopPanel extends JPanel {
 	private void configureUI() {
 		setFocusable(false);
 		setBackground(Color.GREEN);
-		createExitButton();
 		setLayout(new FlowLayout());
+		createExitButton();
 		createAsteroidNumbersForm();
 		createOkButton();
 		createSaveButton();
@@ -79,6 +80,7 @@ public class TopPanel extends JPanel {
 		createPopupMenu();
 		createPopupMenuForSave();
 		createPowerUpView();
+		createTimerLabel();
 		add(simpleLabel);
 		add(simpleField);
 		add(firmLabel);
@@ -92,6 +94,7 @@ public class TopPanel extends JPanel {
 		add(switchButton);
 		add(livesLabel);
 		add(exitButton);
+		add(timerLabel);
 		magnet_button.setVisible(false);
 		taller_button.setVisible(false);
 		gangballs_label.setVisible(false);
@@ -114,6 +117,16 @@ public class TopPanel extends JPanel {
 
 	public int[] getNumOfAsteroidTypes() {
 		return numOfAsteroidTypes;
+	}
+
+	private void createTimerLabel(){
+		timerLabel = new JLabel();		
+		timerLabel.setBounds(1200,100,100,25);
+	}
+
+	public void setTimer(int timeLeft){
+		timerLabel.setText("Time Left: "+timeLeft);
+		timerLabel.setVisible(true);
 	}
 
 	private void createLivesLabel(){
@@ -252,12 +265,14 @@ public class TopPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gameView.getGamePanel().pauseTheGame();
+				gameView.getGameController().stopTimer();
 			}
 		});
 		run_item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gameView.getGamePanel().resumeTheGame();
+				gameView.getGameController().startTimer();
 			}
 		});
 		popupMenu.add(build_item);

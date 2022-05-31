@@ -1,11 +1,14 @@
 package com.nullcrew.Domain.Controllers;
 
 import java.awt.geom.Rectangle2D;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import javax.swing.JButton;
+import javax.swing.Timer;
 
 import com.nullcrew.AlienAsteroidGame;
 import com.nullcrew.Domain.Models.Alien;
@@ -34,6 +37,7 @@ import com.nullcrew.UI.Views.MenuView;
 import com.nullcrew.Utilities.SaveLoadObserver;
 
 public class GameController extends AppController implements SaveLoadObserver {
+	public static final int TIME_LEFT = 200;
 	public static final int MAX_NUM_ASTEROIDS = 165;
 	public static final int MIN_NUM_ASTEROIDS = 75;
 	public static final int MIN_NUM_EXPLOSIVE = 5;
@@ -58,6 +62,8 @@ public class GameController extends AppController implements SaveLoadObserver {
 	private int score;
 	private int lives;
 	private boolean gameOver=false;
+	private Timer timer;
+	private int time_remaining=TIME_LEFT;
 	
 	public GameController(GameView gameView, AlienAsteroidGame app) {
 		super(gameView, app);
@@ -72,7 +78,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 		list_objects = new ArrayList<GameObject>();
 		asteroidList = new ArrayList<>();
 		powerups=  new ArrayList<>();
-
+		timer = new Timer(TIME_LEFT, new TimerListener());
 	}
 
 	/**
@@ -287,10 +293,10 @@ public class GameController extends AppController implements SaveLoadObserver {
 	* Movement of the ball.
 	*/
 	public void ballMoved() {
+		if (isGameOver()||GamePanel.gameMode == GameMode.PAUSED) {
+			return;
+		}
 		for(Ball ball:balls) {
-			if (GamePanel.gameMode == GameMode.PAUSED) {
-				return;
-			}
 			if (0 >= ball.getX()) {
 				ball.setVelocityX(-ball.getVelocityX());
 			}
@@ -310,7 +316,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 	* Movement of the alien.
 	*/
 	public void alienMoved() {
-		if (GamePanel.gameMode == GameMode.PAUSED) {
+		if (isGameOver()||GamePanel.gameMode == GameMode.PAUSED) {
 			return;
 		}
 		if (0 > alien.getX()) {
@@ -326,11 +332,11 @@ public class GameController extends AppController implements SaveLoadObserver {
 	* Movement of the laser.
 	*/
 	public void laserMoved() {
+		if (isGameOver()||GamePanel.gameMode == GameMode.PAUSED) {
+			return;
+		}
 		for(LaserBall laser:laser_balls) {
 			if(laser==null) {
-				return;
-			}
-			if (GamePanel.gameMode == GameMode.PAUSED) {
 				return;
 			}
 			laser.setX(laser.getX() + laser.getVelocityX());
@@ -522,6 +528,9 @@ public class GameController extends AppController implements SaveLoadObserver {
 	* Paddle and ball hit function.
 	*/
 	public void paddleHitBall() {
+		if(isGameOver()) {
+			return;
+		}
 		for(Ball ball:balls) {	
 			if (getPaddle().getObjShape().getShape().intersects(ball.getObjShape().getShape().getBounds2D())){
 				float angled_value=(float) (ball.getVelocityX()*Math.cos(Math.toRadians(paddle.getRotationDegree()))*
@@ -535,9 +544,12 @@ public class GameController extends AppController implements SaveLoadObserver {
 
 	// added for the lives feature
 	public void ballFalls() {
+		if(isGameOver()) {
+			return;
+		}
 		Ball temp_ball=null;
 		for(Ball ball:balls) {
-			if (getPaddle().getObjShape().getShape().getBounds().getY() < ball.getObjShape().getShape().getBounds().getY()){
+			if (getPaddle().getObjShape().getShape().getBounds().getY()+150f < ball.getObjShape().getShape().getBounds().getY()){
 				temp_ball=ball;
 				break;
 			}
@@ -554,6 +566,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 		}
 		if(lives <= 0){
 			this.setGameOver(true);
+			stopTimer();
 			((GameView) view).gameOver();
 			AlienAsteroidGame.getInstance().changeView(((GameView) view), new MenuView());
 		}
@@ -592,7 +605,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 	* @param direction indicates MoveDirection.
 	*/
 	public void paddleMoved(MoveDirection direction) {
-		if (GamePanel.gameMode == GameMode.PAUSED) {
+		if (isGameOver()||GamePanel.gameMode == GameMode.PAUSED) {
 			return;
 		}
 		switch (direction) {
@@ -629,7 +642,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 	* @param direction indicates MoveDirection.
 	*/
 	public void paddleRotated(MoveDirection direction) {
-		if (GamePanel.gameMode == GameMode.PAUSED) {
+		if (isGameOver()||GamePanel.gameMode == GameMode.PAUSED) {
 			return;
 		}
 		switch (direction) {
@@ -667,16 +680,16 @@ public class GameController extends AppController implements SaveLoadObserver {
 		double posX = (double) collided_asteroid.getX() - ball.getX();
 		double posY = (double) collided_asteroid.getY() - ball.getY();
 		double angle = Math.atan2(posY - 0, posX - (double) 1) * (180 / Math.PI);
-		if (45d <= angle && angle <= 135d) {
+		if (45d < angle && angle < 135d) {
 			ball.setVelocityY(-ball.getVelocityY());
 		}
-		if ((135d <= angle && angle <= 180d) || (0 >= angle && angle >= -45d)) {
+		if ((135d <= angle && angle < 180d) || (0 >= angle && angle > -45d)) {
 			ball.setVelocityX(-ball.getVelocityX());
 		}
 		if (-45d >= angle && angle >= -135d) {
 			ball.setVelocityY(-ball.getVelocityY());
 		}
-		if ((0d <= angle && angle <= 45d) || (-135d >= angle && angle <= -180d)) {
+		if ((0d < angle && angle <= 45d) || (-135d > angle && angle <= -180d)) {
 			ball.setVelocityX(-ball.getVelocityX());
 		}
 	}
@@ -717,6 +730,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 		((GameView)view).getTopPanel().getTaller_button().setVisible(false);
 		((GameView)view).getTopPanel().getWrap_label().setVisible(false);
 		setPaddle(new Paddle(this, GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
+		restartTimer();
 	}
 	
 	/**
@@ -741,7 +755,40 @@ public class GameController extends AppController implements SaveLoadObserver {
 		((GameView)view).getTopPanel().getWrap_label().setVisible(false);
 		setPaddle(new Paddle(this, GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
 	}
+
+	public void startTimer(){
+		timer.start();
+	}
+
+	public void stopTimer(){
+		timer.stop();
+	}
+
+	public void restartTimer(){
+		timer.restart();
+	}
 	
+	private class TimerListener implements ActionListener{
+		private int count=0;
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			if (((GameView)view).getGamePanel().gameMode==GameMode.PAUSED){
+				return;
+			}
+			if(count%10==0) {
+				time_remaining=TIME_LEFT - (count/10);
+				((GameView) view).getTopPanel().setTimer(time_remaining);
+				if(time_remaining == 0){
+					setGameOver(true);
+					stopTimer();
+					((GameView) view).gameOver();
+					AlienAsteroidGame.getInstance().changeView(((GameView) view), new MenuView());
+				}
+			}
+			count++;
+		}
+	}
+
 	/**
 	* reflectFromAlien means the reflection of the aliens
 	* 
@@ -1075,6 +1122,14 @@ public class GameController extends AppController implements SaveLoadObserver {
 
 	public void setLives(int lives) {
 		this.lives = lives;
+	}
+	
+	public int getTime_remaining() {
+		return time_remaining;
+	}
+
+	public void setTime_remaining(int time_remaining) {
+		this.time_remaining = time_remaining;
 	}
 
 }
