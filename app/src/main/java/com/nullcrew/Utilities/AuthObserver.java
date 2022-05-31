@@ -2,6 +2,16 @@ package com.nullcrew.Utilities;
 
 import com.nullcrew.Domain.Models.User;
 
+/**
+ * AuthObserver interface manages the connection between classes implements
+ * DataStrategy and controller classes.
+ * <p>
+ * Gives login, register and forgotPassword signals.
+ * 
+ * @author Arda Erlik
+ * @version 1.0
+ * @since 2022-05-01
+ */
 public interface AuthObserver {
 	public void forgotPasswordAccepted(User user, String response);
 
