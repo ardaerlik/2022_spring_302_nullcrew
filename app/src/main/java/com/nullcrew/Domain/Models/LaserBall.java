@@ -14,6 +14,10 @@ public class LaserBall extends GameObject {
 	public LaserBall(GameController gameController, double x, double y, int width, int height) {
 		super(gameController, x, y, width, height);
 	}
+	
+	public LaserBall(Document document) {
+		super(document);
+	}
 
 	public double getVelocityX() {
 		return velocityX;

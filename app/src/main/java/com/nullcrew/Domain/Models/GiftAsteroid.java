@@ -16,6 +16,11 @@ public class GiftAsteroid extends Asteroid {
 		this.powerup=powerup;
 		lives = 1;
 	}
+	
+	public GiftAsteroid(Document document) {
+		super(document);
+		this.powerup = null;
+	}
 
 	public int getLives() {
 		return lives;

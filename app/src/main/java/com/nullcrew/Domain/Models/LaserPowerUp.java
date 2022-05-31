@@ -14,6 +14,11 @@ public class LaserPowerUp extends PowerUp{
 	public LaserPowerUp(GameController gameController,double x, double y, int width, int height) {
 		super(gameController,x, y, width, height);
 	}
+	
+	public LaserPowerUp(Document document) {
+		super(document);
+		this.total_shots = document.getInteger("total_shots", 5);
+	}
 
 	@Override
 	public void use() {

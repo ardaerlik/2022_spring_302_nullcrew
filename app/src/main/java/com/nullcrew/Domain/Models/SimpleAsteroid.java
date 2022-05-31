@@ -14,6 +14,10 @@ public class SimpleAsteroid extends Asteroid {
 		super(gameController,x, y, width, height, speed, Color.RED, AsteroidType.Simple);
 		lives = 1;
 	}
+	
+	public SimpleAsteroid(Document document) {
+		super(document);
+	}
 
 	public int getLives() {
 		return lives;

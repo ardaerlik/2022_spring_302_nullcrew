@@ -5,10 +5,14 @@ import org.bson.Document;
 import com.nullcrew.Domain.Controllers.GameController;
 
 public class WrapPowerUp extends PowerUp{
-	private final float POWERUP_TIME=120f;
+	private final float POWERUP_TIME = 120f;
 	
 	public WrapPowerUp(GameController gameController,double x, double y, int width, int height) {
 		super(gameController,x, y, width, height);
+	}
+	
+	public WrapPowerUp(Document document) {
+		super(document);
 	}
 
 	@Override

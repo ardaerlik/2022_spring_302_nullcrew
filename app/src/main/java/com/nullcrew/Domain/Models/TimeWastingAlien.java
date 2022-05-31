@@ -11,6 +11,10 @@ public class TimeWastingAlien extends Alien {
 	public TimeWastingAlien(GameController gameController,double x, double y, int width, int height) {
 		super(gameController,x, y, width, height, 0, Color.YELLOW, AlienType.TimeWasting);
 	}
+	
+	public TimeWastingAlien(Document document) {
+		super(document);
+	}
 
 	@Override
 	public void hit(GameController gameController) {

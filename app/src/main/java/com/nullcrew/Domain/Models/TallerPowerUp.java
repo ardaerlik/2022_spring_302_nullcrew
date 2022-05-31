@@ -11,6 +11,10 @@ public class TallerPowerUp extends PowerUp{
 	public TallerPowerUp(GameController gameController,double x, double y, int width, int height) {
 		super(gameController,x, y, width, height);
 	}
+	
+	public TallerPowerUp(Document document) {
+		super(document);
+	}
 
 	@Override
 	public void fall() {
