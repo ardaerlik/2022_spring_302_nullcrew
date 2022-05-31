@@ -16,6 +16,13 @@ public abstract class PowerUp extends GameObject {
 		canbeUsed=false;
 	}
 	
+	public PowerUp(Document document) {
+		super(document);
+		this.velocity = (float) document.get("velocity");
+		this.canFall = document.getBoolean("canFall", false);
+		this.canbeUsed = document.getBoolean("canbeUsed", false);
+	}
+	
 	public abstract void fall();
 	
 	public abstract void use();

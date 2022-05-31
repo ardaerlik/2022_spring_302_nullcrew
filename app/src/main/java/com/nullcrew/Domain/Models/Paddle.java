@@ -18,9 +18,20 @@ public class Paddle extends GameObject {
 		super(gameController,x, y, width, height);
 		rotationDegree = 0;
 		PADDLE_HEIGHT = height;
-		PADDLE_WIDTH=width;
-		onWrapPowerUp=false;
-		onTallerPowerUp=false;
+		PADDLE_WIDTH = width;
+		onWrapPowerUp = false;
+		onTallerPowerUp = false;
+	}
+	
+	public Paddle(Document document) {
+		super(document);
+		this.PADDLE_HEIGHT = height;
+		this.PADDLE_WIDTH = width;
+		this.rotationDegree = document.getInteger("rotationDegree", 0);
+		this.onWrapPowerUp = document.getBoolean("onWrapPowerUp", false);
+		this.onTallerPowerUp = document.getBoolean("onTallerPowerUp", false);
+		this.onMagnet = document.getBoolean("onMagnet", false);
+		
 	}
 
 	public int getRotationDegree() {
