@@ -753,6 +753,7 @@ public class GameController extends AppController implements SaveLoadObserver {
 		((GameView)view).getTopPanel().getMagnet_button().setVisible(false);
 		((GameView)view).getTopPanel().getTaller_button().setVisible(false);
 		((GameView)view).getTopPanel().getWrap_label().setVisible(false);
+		((GameView)view).getTopPanel().setLives(lives);
 		setPaddle(new Paddle(this, GameObjectFactory.PADDLE_X, GameObjectFactory.PADDLE_Y, 120, 10));
 	}
 

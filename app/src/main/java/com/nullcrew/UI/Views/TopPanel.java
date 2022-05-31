@@ -131,6 +131,7 @@ public class TopPanel extends JPanel {
 
 	private void createLivesLabel(){
 		livesLabel = new JLabel();
+		livesLabel.setBounds(1300, 100, 100, 25);
 	}
 
 	public void setLives(int lives){
