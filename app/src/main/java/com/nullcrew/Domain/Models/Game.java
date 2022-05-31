@@ -82,6 +82,8 @@ public class Game  {
 		ArrayList<Document> ballDocuments = (ArrayList<Document>) document.get("balls");
 		ArrayList<Document> laserballDocuments = (ArrayList<Document>) document.get("laserballs");
 		Document paddleDocument = (Document) document.get("paddle");
+		
+		// TODO
 	}
 	
 	public void buildAsteroidDocuments() {
@@ -105,10 +107,31 @@ public class Game  {
 		}
 	}
 	
+	public void buildBallDocuments() {
+		list_of_ball_documents = new ArrayList<Document>();
+		for (int i = 0; i < list_of_balls.size(); i++) {
+			list_of_ball_documents.add(list_of_balls.get(i).getDocument());
+		}
+	}
+	
+	public void buildLaserBallDocuments() {
+		list_of_laserball_documents = new ArrayList<Document>();
+		for (int i = 0; i < list_of_laser_balls.size(); i++) {
+			list_of_laserball_documents.add(list_of_laser_balls.get(i).getDocument());
+		}
+	}
+	
+	public void buildPaddleDocument() {
+		paddle_document = paddle.getDocument();
+	}
+	
 	public void buildDocuments() {
 		buildAsteroidDocuments();
 		buildAlienDocuments();
 		buildPowerUpDocuments();
+		buildBallDocuments();
+		buildLaserBallDocuments();
+		buildPaddleDocument();
 	}
 	
 	public Document getDocument() {
@@ -117,7 +140,10 @@ public class Game  {
 				.append("score", score)
 				.append("lives", lives)
 				.append("powerups", list_of_powerup_documents)
-				.append("aliens", list_of_alien_documents);
+				.append("aliens", list_of_alien_documents)
+				.append("balls", list_of_ball_documents)
+				.append("laserBalls", currentGame)
+				.append("paddle", paddle_document);
 		
 		return document;
 	}
