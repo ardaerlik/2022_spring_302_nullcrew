@@ -27,6 +27,13 @@ import com.nullcrew.Domain.Models.Game;
 import com.nullcrew.Domain.Models.Game.DataType;
 import com.nullcrew.Domain.Models.User;
 
+/**
+ * DBManager class uses MongoClient for storing game data and auth the user on MongoDB
+ * 
+ * @author Arda Erlik
+ * @version 1.0
+ * @since 2022-05-01
+ */
 public final class DBManager {
 	private static DBManager instance = new DBManager();
 

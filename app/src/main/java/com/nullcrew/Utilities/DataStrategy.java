@@ -4,7 +4,7 @@ import com.nullcrew.Domain.Models.Game;
 import com.nullcrew.Domain.Models.User;
 
 /**
- * DataStrategy
+ * DataStrategy interface gives auth, save and load functionalities
  * 
  * @author Arda Erlik
  * @version 1.0

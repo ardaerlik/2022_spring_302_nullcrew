@@ -24,6 +24,13 @@ import com.nullcrew.Domain.Models.Game;
 import com.nullcrew.Domain.Models.Game.DataType;
 import com.nullcrew.Domain.Models.User;
 
+/**
+ * FileManager class uses local file system of computer for storing game data.
+ * 
+ * @author Arda Erlik
+ * @version 1.0
+ * @since 2022-05-01
+ */
 public final class FileManager implements Database {
 	private static FileManager instance = new FileManager();
 
