@@ -3,6 +3,13 @@ package com.nullcrew.Utilities;
 import com.nullcrew.Domain.Models.Game;
 import com.nullcrew.Domain.Models.User;
 
+/**
+ * DataStrategy
+ * 
+ * @author Arda Erlik
+ * @version 1.0
+ * @since 2022-05-01
+ */
 public interface DataStrategy {
 	public abstract User getUser();
 

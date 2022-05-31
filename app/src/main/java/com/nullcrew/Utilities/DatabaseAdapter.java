@@ -2,6 +2,14 @@ package com.nullcrew.Utilities;
 
 import com.nullcrew.Domain.Models.Game;
 
+/**
+ * DatabaseAdapter class stores the DBManager instance and connects to Database
+ * implemented functions to DBManager functions
+ * 
+ * @author Arda Erlik
+ * @version 1.0
+ * @since 2022-05-01
+ */
 public class DatabaseAdapter implements Database {
 	private DBManager dbManager;
 
