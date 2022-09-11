@@ -1,5 +1,14 @@
 # Alien Asteroid Game - NullCrew / Demo 1
 
+![GitHub repo size](https://img.shields.io/github/repo-size/ardaerlik/2022_spring_302_nullcrew?style=plastic)
+![GitHub](https://img.shields.io/github/license/ardaerlik/2022_spring_302_nullcrew?style=plastic)
+![Website](https://img.shields.io/website?down_message=offline&style=plastic&up_message=online&url=https%3A%2F%2Fardaerlik.com)
+
+![GitHub commit activity](https://img.shields.io/github/commit-activity/y/ardaerlik/2022_spring_302_nullcrew?style=plastic)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/ardaerlik/2022_spring_302_nullcrew?style=plastic)
+![Lines of code](https://img.shields.io/tokei/lines/github/ardaerlik/2022_spring_302_nullcrew?style=plastic)
+![GitHub top language](https://img.shields.io/github/languages/top/ardaerlik/2022_spring_302_nullcrew?style=plastic)
+
 ## Project Overview
 
 </br>
